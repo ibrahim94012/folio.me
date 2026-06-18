@@ -149,7 +149,7 @@ header{
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* Avatar row */
-.av-row{display:flex;align-items:baseline;gap:1rem;
+.av-row{display:flex;align-items:flex-end;gap:1rem;
   padding:0 1rem;margin-top:-32px;position:relative;z-index:5;}
 .stats-row-flex{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
 .av-wrap{position:relative;width:112px;height:112px;flex-shrink:0;}
@@ -1045,20 +1045,6 @@ section{;background:var(--panel);padding:1.2rem 1rem;
   </div>
 </div><!-- /profile-card -->
 
-<!-- EXPERIENCE -->
-<section class="fade-in">
-  <div class="sec-header">
-    <div class="sec-icon"><i class="fa-solid fa-briefcase"></i></div>
-    <div class="sec-title">Experience</div>
-    <button class="sec-add-btn" onclick="openExpModal()">
-      <i class="fa-solid fa-plus"></i>
-    </button>
-  </div>
-  <div class="timeline" id="exp-wrap">
-    <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
-  </div>
-</section>
-
 <!-- SKILLS -->
 <section class="fade-in">
   <div class="sec-header">
@@ -1069,6 +1055,20 @@ section{;background:var(--panel);padding:1.2rem 1rem;
     </button>
   </div>
   <div class="skills-grid" id="skills-wrap">
+    <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="fade-in">
+  <div class="sec-header">
+    <div class="sec-icon"><i class="fa-solid fa-briefcase"></i></div>
+    <div class="sec-title">Experience</div>
+    <button class="sec-add-btn" onclick="openExpModal()">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+  </div>
+  <div class="timeline" id="exp-wrap">
     <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
   </div>
 </section>
@@ -1119,7 +1119,7 @@ section{;background:var(--panel);padding:1.2rem 1rem;
       </div>
     </div>
     <div class="modal-body">
-      <div class="login-brand">Dev<span>Card</span></div>
+      <div class="login-brand">Folio<span>.me</span></div>
       <div class="login-sub">Sign in with Google or email to manage your profile</div>
       <div id="logged-in-view" style="display:none">
         <div class="user-card">
@@ -2125,7 +2125,7 @@ function openShareModal(){
   document.getElementById('share-url-input').value=url;
 
   const name=_pd.name||'Ibrahim Khalil';
-  const txt=`Check out ${name}'s DevCard!`;
+  const txt=`Check out ${name}'s Folio.me profile!`;
   document.getElementById('share-fb').href=
     `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
   document.getElementById('share-wa').href=
@@ -2248,7 +2248,7 @@ profileRef.on('value',snap=>{
         : '<i class="fa-solid fa-file-arrow-down"></i> Download CV');
   }
 
-  document.title='DevCard — '+(d.name||'Ibrahim Khalil');
+  document.title='Folio.me — '+(d.name||'Ibrahim Khalil');
 });
 
 /* ── Profile Edit ── */
