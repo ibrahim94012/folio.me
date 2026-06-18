@@ -699,10 +699,10 @@ section{;background:var(--panel);padding:1.2rem 1rem;
     }
 </style>
   <!-- Firebase SDK -->
-  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -1145,7 +1145,7 @@ section{;background:var(--panel);padding:1.2rem 1rem;
           </div>
           <div class="av-upload-info">
             <h4>Profile Photo</h4>
-            <p>JPG / PNG / WEBP &bull; Max 8 MB<br>Auto-compressed &amp; saved securely</p>
+            <p>JPG / PNG / WEBP &bull; Max 5 MB<br>Stored in Firebase Storage</p>
           </div>
         </div>
         <div class="upload-zone">
@@ -1593,9 +1593,7 @@ function doLogout(){
 }
 
 auth.onAuthStateChanged(u=>{
-  // Treat anonymous sessions (used only so visitors can write without a real login)
-  // as "logged out" for UI/admin purposes — only a real Google/email account is admin.
-  const realUser = (u && !u.isAnonymous) ? u : null;
+  const realUser = u || null;
   isAdmin = !!realUser;
   document.body.classList.toggle('admin-mode',isAdmin);
 
@@ -1608,14 +1606,9 @@ auth.onAuthStateChanged(u=>{
     lb.style.display='flex';
     if(navBtn) navBtn.style.display='none';
   } else {
-    // Logged out (or anonymous): show sign-in btn in nav, hide avatar
+    // Logged out: show sign-in btn in nav, hide avatar
     lb.style.display='none';
     if(navBtn) navBtn.style.display='flex';
-    // No session at all yet — sign in anonymously in the background so
-    // visitors can like/dislike/review/view without ever seeing a login screen.
-    if(!u){
-      auth.signInAnonymously().catch(err=>console.warn('Anonymous sign-in failed:',err.message||err));
-    }
   }
 
   document.getElementById('edit-pf-btn').style.display=isAdmin?'flex':'none';
@@ -1636,13 +1629,13 @@ function avUrl(n){
     +'&background=2e8b00&color=fff&bold=true&size=96';
 }
 
-/* ── Profile Views (one count per device, not per browser tab/session) ── */
+/* ── Profile Views ── */
 function trackView(){
   const key='dc_viewed_'+window.location.pathname;
   if(localStorage.getItem(key)) return;
   localStorage.setItem(key,'1');
   db.ref('profile/views').transaction(v=>(v||0)+1)
-    .catch(e=>console.warn('View count failed:',e.message||e));
+    .catch(()=>{}); // silently ignore if rules block it
 }
 
 /* ── Realtime counters ── */
@@ -1659,15 +1652,13 @@ db.ref('profile/views').on('value',s=>{
 /* ── Like / Dislike ── */
 function handleLike(){
   if(_myReaction==='like'){
-    db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
-      .catch(e=>toast('Error: '+e.message,'error'));
+    db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1)).catch(()=>{});
     _myReaction='';
   } else {
     if(_myReaction==='dislike')
-      db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
-        .catch(e=>toast('Error: '+e.message,'error'));
+      db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1)).catch(()=>{});
     db.ref('profile/likes').transaction(v=>(v||0)+1)
-      .catch(e=>toast('Error: '+e.message,'error'));
+      .catch(()=>toast('Could not save reaction — check DB rules','error'));
     _myReaction='like';
   }
   localStorage.setItem('dc_reaction',_myReaction);
@@ -1676,15 +1667,13 @@ function handleLike(){
 
 function handleDislike(){
   if(_myReaction==='dislike'){
-    db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
-      .catch(e=>toast('Error: '+e.message,'error'));
+    db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1)).catch(()=>{});
     _myReaction='';
   } else {
     if(_myReaction==='like')
-      db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
-        .catch(e=>toast('Error: '+e.message,'error'));
+      db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1)).catch(()=>{});
     db.ref('profile/dislikes').transaction(v=>(v||0)+1)
-      .catch(e=>toast('Error: '+e.message,'error'));
+      .catch(()=>toast('Could not save reaction — check DB rules','error'));
     _myReaction='dislike';
   }
   localStorage.setItem('dc_reaction',_myReaction);
@@ -1755,135 +1744,126 @@ function downloadCV(){
   toast('Opening CV...','success');
 }
 
-/* ── Image Upload — Pure Base64 → Realtime DB (no Firebase Storage needed) ── */
-
-/**
- * Compresses image to base64 JPEG within a safe size for RTDB.
- * Tries progressively lower quality/dimensions until under 3MB base64.
- */
+/* ── Image Upload — Pure Base64 → Realtime DB (Firebase Storage বাদ) ── */
 function compressToBase64(file, maxW, maxH){
   return new Promise((resolve, reject)=>{
-    const reader = new FileReader();
-    reader.onerror = ()=> reject(new Error('Cannot read file'));
-    reader.onload = ev => {
-      const img = new Image();
-      img.onerror = ()=> reject(new Error('Cannot decode image'));
-      img.onload = ()=>{
-        // Try progressively lower quality until base64 fits in ~3MB
-        const attempts = [
-          {w: maxW,            h: maxH,            q: 0.82},
-          {w: maxW,            h: maxH,            q: 0.65},
-          {w: Math.round(maxW*0.75), h: Math.round(maxH*0.75), q: 0.60},
-          {w: Math.round(maxW*0.55), h: Math.round(maxH*0.55), q: 0.50},
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('Cannot read file'));
+    reader.onload=ev=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('Cannot decode image'));
+      img.onload=()=>{
+        const attempts=[
+          {w:maxW,              h:maxH,              q:0.82},
+          {w:maxW,              h:maxH,              q:0.65},
+          {w:Math.round(maxW*.75),h:Math.round(maxH*.75),q:0.60},
+          {w:Math.round(maxW*.50),h:Math.round(maxH*.50),q:0.50},
         ];
-        let result = null;
+        let result='';
         for(const a of attempts){
-          let sw = img.width, sh = img.height;
-          const ratio = Math.min(a.w/sw, a.h/sh, 1);
-          sw = Math.round(sw * ratio); sh = Math.round(sh * ratio);
-          const canvas = document.createElement('canvas');
-          canvas.width = sw; canvas.height = sh;
-          canvas.getContext('2d').drawImage(img, 0, 0, sw, sh);
-          const b64 = canvas.toDataURL('image/jpeg', a.q);
-          result = b64;
-          if(b64.length < 3 * 1024 * 1024) break; // ~3MB base64 safe limit
+          let sw=img.width, sh=img.height;
+          const r=Math.min(a.w/sw, a.h/sh, 1);
+          sw=Math.round(sw*r); sh=Math.round(sh*r);
+          const c=document.createElement('canvas');
+          c.width=sw; c.height=sh;
+          c.getContext('2d').drawImage(img,0,0,sw,sh);
+          result=c.toDataURL('image/jpeg',a.q);
+          if(result.length < 3*1024*1024) break;
         }
         resolve(result);
       };
-      img.src = ev.target.result;
+      img.src=ev.target.result;
     };
     reader.readAsDataURL(file);
   });
 }
 
 async function handleAvatarUpload(input){
-  const file = input.files[0]; input.value = '';
+  const file=input.files[0]; input.value='';
   if(!file) return;
   if(!isAdmin){ toast('Please sign in first','error'); return; }
-  if(file.size > 8*1024*1024){ toast('Max file size is 8 MB','error'); return; }
-  const ring = document.getElementById('av-ring');
+  if(file.size>10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
+  const ring=document.getElementById('av-ring');
   ring.classList.add('active');
   toast('Uploading profile photo...','info');
   try{
-    const b64 = await compressToBase64(file, 400, 400);
-    await db.ref('profile').update({avatar: b64});
+    const b64=await compressToBase64(file,400,400);
+    await db.ref('profile').update({avatar:b64});
     toast('Profile photo updated!','success');
   }catch(e){ toast('Upload failed: '+e.message,'error'); }
   finally{ ring.classList.remove('active'); }
 }
 
 async function handleCoverUpload(input){
-  const file = input.files[0]; input.value = '';
+  const file=input.files[0]; input.value='';
   if(!file) return;
   if(!isAdmin){ toast('Please sign in first','error'); return; }
-  if(file.size > 10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
-  const overlay = document.getElementById('cover-uploading');
-  const pctEl  = document.getElementById('cover-up-pct');
-  overlay.classList.add('active'); pctEl.textContent = '0%';
+  if(file.size>10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
+  const overlay=document.getElementById('cover-uploading');
+  const pctEl=document.getElementById('cover-up-pct');
+  overlay.classList.add('active'); pctEl.textContent='0%';
   try{
-    pctEl.textContent = '30%';
-    const b64 = await compressToBase64(file, 1200, 675);
-    pctEl.textContent = '80%';
-    await db.ref('profile').update({cover: b64});
-    pctEl.textContent = '100%';
+    pctEl.textContent='30%';
+    const b64=await compressToBase64(file,1200,675);
+    pctEl.textContent='80%';
+    await db.ref('profile').update({cover:b64});
+    pctEl.textContent='100%';
     toast('Cover photo updated!','success');
   }catch(e){ toast('Upload failed: '+e.message,'error'); }
-  finally{ setTimeout(()=>{ overlay.classList.remove('active'); pctEl.textContent='0%'; }, 600); }
+  finally{ setTimeout(()=>{ overlay.classList.remove('active'); pctEl.textContent='0%'; },600); }
 }
 
 async function modalAvatarUpload(input){
-  const file = input.files[0]; input.value = '';
+  const file=input.files[0]; input.value='';
   if(!file) return;
   if(!isAdmin){ toast('Please sign in first','error'); return; }
-  if(file.size > 8*1024*1024){ toast('Max file size is 8 MB','error'); return; }
-  // Immediate local preview
-  const reader = new FileReader();
-  reader.onload = e =>{
-    const c = document.getElementById('av-preview-circle');
-    c.innerHTML = `<img src="${e.target.result}" alt="preview" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+  if(file.size>10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const c=document.getElementById('av-preview-circle');
+    c.innerHTML=`<img src="${e.target.result}" alt="preview" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
   };
   reader.readAsDataURL(file);
-  const prog = document.getElementById('av-up-prog');
-  const fill = document.getElementById('av-up-fill');
-  const lbl  = document.getElementById('av-up-lbl');
-  prog.classList.add('active'); fill.style.width = '0%'; lbl.textContent = 'Compressing...';
+  const prog=document.getElementById('av-up-prog');
+  const fill=document.getElementById('av-up-fill');
+  const lbl=document.getElementById('av-up-lbl');
+  prog.classList.add('active'); fill.style.width='0%'; lbl.textContent='Compressing...';
   try{
-    fill.style.width = '40%'; lbl.textContent = '40% — compressing image';
-    const b64 = await compressToBase64(file, 400, 400);
-    fill.style.width = '75%'; lbl.textContent = '75% — saving to database';
-    await db.ref('profile').update({avatar: b64});
-    fill.style.width = '100%'; lbl.textContent = 'Upload complete!';
+    fill.style.width='40%'; lbl.textContent='40% — compressing';
+    const b64=await compressToBase64(file,400,400);
+    fill.style.width='75%'; lbl.textContent='75% — saving...';
+    await db.ref('profile').update({avatar:b64});
+    fill.style.width='100%'; lbl.textContent='Done!';
     toast('Profile photo saved!','success');
-  }catch(e){ lbl.textContent = 'Upload failed'; toast('Upload failed: '+e.message,'error'); }
-  finally{ setTimeout(()=>{ prog.classList.remove('active'); fill.style.width='0%'; }, 1800); }
+  }catch(e){ lbl.textContent='Failed'; toast('Upload failed: '+e.message,'error'); }
+  finally{ setTimeout(()=>{ prog.classList.remove('active'); fill.style.width='0%'; },1800); }
 }
 
 async function modalCoverUpload(input){
-  const file = input.files[0]; input.value = '';
+  const file=input.files[0]; input.value='';
   if(!file) return;
   if(!isAdmin){ toast('Please sign in first','error'); return; }
-  if(file.size > 10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
-  // Immediate local preview
-  const reader = new FileReader();
-  reader.onload = e =>{
-    const prev  = document.getElementById('cover-uz-prev');
-    const inner = document.getElementById('cover-uz-inner');
-    prev.src = e.target.result; prev.classList.add('show'); inner.style.display = 'none';
+  if(file.size>10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const prev=document.getElementById('cover-uz-prev');
+    const inner=document.getElementById('cover-uz-inner');
+    prev.src=e.target.result; prev.classList.add('show'); inner.style.display='none';
   };
   reader.readAsDataURL(file);
-  const prog = document.getElementById('cover-up-prog');
-  const fill = document.getElementById('cover-up-fill');
-  const lbl  = document.getElementById('cover-up-lbl');
-  prog.classList.add('active'); fill.style.width = '0%'; lbl.textContent = 'Compressing...';
+  const prog=document.getElementById('cover-up-prog');
+  const fill=document.getElementById('cover-up-fill');
+  const lbl=document.getElementById('cover-up-lbl');
+  prog.classList.add('active'); fill.style.width='0%'; lbl.textContent='Compressing...';
   try{
-    fill.style.width = '40%'; lbl.textContent = '40% — compressing image';
-    const b64 = await compressToBase64(file, 1200, 675);
-    fill.style.width = '75%'; lbl.textContent = '75% — saving to database';
-    await db.ref('profile').update({cover: b64});
-    fill.style.width = '100%'; lbl.textContent = 'Upload complete!';
+    fill.style.width='40%'; lbl.textContent='40% — compressing';
+    const b64=await compressToBase64(file,1200,675);
+    fill.style.width='75%'; lbl.textContent='75% — saving...';
+    await db.ref('profile').update({cover:b64});
+    fill.style.width='100%'; lbl.textContent='Done!';
     toast('Cover photo saved!','success');
-  }catch(e){ lbl.textContent = 'Upload failed'; toast('Upload failed: '+e.message,'error'); }
-  finally{ setTimeout(()=>{ prog.classList.remove('active'); fill.style.width='0%'; }, 1800); }
+  }catch(e){ lbl.textContent='Failed'; toast('Upload failed: '+e.message,'error'); }
+  finally{ setTimeout(()=>{ prog.classList.remove('active'); fill.style.width='0%'; },1800); }
 }
 
 /* ── Username ── */
