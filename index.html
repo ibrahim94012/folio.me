@@ -1,0 +1,2512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Folio.me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+<link rel="icon" type="image/x-icon" href="folioDOTme.jpg">
+<link href="https://fonts.googleapis.com/css2?
+    family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --bg:#f5f5f0;
+  --bg2:#eeede8;
+  --bg3:#e4e3dc;
+  --panel:#ffffff;
+  --panel2:#f0efe9;
+  --border:rgba(0,0,0,0.08);
+  --border2:rgba(0,0,0,0.14);
+  --accent:#2e8b00;
+  --accent2:#0a7a5c;
+  --accent3:#c2185b;
+  --accent-dim:rgba(46,139,0,0.08);
+  --text:#1a1a2e;
+  --text2:#5a5a7a;
+  --text3:#aaaabc;
+  --danger:#d32f2f;
+  --green:#2e8b00;
+  --shadow:rgba(0,0,0,0.12);
+  --modal-bg:rgba(0,0,0,0.5);
+  --avatar-bg:#e8e7e2;
+  --like:#2e8b00;
+  --dislike:#d32f2f;
+  --radius:12px;
+  --radius-lg:18px;
+  --radius-xl:22px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
+.wrap{max-width:520px;margin:0 auto;padding-bottom:4rem;}
+
+/* ── HEADER ── */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.7rem 1rem;position:sticky;top:0;z-index:300;
+  background:rgba(245,245,240,0.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2);
+}
+
+/* Logo — upgraded */
+.logo{
+  display:flex;align-items:center;gap:9px;text-decoration:none;
+  font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.18rem;
+  letter-spacing:-.04em;color:var(--text);
+}
+.logo-icon{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.9rem;box-shadow:0 3px 10px rgba(46,139,0,.35);
+  flex-shrink:0;
+}
+.logo-text{display:flex;align-items:baseline;gap:1px;}
+.logo-text em{color:var(--accent);font-style:normal;}
+.logo-badge{
+  font-size:.45rem;font-weight:700;letter-spacing:.12em;
+  background:var(--accent-dim);color:var(--accent);
+  border:1px solid rgba(46,139,0,.2);border-radius:100px;
+  padding:2px 6px;text-transform:uppercase;align-self:center;margin-left:2px;
+}
+
+/* Header right */
+.hd-right{display:flex;gap:6px;align-items:center;}
+.icon-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;
+  border:1.5px solid var(--border2);background:var(--panel2);
+  cursor:pointer;color:var(--text2);font-size:.85rem;
+  transition:all .22s;flex-shrink:0;
+}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
+.icon-btn img{width:28px;height:28px;border-radius:50%;object-fit:cover;}
+
+/* Settings trigger — now in hd-right */
+.settings-trigger{
+  display:none;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;
+  border:1.5px solid var(--border2);background:var(--panel2);
+  cursor:pointer;color:var(--text2);font-size:.85rem;transition:all .22s;
+}
+.settings-trigger:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
+.admin-mode .settings-trigger{display:flex;}
+
+/* ── PROFILE CARD ── */
+.profile-card{background:var(--panel);
+  }
+
+/* Cover */
+.cover-wrap{position:relative;width:100%;height:210px;border-radius: 0 0 23px 23px;
+  background:linear-gradient(135deg,#4caf50 0%,#2e8b00 55%,#0a7a5c 100%);overflow:hidden;}
+.cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.cover-overlay{position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.62) 0%,rgba(0,0,0,.05) 55%);z-index:1;}
+.cover-badge{position:absolute;bottom:14px;left:18px;z-index:3;color:#fff;}
+.cover-badge h2{font-family:'Space Grotesk',sans-serif;font-size:1.32rem;font-weight:700;
+  text-shadow:0 2px 8px rgba(0,0,0,.55);line-height:1.2;}
+.cover-badge p{font-size:.7rem;opacity:.88;margin-top:3px;font-weight:500;letter-spacing:.04em;}
+/* Vibe cloud */
+.vibe-cloud-wrap{position:absolute;bottom:93px;left:55%;z-index:4;white-space:nowrap;}
+.vibe-cloud{display:inline-flex;align-items:center;gap:7px;
+  background:rgba(245,245,240,0.95);backdrop-filter:blur(14px);
+  border-radius:20px 20px 20px 5px;padding:8px 15px;
+  font-size:.78rem;color:var(--text);
+  box-shadow:0 4px 18px rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.8);}
+.vibe-dot{width:8px;height:8px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 7px var(--green);flex-shrink:0;animation:vd 2s ease-in-out infinite;}
+@keyframes vd{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.45;transform:scale(.82);}}
+.vibe-text-el{font-weight:500;max-width:170px;overflow:hidden;text-overflow:ellipsis;}
+.vibe-edit-wrap{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:5;
+  display:none;align-items:center;gap:6px;
+  background:rgba(245,245,240,.97);border-radius:20px;padding:5px 5px 5px 13px;
+  border:2px solid var(--accent);box-shadow:0 4px 18px rgba(0,0,0,.2);}
+.admin-mode .vibe-edit-wrap{display:flex;}
+.admin-mode .vibe-cloud-wrap{display:none;}
+.vibe-edit-wrap input{border:none;background:transparent;font-size:.78rem;color:var(--text);
+  outline:none;font-family:'Inter',sans-serif;width:145px;}
+.vibe-save-btn{background:var(--accent);color:#fff;border:none;border-radius:14px;
+  padding:5px 12px;font-size:.68rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:filter .2s;}
+.vibe-save-btn:hover{filter:brightness(1.12);}
+
+/* Cover cam btn */
+.cover-cam-btn{position:absolute;bottom:10px;right:10px;z-index:4;
+  background:rgba(0,0,0,.5);color:#fff;border:1.5px solid rgba(255,255,255,.3);
+  border-radius:9px;padding:6px 12px;font-size:.72rem;font-weight:600;cursor:pointer;
+  display:none;align-items:center;gap:6px;backdrop-filter:blur(8px);transition:all .2s;}
+.cover-cam-btn:hover{background:rgba(0,0,0,.78);}
+.admin-mode .cover-cam-btn{display:flex;}
+.cover-uploading{position:absolute;inset:0;background:rgba(0,0,0,.48);z-index:5;
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#fff;}
+.cover-uploading.active{display:flex;}
+.cover-up-pct{font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;}
+.spin-ring{width:42px;height:42px;border:3px solid rgba(255,255,255,.2);
+  border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Avatar row */
+.av-row{display:flex;align-items:baseline;gap:1rem;
+  padding:0 1rem;margin-top:-32px;position:relative;z-index:5;}
+.stats-row-flex{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.av-wrap{position:relative;width:112px;height:112px;flex-shrink:0;}
+.av-img,.av-icon-ph{width:112px;height:112px;border-radius:50%;border:4px solid var(--panel);
+  display:block;object-fit:cover;background:var(--avatar-bg);}
+.av-icon-ph{display:flex;align-items:center;justify-content:center;font-size:2.7rem;color:var(--text3);}
+.online-dot{width:16px;height:16px;background:var(--green);border-radius:50%;
+  border:3px solid var(--panel);position:absolute;bottom:5px;right:5px;}
+.av-uploading-ring{position:absolute;inset:-4px;border:3px solid transparent;
+  border-top-color:var(--accent);border-radius:50%;display:none;animation:spin 1s linear infinite;}
+.av-uploading-ring.active{display:block;}
+.av-cam-btn{position:absolute;bottom:2px;right:2px;width:30px;height:30px;
+  background:var(--panel);border:1.5px solid var(--border2);border-radius:50%;
+  display:none;align-items:center;justify-content:center;cursor:pointer;
+  font-size:.68rem;color:var(--text2);box-shadow:0 2px 8px var(--shadow);transition:all .2s;}
+.av-cam-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.admin-mode .av-cam-btn{display:flex;}
+
+/* Action buttons */
+.action-btns{display:flex;flex-direction:column;gap:8px;padding-left:8px;}
+.ab-row{display:flex;gap:6px;}
+.ab-btn{
+    height: 36px;
+    font-family: 'Inter',sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all .18s;
+    white-space: nowrap;}
+.ab-row .ab-btn{flex:1;min-width:0;}
+.ab-btn.green{background:var(--accent);color:#fff;}
+.ab-btn.green:hover{filter:brightness(1.1);}
+.ab-btn.teal{background:var(--accent2);color:#fff;}
+.ab-btn.teal:hover{filter:brightness(1.12);}
+.ab-btn.neutral{background:var(--panel2);color:var(--text);border:1.5px solid var(--border2);}
+.ab-btn.neutral:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Profile info */
+.pf-info{padding:.3rem 1rem 1rem;}
+.pf-name-row{display:flex;align-items:center;gap:10px;margin-bottom:0;}
+.pf-name{font-family:'Space Grotesk',sans-serif;font-size:1.28rem;font-weight:700;
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex:1;}
+.verified{color:var(--accent);font-size:.85rem;}
+.pf-type-row{font-size:.75rem;color:var(--text2);margin-bottom:0rem;display:flex;align-items:center;gap:6px;}
+.pf-type-row .dot{color:var(--text3);}
+.pf-bio{font-size:.88rem;color:var(--text);line-height:1.65;margin-bottom:.8rem;}
+
+/* Meta chips */
+.pf-meta{display:flex;flex-wrap:wrap;gap:.42rem;margin-bottom:.8rem;}
+.pf-meta-chip{display:inline-flex;align-items:center;gap:5px;font-size:.75rem;color:var(--text2);
+  background:var(--panel2);border-radius:20px;padding:4px 11px;}
+.pf-meta-chip i{font-size:.77rem;color:var(--accent2);}
+.pf-meta-chip a{color:inherit;text-decoration:none;}
+.pf-meta-chip a:hover{color:var(--accent);}
+
+/* Username prompt */
+.username-prompt{background:linear-gradient(135deg,rgba(46,139,0,.07),var(--panel2));
+  border:1.5px solid var(--accent);border-radius:var(--radius);
+  padding:.85rem 1rem;margin-bottom:.8rem;display:flex;align-items:center;gap:10px;
+  cursor:pointer;transition:all .22s;}
+.username-prompt:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(46,139,0,.15);}
+.username-prompt > i{color:var(--accent);}
+.up-text strong{display:block;font-size:.84rem;font-weight:700;}
+.up-text span{display:block;font-size:.72rem;color:var(--text2);margin-top:1px;}
+.up-arrow{color:var(--text3);font-size:.75rem;margin-left:auto;}
+
+/* ── NAV SIGN IN BUTTON ── */
+.nav-signin-btn{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;
+  padding:6px 13px;border-radius:9px;
+  border:1.5px solid var(--border2);
+  background:var(--panel);color:var(--text);
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.nav-signin-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
+
+/* ── NAME ROW: icon buttons LEFT, name RIGHT ── */
+
+.name-reaction-group{
+  display:flex;flex-direction:column;
+  gap:5px;flex-shrink:0;
+}
+.reaction-row{display:flex;gap:5px;width: 81px;}
+
+/* Icon-only like/dislike */
+.icon-react{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:30px;border-radius:8px;
+  border:1.5px solid var(--border2);
+  background:var(--panel2);
+  cursor:pointer;user-select:none;
+  font-size:.98rem;color:var(--text3);
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  padding:0;
+}
+.icon-react i{transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+
+.icon-react.like-btn:hover{
+  border-color:rgba(46,139,0,.4);
+  background:rgba(46,139,0,.08);
+  color:var(--like);
+}
+.icon-react.like-btn:hover i{ transform:scale(1.2) rotate(-8deg); }
+.icon-react.like-btn.liked{
+  background:linear-gradient(135deg,#2e8b00,#3aab00);
+  border-color:transparent;color:#fff;
+  box-shadow:0 3px 10px rgba(46,139,0,.35);
+}
+.icon-react.like-btn.liked i{
+  transform:scale(1.15) rotate(-10deg);
+  animation:iconpop .3s cubic-bezier(.34,1.8,.64,1);
+}
+
+.icon-react.dislike-btn:hover{
+  border-color:rgba(211,47,47,.35);
+  background:rgba(211,47,47,.07);
+  color:var(--dislike);
+}
+.icon-react.dislike-btn:hover i{ transform:scale(1.2) rotate(8deg); }
+.icon-react.dislike-btn.disliked{
+  background:linear-gradient(135deg,#d32f2f,#e53935);
+  border-color:transparent;color:#fff;
+  box-shadow:0 3px 10px rgba(211,47,47,.3);
+}
+.icon-react.dislike-btn.disliked i{ transform:scale(1.15) rotate(10deg); }
+
+/* Review button — sits directly under the like/dislike row */
+.icon-react.review-btn{
+  width:81px;height:24px;border-radius:7px;
+  font-size:.64rem;font-weight:700;gap:4px;
+  color:#b9790a;border-color:rgba(245,166,35,.4);
+  background:rgba(245,166,35,.1);
+    
+}
+.icon-react.review-btn:hover{
+  background:rgba(245,166,35,.2);border-color:#f5a623;color:#8a5a06;
+}
+.icon-react.review-btn i{font-size:.64rem;}
+
+@keyframes iconpop{
+  0%{transform:scale(1);}
+  45%{transform:scale(1.5) rotate(-14deg);}
+  75%{transform:scale(.9) rotate(-5deg);}
+  100%{transform:scale(1.15) rotate(-10deg);}
+}
+
+/* ── STATS ROW (counts below name) ── */
+.stats-row{
+  display:flex;align-items:center;
+  gap:5px;margin-bottom:0;
+  padding-left:2px;
+}
+.stat-count{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.75rem;font-weight:700;color:var(--text2);
+}
+.stats-sep{
+  width:3px;height:3px;border-radius:50%;
+  background:var(--border2);flex-shrink:0;margin:0 1px;
+}
+.stat-view-lbl{font-size:.7rem;color:var(--text3);}
+
+/* ── CONTACT DOWNLOAD BUTTON ── */
+.ab-btn.contact-dl{
+  background:var(--panel2);
+  color:var(--text);
+  border:1.5px solid var(--border2);
+}
+.ab-btn.contact-dl:hover{
+  border-color:var(--accent2);
+  color:var(--accent2);
+  background:rgba(10,122,92,.06);
+}
+
+/* ── CV DOWNLOAD BUTTON (full-width, row 2) ── */
+.ab-btn.cv-dl{
+  width:100%;
+  height:46px;
+  font-size:.88rem;
+  font-weight:700;
+  color:#fff;
+  background:linear-gradient(135deg,var(--accent2) 0%,var(--accent) 100%);
+  box-shadow:0 4px 14px rgba(10,122,92,.25);
+}
+.ab-btn.cv-dl:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.ab-btn.cv-dl:active{transform:translateY(0);}
+
+@keyframes pop{
+  0%{transform:scale(1);}
+  40%{transform:scale(1.35);}
+  70%{transform:scale(.88);}
+  100%{transform:scale(1);}
+}
+
+/* Socials */
+.pf-socials{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+.soc-link{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--text2);
+  text-decoration:none;background:var(--panel2);border:1.5px solid var(--border2);
+  border-radius:9px;padding:6px 12px;transition:all .2s;font-weight:500;}
+.soc-link:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-dim);}
+
+/* ── SECTIONS ── */
+section{;background:var(--panel);padding:1.2rem 1rem;
+  }
+.sec-header{display:flex;align-items:center;gap:9px;margin-bottom:1rem;}
+.sec-icon{width:32px;height:32px;border-radius:9px;background:var(--accent-dim);
+  display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.85rem;flex-shrink:0;}
+.sec-title{font-family:'Space Grotesk',sans-serif;font-size:.97rem;font-weight:700;flex:1;}
+.sec-add-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--accent);
+  background:var(--accent-dim);color:var(--accent);cursor:pointer;display:none;
+  align-items:center;justify-content:center;font-size:.7rem;transition:all .2s;}
+.sec-add-btn:hover{background:var(--accent);color:#fff;}
+.admin-mode .sec-add-btn{display:flex;}
+
+/* Skills — upgraded cards */
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.skill-card{
+  background:var(--panel2);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:.8rem;
+  display:flex;flex-direction:column;gap:8px;
+  transition:all .2s;position:relative;
+}
+.skill-card:hover{border-color:var(--accent);box-shadow:0 3px 14px rgba(46,139,0,.1);}
+.skill-card-header{display:flex;align-items:center;justify-content:space-between;}
+.skill-name{font-size:.78rem;font-weight:600;color:var(--text);}
+.skill-pct{
+  font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;
+  color:#fff;background:var(--accent);border-radius:100px;padding:2px 7px;
+}
+.skill-track{height:6px;background:var(--bg3);border-radius:100px;overflow:hidden;border:1px solid var(--border);}
+.skill-fill{height:100%;border-radius:100px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .7s cubic-bezier(.4,0,.2,1);}
+.skill-del{position:absolute;top:6px;right:6px;background:none;border:none;
+  color:var(--text3);cursor:pointer;font-size:.7rem;padding:3px 5px;
+  border-radius:6px;display:none;transition:all .2s;}
+.skill-del:hover{color:var(--danger);background:rgba(211,47,47,.08);}
+.admin-mode .skill-del{display:block;}
+
+/* Timeline — upgraded */
+.timeline{position:relative;padding-left:32px;}
+.timeline::before{content:'';position:absolute;left:10px;top:12px;bottom:4px;width:2px;
+  background:linear-gradient(to bottom,var(--accent),rgba(46,139,0,.1));border-radius:2px;}
+.tl-item{position:relative;margin-bottom:1.4rem;}
+.tl-item:last-child{margin-bottom:0;}
+.tl-dot{
+  position:absolute;left:-32px;top:4px;
+  width:20px;height:20px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:3px solid var(--bg);box-shadow:0 0 0 2px var(--accent);
+  display:flex;align-items:center;justify-content:center;
+}
+.tl-dot i{color:#fff;font-size:.5rem;}
+.tl-card{
+  background:var(--panel2);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:.85rem 1rem;
+  transition:border-color .2s;
+}
+.tl-card:hover{border-color:rgba(46,139,0,.25);}
+.tl-role{font-family:'Space Grotesk',sans-serif;font-size:.92rem;font-weight:700;}
+.tl-org{font-size:.75rem;color:var(--accent2);margin-top:3px;font-weight:600;
+  display:flex;align-items:center;gap:5px;}
+.tl-date{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--text3);
+  margin-top:5px;display:inline-flex;align-items:center;gap:4px;
+  background:var(--bg3);border-radius:100px;padding:2px 9px;}
+.tl-desc{font-size:.8rem;color:var(--text2);margin-top:7px;line-height:1.62;}
+.item-actions{display:none;gap:6px;margin-top:10px;}
+.admin-mode .item-actions{display:flex;}
+.ia-btn{flex:1;font-size:.68rem;font-weight:600;padding:7px;border-radius:8px;
+  border:1.5px solid var(--border2);background:var(--panel);color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;transition:all .2s;}
+.ia-btn:hover{border-color:var(--accent);color:var(--accent);}
+.ia-btn.del:hover{border-color:var(--danger);color:var(--danger);}
+
+/* Projects — upgraded */
+.projects-grid{display:flex;flex-direction:column;gap:12px;}
+.project-card{background:var(--panel2);border:1.5px solid var(--border);
+  border-radius:var(--radius-lg);overflow:hidden;transition:all .25s;}
+.project-card:hover{border-color:var(--accent);
+  box-shadow:0 6px 24px rgba(46,139,0,.12);transform:translateY(-2px);}
+.project-img{width:100%;height:160px;object-fit:cover;display:block;}
+.project-img-ph{width:100%;height:160px;
+  background:linear-gradient(135deg,rgba(46,139,0,.07),rgba(10,122,92,.07));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:var(--text3);font-size:2rem;gap:7px;}
+.project-img-ph small{font-size:.6rem;letter-spacing:.08em;font-family:'Space Mono',monospace;}
+.project-body{padding:.9rem 1rem;}
+.project-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px;}
+.project-title{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;}
+.project-status{font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:100px;
+  background:rgba(46,139,0,.1);color:var(--accent);border:1px solid rgba(46,139,0,.2);}
+.project-desc{font-size:.79rem;color:var(--text2);line-height:1.6;margin-bottom:.65rem;}
+.project-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.75rem;}
+.project-tag{font-size:.62rem;background:var(--accent-dim);
+  border:1px solid rgba(46,139,0,.2);border-radius:20px;padding:3px 10px;
+  color:var(--accent);font-weight:600;}
+.project-links{display:flex;gap:7px;}
+.proj-link{flex:1;text-align:center;font-size:.72rem;font-weight:600;padding:8px;
+  border-radius:9px;border:1.5px solid var(--border2);color:var(--text2);
+  text-decoration:none;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.proj-link:hover{border-color:var(--accent);color:var(--accent);}
+.proj-link.live{background:var(--accent);color:#fff;border-color:var(--accent);}
+.proj-link.live:hover{filter:brightness(1.1);}
+
+/* Reviews & Ratings */
+.rating-summary{display:flex;align-items:center;gap:12px;margin-bottom:1rem;
+  background:var(--panel2);border:1.5px solid var(--border);border-radius:var(--radius);
+  padding:.9rem 1rem;}
+.rating-avg-num{font-family:'Space Grotesk',sans-serif;font-size:1.85rem;font-weight:800;
+  color:var(--text);line-height:1;}
+.rating-avg-stars{color:#f5a623;font-size:.95rem;display:flex;gap:2px;flex-shrink:0;}
+.rating-count{font-size:.72rem;color:var(--text2);margin-left:auto;text-align:right;
+  flex-shrink:0;line-height:1.4;}
+.reviews-list{display:flex;flex-direction:column;gap:10px;}
+.review-card{background:var(--panel2);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:.85rem 1rem;transition:border-color .2s;}
+.review-card:hover{border-color:rgba(46,139,0,.25);}
+.review-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.review-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;}
+.review-stars{color:#f5a623;font-size:.74rem;display:flex;gap:2px;flex-shrink:0;}
+.review-comment{font-size:.8rem;color:var(--text2);line-height:1.6;margin-top:6px;}
+.review-date{font-size:.62rem;color:var(--text3);margin-top:7px;display:inline-block;
+  font-family:'Space Mono',monospace;}
+
+/* Interactive 5-star selector (review form) */
+.star-select{display:flex;gap:7px;font-size:1.7rem;color:var(--text3);}
+.star-select i{cursor:pointer;transition:transform .15s;}
+.star-select i:hover{transform:scale(1.15);}
+.star-select i.fa-solid{color:#f5a623;}
+
+/* ── MODALS (bottom sheet — upgraded) ── */
+.modal-overlay{
+  position:fixed;inset:0;background:var(--modal-bg);
+  display:flex;align-items:flex-end;justify-content:center;
+  z-index:500;opacity:0;pointer-events:none;
+  transition:opacity .28s ease;
+}
+.modal-overlay.show{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--panel);
+  border-radius:var(--radius-xl) var(--radius-xl) 0 0;
+  padding:0 0 2.5rem;
+  max-width:480px;width:100%;max-height:92vh;
+  overflow-y:auto;
+  box-shadow:0 -12px 60px rgba(0,0,0,.22);
+  transform:translateY(105%);
+  transition:transform .36s cubic-bezier(.32,0,.15,1);
+}
+.modal-overlay.show .modal{transform:translateY(0);}
+.modal-header{
+  position:sticky;top:0;z-index:10;
+  background:var(--panel);
+  padding:1rem 1.4rem .9rem;
+  border-bottom:1px solid var(--border);
+}
+.modal-handle{width:38px;height:4px;background:var(--bg3);border-radius:100px;margin:0 auto .9rem;}
+.modal-title{
+  font-family:'Space Grotesk',sans-serif;font-size:1.08rem;font-weight:700;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.modal-close{
+  background:var(--panel2);border:1.5px solid var(--border2);color:var(--text3);
+  font-size:.85rem;cursor:pointer;
+  width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;transition:all .2s;flex-shrink:0;
+}
+.modal-close:hover{background:var(--bg3);color:var(--text);}
+.modal-body{padding:1.2rem 1.4rem 0;}
+
+/* Tabs */
+.tab-row{display:flex;gap:3px;background:var(--panel2);border-radius:11px;padding:3px;
+  margin-bottom:1.1rem;overflow-x:auto;}
+.tab-btn{flex:1;font-size:.65rem;font-weight:600;padding:8px 6px;border-radius:9px;
+  border:none;background:transparent;color:var(--text3);cursor:pointer;
+  transition:all .2s;white-space:nowrap;font-family:'Inter',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:5px;}
+.tab-btn.active{background:var(--panel);color:var(--accent);font-weight:700;
+  box-shadow:0 1px 6px var(--shadow);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* Form */
+.form-group{margin-bottom:.9rem;}
+.form-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text3);display:flex;align-items:center;gap:5px;margin-bottom:5px;}
+.form-label i{font-size:.75rem;color:var(--accent2);}
+.fg-input{width:100%;background:var(--panel2);border:1.5px solid var(--border2);
+  border-radius:10px;padding:.65rem .9rem;font-family:'Inter',sans-serif;font-size:.85rem;
+  color:var(--text);outline:none;transition:border-color .2s,background .2s;resize:vertical;}
+.fg-input:focus{border-color:var(--accent);background:#fff;}
+.input-icon-wrap{position:relative;}
+.input-icon-wrap .fg-input{padding-left:36px;}
+.inp-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  color:var(--text3);font-size:.85rem;pointer-events:none;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* Buttons */
+.btn{font-family:'Inter',sans-serif;font-size:.84rem;font-weight:700;padding:12px 20px;
+  border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn:active{transform:translateY(0);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn.outline{background:transparent;color:var(--text2);border:1.5px solid var(--border2);}
+.btn.outline:hover{color:var(--text);border-color:var(--accent);background:var(--accent-dim);}
+.btn.danger{background:var(--danger);color:#fff;}
+.btn.danger:hover{filter:brightness(1.1);}
+.btn.google{background:var(--panel);color:var(--text);border:1.5px solid var(--border2);font-size:.88rem;}
+.btn.google:hover{box-shadow:0 2px 10px var(--shadow);}
+.g-icon{width:19px;height:19px;flex-shrink:0;}
+.btn-row{display:flex;gap:8px;margin-top:.6rem;}
+.btn-row .btn{flex:1;}
+
+/* Upload zone */
+.upload-zone{position:relative;border:2px dashed var(--border2);
+  border-radius:var(--radius);overflow:hidden;cursor:pointer;
+  transition:all .2s;background:var(--panel2);}
+.upload-zone:hover{border-color:var(--accent);background:var(--accent-dim);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2;}
+.uz-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:1.5rem;pointer-events:none;text-align:center;}
+.uz-inner i{font-size:2rem;color:var(--text3);}
+.uz-inner b{font-size:.78rem;color:var(--text2);font-weight:600;}
+.uz-inner small{font-size:.7rem;color:var(--text3);}
+.uz-prev{width:100%;height:130px;object-fit:cover;display:none;border-radius:var(--radius);}
+.uz-prev.show{display:block;}
+.up-prog{margin-top:.7rem;display:none;}
+.up-prog.active{display:block;}
+.up-bar-track{height:6px;background:var(--bg3);border-radius:100px;overflow:hidden;}
+.up-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:100px;width:0%;transition:width .25s;}
+.up-label{font-size:.63rem;color:var(--text3);margin-top:4px;text-align:center;
+  font-family:'Space Mono',monospace;}
+.av-preview-row{display:flex;align-items:center;gap:14px;margin-bottom:.9rem;}
+.av-circle{width:68px;height:68px;border-radius:50%;border:3px solid var(--border2);
+  background:var(--avatar-bg);overflow:hidden;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:1.7rem;}
+.av-circle img{width:100%;height:100%;object-fit:cover;}
+.av-upload-info h4{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:3px;}
+.av-upload-info p{font-size:.73rem;color:var(--text2);line-height:1.5;}
+
+/* Login */
+.login-brand{font-family:'Space Grotesk',sans-serif;font-size:1.7rem;font-weight:800;
+  text-align:center;margin-bottom:.25rem;color:var(--text);}
+.login-brand span{color:var(--accent);}
+.login-sub{text-align:center;color:var(--text2);font-size:.82rem;margin-bottom:1.4rem;line-height:1.55;}
+.user-card{display:flex;align-items:center;gap:12px;padding:.9rem;
+  background:var(--panel2);border-radius:var(--radius);margin-bottom:1rem;border:1.5px solid var(--border2);}
+.user-card img{width:44px;height:44px;border-radius:50%;border:2px solid var(--accent);}
+.uc-name{font-weight:700;font-size:.9rem;}
+.uc-email{font-size:.72rem;color:var(--text2);margin-top:1px;}
+.or-div{display:flex;align-items:center;gap:.7rem;margin:.9rem 0;color:var(--text3);
+  font-size:.65rem;letter-spacing:.06em;font-family:'Space Mono',monospace;}
+.or-div::before,.or-div::after{content:'';flex:1;height:1px;background:var(--border2);}
+
+/* Settings list */
+.settings-list{display:flex;flex-direction:column;}
+.s-item{display:flex;align-items:center;gap:12px;padding:.85rem 0;
+  border-bottom:1px solid var(--border);cursor:pointer;transition:all .15s;}
+.s-item:last-child{border-bottom:none;}
+.s-item:hover .s-icon{color:var(--accent);}
+.s-icon-wrap{width:36px;height:36px;border-radius:10px;background:var(--panel2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
+.s-item:hover .s-icon-wrap{background:var(--accent-dim);}
+.s-icon{color:var(--text2);font-size:.9rem;transition:color .2s;}
+.s-text{flex:1;}
+.s-main{font-size:.88rem;font-weight:600;color:var(--text);}
+.s-sub{font-size:.7rem;color:var(--text2);margin-top:1px;}
+.s-arrow{color:var(--text3);font-size:.7rem;}
+.s-item.danger .s-icon-wrap{background:rgba(211,47,47,.08);}
+.s-item.danger .s-icon{color:var(--danger);}
+.s-item.danger .s-main{color:var(--danger);}
+
+/* Username modal */
+.un-info{background:var(--panel2);border-radius:var(--radius);padding:1rem;
+  margin-bottom:1rem;font-size:.8rem;color:var(--text2);line-height:1.6;border:1px solid var(--border);}
+.un-url-prev{font-family:'Space Mono',monospace;font-size:.67rem;color:var(--accent);
+  background:var(--accent-dim);border-radius:8px;padding:6px 12px;margin-top:.5rem;word-break:break-all;}
+.un-check{display:none;align-items:center;gap:6px;font-size:.75rem;margin-top:.4rem;}
+.un-check.ok{color:var(--green);display:flex;}
+.un-check.err{color:var(--danger);display:flex;}
+
+/* Share modal */
+.share-url-box{display:flex;align-items:center;gap:8px;background:var(--panel2);
+  border:1.5px solid var(--border2);border-radius:11px;padding:10px 13px;margin-bottom:1rem;}
+.share-url-box input{flex:1;background:none;border:none;font-family:'Space Mono',monospace;
+  font-size:.67rem;color:var(--text2);outline:none;overflow:hidden;text-overflow:ellipsis;}
+.copy-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;
+  padding:6px 13px;font-size:.68rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.copy-btn:hover{filter:brightness(1.1);}
+.qr-box{display:flex;flex-direction:column;align-items:center;padding:1.3rem;
+  background:var(--panel2);border-radius:var(--radius);margin-bottom:1rem;gap:.7rem;
+  border:1px solid var(--border);}
+.qr-box p{font-size:.7rem;color:var(--text2);font-family:'Space Mono',monospace;}
+#qr-code canvas,#qr-code img{border-radius:0;display:block;}
+.share-soc-row{display:flex;gap:7px;}
+.soc-share-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px;border-radius:9px;border:1.5px solid var(--border2);
+  background:var(--panel2);color:var(--text2);font-size:.76rem;font-weight:600;
+  cursor:pointer;transition:all .2s;text-decoration:none;}
+.soc-share-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
+
+/* ── TOAST (upgraded) ── */
+.toast{
+  position:fixed;bottom:32px;left:50%;
+  transform:translateX(-50%) translateY(20px) scale(.94);
+  background:var(--text);border-radius:100px;
+  padding:10px 22px 10px 16px;
+  font-size:.73rem;font-weight:600;color:#fff;
+  box-shadow:0 8px 32px rgba(0,0,0,.28);z-index:9999;
+  opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;max-width:90vw;text-align:center;
+  display:flex;align-items:center;gap:9px;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}
+.toast.success{background:var(--accent);}
+.toast.error{background:var(--danger);}
+.toast.info{background:var(--accent2);}
+.toast-icon{font-size:.85rem;flex-shrink:0;}
+
+/* Misc */
+.sec-div{height:1px;background:var(--border);margin:1.1rem 0;}
+.loader{display:flex;align-items:center;justify-content:center;gap:8px;padding:2rem;
+  color:var(--text3);font-size:.72rem;}
+.empty{text-align:center;padding:1.5rem;color:var(--text3);font-size:.72rem;
+  border:1.5px dashed var(--border2);border-radius:var(--radius);}
+.fade-in{animation:fi .4s ease both;}
+@keyframes fi{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:10px;}
+
+/* Section divider label */
+.sec-divider{display:flex;align-items:center;gap:8px;margin:1.2rem 0 .7rem;color:var(--text3);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Space Mono',monospace;}
+.sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:var(--border2);}
+    .review-count-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+}
+    }
+</style>
+  <!-- Firebase SDK -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-text">Folio<em>.me</em></div>
+  </a>
+  <div class="hd-right">
+    <button class="settings-trigger" onclick="openModal('settings-modal')" title="Settings">
+      <i class="fa-solid fa-gear"></i>
+    </button>
+    <!-- Sign In button in nav -->
+    <button class="nav-signin-btn" id="login-action-btn" onclick="openLoginModal()">
+      <svg width="13" height="13" viewBox="0 0 24 24" style="flex-shrink:0"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66 2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Sign In
+    </button>
+    <button class="icon-btn" id="login-btn" onclick="openLoginModal()" title="Account" style="display:none">
+      <i class="fa-solid fa-user"></i>
+    </button>
+  </div>
+</header>
+
+<!-- PROFILE CARD -->
+<div class="profile-card fade-in">
+
+  <!-- Cover -->
+  <div class="cover-wrap" id="cover-wrap">
+    <div class="cover-overlay"></div>
+
+    
+
+    <!-- Vibe edit (admin) -->
+    <div class="vibe-edit-wrap" id="vibe-edit-wrap">
+      <div class="vibe-dot"></div>
+      <input type="text" id="vibe-input" placeholder="Type your vibe...">
+      <button class="vibe-save-btn" onclick="saveVibe()"><i class="fa-solid fa-check"></i> Save</button>
+    </div>
+
+    <button class="cover-cam-btn" id="cover-cam-btn"
+      onclick="document.getElementById('cover-file-input').click()">
+      <i class="fa-solid fa-camera"></i> Change Cover
+    </button>
+    <input type="file" id="cover-file-input" accept="image/*"
+      style="display:none" onchange="handleCoverUpload(this)">
+
+    <div class="cover-uploading" id="cover-uploading">
+      <div class="spin-ring"></div>
+      <span class="cover-up-pct" id="cover-up-pct">0%</span>
+    </div>
+  </div><!-- /cover-wrap -->
+
+  <!-- Avatar Row -->
+  <div class="av-row">
+    
+    <div class="av-wrap">
+          <!-- Vibe cloud (visitor) -->
+        <div class="vibe-cloud-wrap" id="vibe-cloud-wrap">
+            <div class="vibe-cloud">
+                <div class="vibe-dot"></div>
+                <span class="vibe-text-el" id="vibe-text">Current vibe...</span>
+            </div>
+        </div>
+        
+      <div id="av-display">
+        <div class="av-icon-ph"><i class="fa-solid fa-user"></i></div>
+      </div>
+        
+      <div class="online-dot"></div>
+      <div class="av-uploading-ring" id="av-ring"></div>
+      <button class="av-cam-btn"
+        onclick="document.getElementById('avatar-file-input').click()">
+        <i class="fa-solid fa-camera"></i>
+      </button>
+      <input type="file" id="avatar-file-input" accept="image/*"
+        style="display:none" onchange="handleAvatarUpload(this)">
+    </div>
+
+      <!-- Name row: like/dislike icons LEFT, name RIGHT -->
+      <div class="stats-row-flex">
+          
+      
+    <div class="pf-name-row">
+      
+      <div class="pf-name" id="pf-name-el">
+        Ibrahim Khalil
+        <span class="verified"><i class="fa-solid fa-circle-check"></i></span>
+      </div>
+        <div class="name-reaction-group">
+        <div class="reaction-row">
+          <button class="icon-react like-btn" id="like-btn" onclick="handleLike()" title="Like">
+            <i class="fa-solid fa-thumbs-up"></i>
+          </button>
+          <button class="icon-react dislike-btn" id="dislike-btn" onclick="handleDislike()" title="Dislike">
+            <i class="fa-solid fa-thumbs-down"></i>
+          </button>
+        </div>
+        
+      </div>
+    </div>
+          <!-- Stats row — counts + views under name -->
+    <div class="stats-row">
+      <span id="like-count" class="stat-count">0</span>
+        <span class="stat-view-lbl">Like</span>
+      <span class="stats-sep"></span>
+      <span id="dislike-count" class="stat-count">0</span>
+        <span class="stat-view-lbl">Dislike</span>
+      <span class="stats-sep"></span>
+      <span id="eng-views" class="stat-count">0</span>
+      <span class="stat-view-lbl">views</span>
+    </div>
+         
+          <!-- Review count — sits right under the view-count row -->
+          <div class="review-count-row">
+    <div class="stats-row">
+      <span id="top-review-count" class="stat-count">0</span>
+      <span class="stat-view-lbl">Reviews</span>
+      <span class="stats-sep"></span>
+      <span id="top-review-avg" class="stat-count">0.0</span>
+      <span class="stat-view-lbl"><i class="fa-solid fa-star" style="color:#f5a623;"></i> avg</span>
+    </div>
+              <button class="icon-react review-btn" id="top-review-btn" onclick="openReviewModal()" title="Write a review">
+          <i class="fa-solid fa-star"></i> Review
+        </button>
+            </div>
+           
+          </div>
+      
+    
+      
+  </div>
+
+  <!-- Profile Info -->
+  <div class="pf-info">
+
+
+    <div class="pf-type-row">
+      <i class="fa-solid fa-circle-user" style="color:var(--accent2);font-size:.7rem;"></i>
+      <span id="pf-role-type">Digital creator</span>
+    </div>
+    <div class="pf-bio" id="pf-bio-el">Time is relative, but one-way.</div>
+
+    <!-- Meta chips -->
+    <div class="pf-meta" id="pf-meta"></div>
+
+      <!-- action buttons -->
+      <div class="action-btns">
+      <div class="ab-row">
+        <button class="ab-btn teal" onclick="openShareModal()">
+          <i class="fa-solid fa-share-nodes"></i> Share
+        </button>
+        <button class="ab-btn green" id="edit-pf-btn"
+          onclick="openProfileModal()" style="display:none">
+          <i class="fa-solid fa-pen-to-square"></i> Edit
+        </button>
+        <button class="ab-btn contact-dl" id="contact-dl-btn" onclick="downloadVCard()">
+          <i class="fa-solid fa-address-card"></i> Contact
+        </button>
+      </div>
+      <button class="ab-btn cv-dl" id="cv-dl-btn" onclick="downloadCV()">
+        <i class="fa-solid fa-file-arrow-down"></i> Download CV
+      </button>
+    </div>
+      
+
+    <!-- Username prompt (admin only, no username set) -->
+    <div class="username-prompt" id="username-prompt"
+      style="display:none" onclick="openUsernameModal()">
+      <i class="fa-solid fa-at"></i>
+      <div class="up-text">
+        <strong>Set Your Username</strong>
+        <span>Get a custom profile URL</span>
+      </div>
+      <i class="fa-solid fa-chevron-right up-arrow"></i>
+    </div>
+
+    <!-- Social links -->
+    <div class="pf-socials" id="pf-socials"></div>
+  </div>
+</div><!-- /profile-card -->
+
+<!-- EXPERIENCE -->
+<section class="fade-in">
+  <div class="sec-header">
+    <div class="sec-icon"><i class="fa-solid fa-briefcase"></i></div>
+    <div class="sec-title">Experience</div>
+    <button class="sec-add-btn" onclick="openExpModal()">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+  </div>
+  <div class="timeline" id="exp-wrap">
+    <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="fade-in">
+  <div class="sec-header">
+    <div class="sec-icon"><i class="fa-solid fa-code"></i></div>
+    <div class="sec-title">Skills</div>
+    <button class="sec-add-btn" onclick="openSkillModal()">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+  </div>
+  <div class="skills-grid" id="skills-wrap">
+    <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="fade-in">
+  <div class="sec-header">
+    <div class="sec-icon"><i class="fa-solid fa-diagram-project"></i></div>
+    <div class="sec-title">Projects</div>
+    <button class="sec-add-btn" onclick="openProjectModal()">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+  </div>
+  <div class="projects-grid" id="projects-wrap">
+    <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
+  </div>
+</section>
+
+<!-- REVIEWS & RATINGS -->
+<section class="fade-in">
+  <div class="sec-header">
+    <div class="sec-icon"><i class="fa-solid fa-star"></i></div>
+    <div class="sec-title">Reviews &amp; Ratings</div>
+  </div>
+  <div class="rating-summary">
+    <div>
+      <div class="rating-avg-num" id="rating-avg">0.0</div>
+      <div class="rating-avg-stars" id="rating-avg-stars"></div>
+    </div>
+    <div class="rating-count" id="rating-count">No reviews yet</div>
+  </div>
+  <div class="reviews-list" id="reviews-wrap">
+    <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+<div class="toast" id="toast"></div>
+
+<!-- ══ LOGIN MODAL ══ -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <span><i class="fa-solid fa-right-to-bracket" style="color:var(--accent);margin-right:8px;"></i>Sign In</span>
+        <button class="modal-close" onclick="closeModal('login-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="login-brand">Dev<span>Card</span></div>
+      <div class="login-sub">Sign in with Google or email to manage your profile</div>
+      <div id="logged-in-view" style="display:none">
+        <div class="user-card">
+          <img id="u-photo" src="" alt="">
+          <div><div class="uc-name" id="u-name"></div><div class="uc-email" id="u-email"></div></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn outline" onclick="closeModal('login-modal')">
+            <i class="fa-solid fa-xmark"></i> Close
+          </button>
+          <button class="btn danger" onclick="doLogout()">
+            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+          </button>
+        </div>
+      </div>
+      <div id="login-form-view">
+        <button class="btn google" onclick="googleLogin()">
+          <svg class="g-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66 2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Continue with Google
+        </button>
+        <div class="or-div">or sign in with email</div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-envelope"></i> Email</label>
+          <input class="fg-input" type="email" id="adm-email" placeholder="admin@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-lock"></i> Password</label>
+          <input class="fg-input" type="password" id="adm-pass" placeholder="••••••••">
+        </div>
+        <button class="btn" onclick="emailLogin()">
+          <i class="fa-solid fa-key"></i> Sign In
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SETTINGS MODAL ══ -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <span><i class="fa-solid fa-gear" style="color:var(--accent);margin-right:8px;"></i>Settings</span>
+        <button class="modal-close" onclick="closeModal('settings-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="settings-list">
+        <div class="s-item" onclick="closeModal('settings-modal');openProfileModal()">
+          <div class="s-icon-wrap"><i class="fa-solid fa-pen-to-square s-icon"></i></div>
+          <div class="s-text"><div class="s-main">Edit Profile</div><div class="s-sub">Name, bio, photo, socials</div></div>
+          <i class="fa-solid fa-chevron-right s-arrow"></i>
+        </div>
+        <div class="s-item" onclick="closeModal('settings-modal');openUsernameModal()">
+          <div class="s-icon-wrap"><i class="fa-solid fa-at s-icon"></i></div>
+          <div class="s-text"><div class="s-main">Change Username</div><div class="s-sub">Custom profile URL</div></div>
+          <i class="fa-solid fa-chevron-right s-arrow"></i>
+        </div>
+        <div class="s-item" onclick="closeModal('settings-modal');openSkillModal()">
+          <div class="s-icon-wrap"><i class="fa-solid fa-code s-icon"></i></div>
+          <div class="s-text"><div class="s-main">Add Skill</div><div class="s-sub">Update your skill set</div></div>
+          <i class="fa-solid fa-chevron-right s-arrow"></i>
+        </div>
+        <div class="s-item" onclick="closeModal('settings-modal');openExpModal()">
+          <div class="s-icon-wrap"><i class="fa-solid fa-briefcase s-icon"></i></div>
+          <div class="s-text"><div class="s-main">Add Experience</div><div class="s-sub">Work history</div></div>
+          <i class="fa-solid fa-chevron-right s-arrow"></i>
+        </div>
+        <div class="s-item" onclick="closeModal('settings-modal');openProjectModal()">
+          <div class="s-icon-wrap"><i class="fa-solid fa-diagram-project s-icon"></i></div>
+          <div class="s-text"><div class="s-main">Add Project</div><div class="s-sub">Showcase your work</div></div>
+          <i class="fa-solid fa-chevron-right s-arrow"></i>
+        </div>
+        <div class="s-item" onclick="closeModal('settings-modal');openShareModal()">
+          <div class="s-icon-wrap"><i class="fa-solid fa-share-nodes s-icon"></i></div>
+          <div class="s-text"><div class="s-main">Share Profile</div><div class="s-sub">QR code & URL</div></div>
+          <i class="fa-solid fa-chevron-right s-arrow"></i>
+        </div>
+        <div class="s-item danger" onclick="doLogout();closeModal('settings-modal')">
+          <div class="s-icon-wrap"><i class="fa-solid fa-right-from-bracket s-icon"></i></div>
+          <div class="s-text"><div class="s-main">Sign Out</div><div class="s-sub">Log out of your account</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ USERNAME MODAL ══ -->
+<div class="modal-overlay" id="username-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <span><i class="fa-solid fa-at" style="color:var(--accent);margin-right:8px;"></i>Set Username</span>
+        <button class="modal-close" onclick="closeModal('username-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="un-info">
+        Your username is your unique profile address.
+        <div class="un-url-prev" id="un-url-prev">yoursite.com/?u=<b>username</b></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-at"></i> Username</label>
+        <div class="input-icon-wrap">
+          <span class="inp-icon" style="font-family:'Space Mono',monospace;font-weight:700;font-style:normal;">@</span>
+          <input class="fg-input" type="text" id="username-input"
+            placeholder="ibrahim094" oninput="previewUsername(this.value)">
+        </div>
+        <div class="un-check" id="un-check"></div>
+      </div>
+      <p style="font-size:.72rem;color:var(--text2);margin-bottom:1rem;">
+        Only a–z, 0–9 and _ allowed. 3–20 characters.
+      </p>
+      <button class="btn" onclick="saveUsername()">
+        <i class="fa-solid fa-check"></i> Save Username
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SHARE MODAL ══ -->
+<div class="modal-overlay" id="share-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <span><i class="fa-solid fa-share-nodes" style="color:var(--accent);margin-right:8px;"></i>Share Profile</span>
+        <button class="modal-close" onclick="closeModal('share-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="share-url-box">
+        <i class="fa-solid fa-link" style="color:var(--accent2);flex-shrink:0;"></i>
+        <input type="text" id="share-url-input" readonly>
+        <button class="copy-btn" onclick="copyProfileUrl()">
+          <i class="fa-solid fa-copy"></i> Copy
+        </button>
+      </div>
+      <div class="qr-box">
+        <div id="qr-code"></div>
+        <p>Scan QR code to open profile</p>
+      </div>
+      <div class="share-soc-row">
+        <a class="soc-share-btn" id="share-fb" target="_blank" rel="noopener">
+          <i class="fa-brands fa-facebook-f" style="color:#1877f2;"></i> Facebook
+        </a>
+        <a class="soc-share-btn" id="share-wa" target="_blank" rel="noopener">
+          <i class="fa-brands fa-whatsapp" style="color:#25d366;"></i> WhatsApp
+        </a>
+        <a class="soc-share-btn" id="share-tw" target="_blank" rel="noopener">
+          <i class="fa-brands fa-x-twitter"></i> X
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFILE EDIT MODAL (professional, extra fields) ══ -->
+<div class="modal-overlay" id="profile-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <span><i class="fa-solid fa-pen-to-square" style="color:var(--accent);margin-right:8px;"></i>Edit Profile</span>
+        <button class="modal-close" onclick="closeModal('profile-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="tab-row" style="margin-top:.9rem;margin-bottom:0;">
+        <button class="tab-btn active" onclick="switchTab('tab-photos')"><i class="fa-solid fa-camera"></i> Photos</button>
+        <button class="tab-btn" onclick="switchTab('tab-basic')"><i class="fa-solid fa-user"></i> Basic</button>
+        <button class="tab-btn" onclick="switchTab('tab-contact')"><i class="fa-solid fa-address-card"></i> Contact</button>
+        <button class="tab-btn" onclick="switchTab('tab-social')"><i class="fa-solid fa-share-nodes"></i> Social</button>
+      </div>
+    </div>
+    <div class="modal-body">
+
+      <!-- Photos tab -->
+      <div class="tab-pane active" id="tab-photos">
+        <div class="av-preview-row">
+          <div class="av-circle" id="av-preview-circle">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="av-upload-info">
+            <h4>Profile Photo</h4>
+            <p>JPG / PNG / WEBP &bull; Max 5 MB<br>Stored in Firebase Storage</p>
+          </div>
+        </div>
+        <div class="upload-zone">
+          <input type="file" accept="image/*" onchange="modalAvatarUpload(this)">
+          <div class="uz-inner">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <b>Upload Profile Photo</b>
+            <small>Click or drag & drop</small>
+          </div>
+        </div>
+        <div class="up-prog" id="av-up-prog">
+          <div class="up-bar-track"><div class="up-bar-fill" id="av-up-fill"></div></div>
+          <div class="up-label" id="av-up-lbl">Uploading...</div>
+        </div>
+
+        <div class="sec-divider">Cover Photo</div>
+        <p style="font-size:.73rem;color:var(--text2);margin-bottom:.7rem;">
+          <i class="fa-solid fa-circle-info" style="color:var(--accent2);"></i>
+          16:9 ratio works best.
+        </p>
+        <div class="upload-zone" id="cover-upload-zone">
+          <input type="file" accept="image/*" onchange="modalCoverUpload(this)">
+          <img class="uz-prev" id="cover-uz-prev" alt="">
+          <div class="uz-inner" id="cover-uz-inner">
+            <i class="fa-solid fa-panorama"></i>
+            <b>Upload Cover Photo</b>
+            <small>16:9 aspect ratio preferred</small>
+          </div>
+        </div>
+        <div class="up-prog" id="cover-up-prog">
+          <div class="up-bar-track"><div class="up-bar-fill" id="cover-up-fill"></div></div>
+          <div class="up-label" id="cover-up-lbl">Uploading...</div>
+        </div>
+      </div>
+
+      <!-- Basic tab -->
+      <div class="tab-pane" id="tab-basic">
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-user"></i> Full Name</label>
+          <input class="fg-input" type="text" id="pf-name" placeholder="Ibrahim Khalil">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-briefcase"></i> Job Title / Role</label>
+          <input class="fg-input" type="text" id="pf-role" placeholder="Digital Creator">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-quote-left"></i> Bio</label>
+          <textarea class="fg-input" id="pf-bio" rows="3" placeholder="Write about yourself..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-location-dot"></i> Location</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-solid fa-location-dot"></i>
+            <input class="fg-input" type="text" id="pf-location" placeholder="Dhaka, Bangladesh">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-school"></i> School</label>
+            <div class="input-icon-wrap">
+              <i class="inp-icon fa-solid fa-school"></i>
+              <input class="fg-input" type="text" id="pf-school" placeholder="School name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-graduation-cap"></i> College / Uni</label>
+            <div class="input-icon-wrap">
+              <i class="inp-icon fa-solid fa-graduation-cap"></i>
+              <input class="fg-input" type="text" id="pf-college" placeholder="College name">
+            </div>
+          </div>
+        </div>
+        <button class="btn" onclick="saveProfile()">
+          <i class="fa-solid fa-floppy-disk"></i> Save Changes
+        </button>
+      </div>
+
+      <!-- Contact tab (new) -->
+      <div class="tab-pane" id="tab-contact">
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-envelope"></i> Email Address</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-solid fa-envelope"></i>
+            <input class="fg-input" type="email" id="pf-email" placeholder="you@example.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-mobile-screen"></i> Mobile Number</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-solid fa-mobile-screen"></i>
+            <input class="fg-input" type="tel" id="pf-phone" placeholder="+880 1XXX XXXXXX">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-globe"></i> Website</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-solid fa-globe"></i>
+            <input class="fg-input" type="text" id="pf-website" placeholder="https://yoursite.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-map-pin"></i> Full Address</label>
+          <textarea class="fg-input" id="pf-address" rows="2" placeholder="Street, City, Country..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-file-arrow-down"></i> CV / Resume Link</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-solid fa-file-arrow-down"></i>
+            <input class="fg-input" type="text" id="pf-cv" placeholder="https://drive.google.com/... (PDF link)">
+          </div>
+        </div>
+        <button class="btn" onclick="saveProfile()">
+          <i class="fa-solid fa-floppy-disk"></i> Save Changes
+        </button>
+      </div>
+
+      <!-- Social tab -->
+      <div class="tab-pane" id="tab-social">
+        <div class="form-group">
+          <label class="form-label"><i class="fa-brands fa-github"></i> GitHub</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-brands fa-github"></i>
+            <input class="fg-input" type="text" id="pf-github" placeholder="https://github.com/username">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-brands fa-linkedin" style="color:#0077b5;"></i> LinkedIn</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-brands fa-linkedin"></i>
+            <input class="fg-input" type="text" id="pf-linkedin" placeholder="https://linkedin.com/in/...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-brands fa-instagram" style="color:#e1306c;"></i> Instagram</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-brands fa-instagram"></i>
+            <input class="fg-input" type="text" id="pf-instagram" placeholder="username (no @)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-brands fa-facebook-f" style="color:#1877f2;"></i> Facebook</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-brands fa-facebook-f"></i>
+            <input class="fg-input" type="text" id="pf-facebook" placeholder="https://facebook.com/...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-brands fa-youtube"></i>
+            <input class="fg-input" type="text" id="pf-youtube" placeholder="https://youtube.com/@...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-brands fa-x-twitter"></i> X (Twitter)</label>
+          <div class="input-icon-wrap">
+            <i class="inp-icon fa-brands fa-x-twitter"></i>
+            <input class="fg-input" type="text" id="pf-twitter" placeholder="https://x.com/username">
+          </div>
+        </div>
+        <button class="btn" onclick="saveProfile()">
+          <i class="fa-solid fa-floppy-disk"></i> Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SKILL MODAL ══ -->
+<div class="modal-overlay" id="skill-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <span><i class="fa-solid fa-code" style="color:var(--accent);margin-right:8px;"></i>Add Skill</span>
+        <button class="modal-close" onclick="closeModal('skill-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-tag"></i> Skill Name</label>
+        <input class="fg-input" type="text" id="sk-name" placeholder="JavaScript, Photoshop, Python...">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-sliders"></i> Proficiency — <span id="sk-pct-lbl">75</span>%</label>
+        <input type="range" id="sk-level" min="5" max="100" value="75"
+          style="width:100%;accent-color:var(--accent);margin-top:5px;"
+          oninput="document.getElementById('sk-pct-lbl').textContent=this.value">
+      </div>
+      <button class="btn" onclick="addSkill()">
+        <i class="fa-solid fa-plus"></i> Add Skill
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EXP MODAL ══ -->
+<div class="modal-overlay" id="exp-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <span id="exp-modal-title"><i class="fa-solid fa-briefcase" style="color:var(--accent);margin-right:8px;"></i>Add Experience</span>
+        <button class="modal-close" onclick="closeModal('exp-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ex-id">
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-user-tie"></i> Job Title</label>
+        <input class="fg-input" type="text" id="ex-role" placeholder="Frontend Developer">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-building"></i> Organization</label>
+        <input class="fg-input" type="text" id="ex-org" placeholder="ABC Tech Ltd.">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-regular fa-calendar"></i> Duration</label>
+        <input class="fg-input" type="text" id="ex-date" placeholder="Jan 2023 – Present">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-align-left"></i> Description</label>
+        <textarea class="fg-input" id="ex-desc" rows="3" placeholder="What did you achieve in this role..."></textarea>
+      </div>
+      <button class="btn" onclick="saveExp()">
+        <i class="fa-solid fa-floppy-disk"></i> Save Experience
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROJECT MODAL ══ -->
+<div class="modal-overlay" id="project-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <span id="proj-modal-title"><i class="fa-solid fa-diagram-project" style="color:var(--accent);margin-right:8px;"></i>New Project</span>
+        <button class="modal-close" onclick="closeModal('project-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pr-id">
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-pen"></i> Project Title</label>
+        <input class="fg-input" type="text" id="pr-title" placeholder="E-commerce App">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-align-left"></i> Description</label>
+        <textarea class="fg-input" id="pr-desc" rows="3" placeholder="What does this project do..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-image"></i> Banner Image URL</label>
+        <input class="fg-input" type="text" id="pr-image" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-tags"></i> Tech Stack (comma separated)</label>
+        <input class="fg-input" type="text" id="pr-tags" placeholder="React, Firebase, Tailwind">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</label>
+          <input class="fg-input" type="text" id="pr-demo" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-brands fa-github"></i> GitHub</label>
+          <input class="fg-input" type="text" id="pr-code" placeholder="https://github.com/...">
+        </div>
+      </div>
+      <button class="btn" onclick="saveProject()">
+        <i class="fa-solid fa-floppy-disk"></i> Save Project
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REVIEW MODAL (open to everyone — no login required) ══ -->
+<div class="modal-overlay" id="review-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <span><i class="fa-solid fa-star" style="color:var(--accent);margin-right:8px;"></i>Write a Review</span>
+        <button class="modal-close" onclick="closeModal('review-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-star"></i> Your Rating</label>
+        <div class="star-select" id="rv-star-select">
+          <i class="fa-regular fa-star" data-val="1" onclick="setReviewStar(1)"></i>
+          <i class="fa-regular fa-star" data-val="2" onclick="setReviewStar(2)"></i>
+          <i class="fa-regular fa-star" data-val="3" onclick="setReviewStar(3)"></i>
+          <i class="fa-regular fa-star" data-val="4" onclick="setReviewStar(4)"></i>
+          <i class="fa-regular fa-star" data-val="5" onclick="setReviewStar(5)"></i>
+        </div>
+        <input type="hidden" id="rv-rating" value="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-user"></i> Your Name</label>
+        <input class="fg-input" type="text" id="rv-name" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-address-card"></i> Email or Mobile Number</label>
+        <input class="fg-input" type="text" id="rv-contact" placeholder="you@example.com or +880 1XXXXXXXXX">
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-comment"></i> Your Review (optional)</label>
+        <textarea class="fg-input" id="rv-comment" rows="3" placeholder="Share your experience..."></textarea>
+      </div>
+      <button class="btn" onclick="submitReview()">
+        <i class="fa-solid fa-paper-plane"></i> Submit Review
+      </button>
+      <p style="font-size:.68rem;color:var(--text3);margin-top:.7rem;text-align:center;">
+        <i class="fa-solid fa-lock"></i> Your contact info is kept private and never shown publicly.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Safe init wrapper ── */
+window._fbReady = false;
+
+function _safeInit() {
+try {
+/* ── Safe DOM helper ── */
+function safeGet(id){ return document.getElementById(id)||{textContent:'',innerHTML:'',style:{},classList:{add:function(){},remove:function(){},toggle:function(){}},value:''}; }
+
+/* ── Firebase Init ── */
+const fbCfg={
+  apiKey:"AIzaSyA_vr4EXR57ap2CRxlS1JpK6wHqIwlU8Rc",
+  authDomain:"devcard-6b634.firebaseapp.com",
+  databaseURL:"https://devcard-6b634-default-rtdb.firebaseio.com",
+  projectId:"devcard-6b634",
+  storageBucket:"devcard-6b634.firebasestorage.app",
+  messagingSenderId:"754891867884",
+  appId:"1:754891867884:web:f6ff7e2f8d2fcf8ae147c9"
+};
+firebase.initializeApp(fbCfg);
+const auth=firebase.auth();
+const db=firebase.database();
+const storage=firebase.storage();
+
+let isAdmin=false, _pd={}, _expData={}, _projData={};
+let _myReaction=localStorage.getItem('dc_reaction')||'';
+
+/* ── Toast ── */
+let _toastTimer;
+function toast(msg,type=''){
+  const el=document.getElementById('toast');
+  const icons={success:'fa-circle-check',error:'fa-circle-exclamation',info:'fa-circle-info'};
+  const icon=icons[type]||'fa-bell';
+  el.innerHTML=`<i class="fa-solid ${icon} toast-icon"></i>${msg}`;
+  el.className='toast show'+(type?' '+type:'');
+  clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>{ el.className='toast'; },2800);
+}
+
+/* ── Modal helpers ── */
+function openModal(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeModal(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.classList.remove('show');
+  // Only restore scroll if no other modals are open
+  if(!document.querySelector('.modal-overlay.show')){
+    document.body.style.overflow='';
+  }
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+  overlay.addEventListener('click',e=>{
+    if(e.target===overlay){
+      overlay.classList.remove('show');
+      if(!document.querySelector('.modal-overlay.show')) document.body.style.overflow='';
+    }
+  });
+  // Prevent modal content scroll from closing
+  const modal=overlay.querySelector('.modal');
+  if(modal) modal.addEventListener('click',e=>e.stopPropagation());
+});
+
+/* ── Tab switcher ── */
+function switchTab(id){
+  const modal=document.getElementById(id)?.closest('.modal');
+  if(!modal) return;
+  modal.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  modal.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const order=['tab-photos','tab-basic','tab-contact','tab-social'];
+  const idx=order.indexOf(id);
+  if(idx>=0){
+    const btns=modal.querySelectorAll('.tab-btn');
+    if(btns[idx]) btns[idx].classList.add('active');
+  }
+}
+
+/* ── Auth ── */
+function openLoginModal(){
+  const u=auth.currentUser;
+  if(u){
+    document.getElementById('logged-in-view').style.display='block';
+    document.getElementById('login-form-view').style.display='none';
+    document.getElementById('u-photo').src=u.photoURL||avUrl(u.displayName||'U');
+    document.getElementById('u-name').textContent=u.displayName||'User';
+    document.getElementById('u-email').textContent=u.email||'';
+  } else {
+    document.getElementById('logged-in-view').style.display='none';
+    document.getElementById('login-form-view').style.display='block';
+  }
+  openModal('login-modal');
+}
+
+function googleLogin(){
+  const p=new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(p)
+    .then(()=>{ closeModal('login-modal'); toast('Login successful!','success'); })
+    .catch(e=>toast('Error: '+e.message,'error'));
+}
+
+function emailLogin(){
+  const e=document.getElementById('adm-email').value.trim();
+  const pw=document.getElementById('adm-pass').value;
+  if(!e||!pw){ toast('Enter email and password','error'); return; }
+  auth.signInWithEmailAndPassword(e,pw)
+    .then(()=>{ closeModal('login-modal'); toast('Login successful!','success'); })
+    .catch(err=>{
+      if(['auth/user-not-found','auth/invalid-credential','auth/invalid-email'].includes(err.code)){
+        auth.createUserWithEmailAndPassword(e,pw)
+          .then(()=>{ closeModal('login-modal'); toast('Account created & signed in!','success'); })
+          .catch(e2=>toast('Error: '+e2.message,'error'));
+      } else {
+        toast('Error: '+err.message,'error');
+      }
+    });
+}
+
+function doLogout(){
+  auth.signOut().then(()=>toast('Signed out','info'));
+}
+
+auth.onAuthStateChanged(u=>{
+  // Treat anonymous sessions (used only so visitors can write without a real login)
+  // as "logged out" for UI/admin purposes — only a real Google/email account is admin.
+  const realUser = (u && !u.isAnonymous) ? u : null;
+  isAdmin = !!realUser;
+  document.body.classList.toggle('admin-mode',isAdmin);
+
+  const lb=document.getElementById('login-btn');
+  const navBtn=document.getElementById('login-action-btn');
+
+  if(realUser){
+    // Logged in: show avatar icon, hide sign-in btn
+    lb.innerHTML=`<img src="${realUser.photoURL||avUrl(realUser.displayName||'U')}" alt="">`;
+    lb.style.display='flex';
+    if(navBtn) navBtn.style.display='none';
+  } else {
+    // Logged out (or anonymous): show sign-in btn in nav, hide avatar
+    lb.style.display='none';
+    if(navBtn) navBtn.style.display='flex';
+    // No session at all yet — sign in anonymously in the background so
+    // visitors can like/dislike/review/view without ever seeing a login screen.
+    if(!u){
+      auth.signInAnonymously().catch(err=>console.warn('Anonymous sign-in failed:',err.message||err));
+    }
+  }
+
+  document.getElementById('edit-pf-btn').style.display=isAdmin?'flex':'none';
+
+  if(isAdmin){
+    db.ref('profile/username').once('value').then(s=>{
+      document.getElementById('username-prompt').style.display=s.val()?'none':'flex';
+    });
+  } else {
+    document.getElementById('username-prompt').style.display='none';
+    trackView();
+  }
+  applyReactionUI(_myReaction);
+});
+
+function avUrl(n){
+  return'https://ui-avatars.com/api/?name='+encodeURIComponent(n)
+    +'&background=2e8b00&color=fff&bold=true&size=96';
+}
+
+/* ── Profile Views (one count per device, not per browser tab/session) ── */
+function trackView(){
+  const key='dc_viewed_'+window.location.pathname;
+  if(localStorage.getItem(key)) return;
+  localStorage.setItem(key,'1');
+  db.ref('profile/views').transaction(v=>(v||0)+1)
+    .catch(e=>console.warn('View count failed:',e.message||e));
+}
+
+/* ── Realtime counters ── */
+db.ref('profile/likes').on('value',s=>{
+  document.getElementById('like-count').textContent=fmtNum(s.val()||0);
+});
+db.ref('profile/dislikes').on('value',s=>{
+  document.getElementById('dislike-count').textContent=fmtNum(s.val()||0);
+});
+db.ref('profile/views').on('value',s=>{
+  document.getElementById('eng-views').textContent=fmtNum(s.val()||0);
+});
+
+/* ── Like / Dislike ── */
+function handleLike(){
+  if(_myReaction==='like'){
+    db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
+      .catch(e=>toast('Error: '+e.message,'error'));
+    _myReaction='';
+  } else {
+    if(_myReaction==='dislike')
+      db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
+        .catch(e=>toast('Error: '+e.message,'error'));
+    db.ref('profile/likes').transaction(v=>(v||0)+1)
+      .catch(e=>toast('Error: '+e.message,'error'));
+    _myReaction='like';
+  }
+  localStorage.setItem('dc_reaction',_myReaction);
+  applyReactionUI(_myReaction);
+}
+
+function handleDislike(){
+  if(_myReaction==='dislike'){
+    db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
+      .catch(e=>toast('Error: '+e.message,'error'));
+    _myReaction='';
+  } else {
+    if(_myReaction==='like')
+      db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
+        .catch(e=>toast('Error: '+e.message,'error'));
+    db.ref('profile/dislikes').transaction(v=>(v||0)+1)
+      .catch(e=>toast('Error: '+e.message,'error'));
+    _myReaction='dislike';
+  }
+  localStorage.setItem('dc_reaction',_myReaction);
+  applyReactionUI(_myReaction);
+}
+
+function applyReactionUI(r){
+  const lb=document.getElementById('like-btn');
+  const db2=document.getElementById('dislike-btn');
+  if(lb) lb.classList.toggle('liked', r==='like');
+  if(db2) db2.classList.toggle('disliked', r==='dislike');
+  if(r==='like' && lb){
+    lb.style.animation='none';
+    requestAnimationFrame(()=>{ lb.style.animation='iconpop .3s cubic-bezier(.34,1.8,.64,1)'; });
+  }
+}
+
+/* ── vCard / Contact download ── */
+function downloadVCard(){
+  const d=_pd;
+  const name=d.name||'Ibrahim Khalil';
+  const nameParts=name.trim().split(' ');
+  const first=nameParts[0]||'';
+  const last=nameParts.slice(1).join(' ')||'';
+  const lines=[
+    'BEGIN:VCARD',
+    'VERSION:3.0',
+    `FN:${name}`,
+    `N:${last};${first};;;`,
+    d.role   ? `TITLE:${d.role}` : '',
+    d.email  ? `EMAIL;TYPE=INTERNET:${d.email}` : '',
+    d.phone  ? `TEL;TYPE=CELL:${d.phone}` : '',
+    d.address? `ADR;TYPE=HOME:;;${d.address};;;;` : '',
+    d.website? `URL:${d.website}` : '',
+    d.twitter? `X-SOCIALPROFILE;type=twitter:${d.twitter}` : '',
+    d.github ? `X-SOCIALPROFILE;type=github:${d.github}` : '',
+    d.linkedin?`X-SOCIALPROFILE;type=linkedin:${d.linkedin}` : '',
+    `NOTE:${d.bio||''}`,
+    'END:VCARD'
+  ].filter(Boolean).join('\r\n');
+  const blob=new Blob([lines],{type:'text/vcard;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(name.replace(/\s+/g,'_')||'contact')+'.vcf';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+  toast('Contact card downloaded!','success');
+}
+
+/* ── CV / Resume download ── */
+function downloadCV(){
+  const url=(_pd.cv||'').trim();
+  if(!url){
+    if(isAdmin){
+      toast('Add your CV link below first','info');
+      openProfileModal();
+      switchTab('tab-contact');
+    } else {
+      toast('CV not available yet','info');
+    }
+    return;
+  }
+  const a=document.createElement('a');
+  a.href=url; a.target='_blank'; a.rel='noopener'; a.download='';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  toast('Opening CV...','success');
+}
+
+/* ── Image helpers — Base64 approach (no CORS/Storage issues) ── */
+
+/**
+ * Resizes an image file to the given maxWidth/maxHeight and returns a base64 JPEG string.
+ * This avoids Firebase Storage CORS (ERR_FAILED) entirely — images are stored in RTDB.
+ */
+function resizeImageToBase64(file, maxW, maxH, quality){
+  return new Promise((resolve, reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('FileReader failed'));
+    reader.onload=ev=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('Image decode failed'));
+      img.onload=()=>{
+        let w=img.width, h=img.height;
+        const ratio=Math.min(maxW/w, maxH/h, 1);
+        w=Math.round(w*ratio); h=Math.round(h*ratio);
+        const canvas=document.createElement('canvas');
+        canvas.width=w; canvas.height=h;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg', quality||0.82));
+      };
+      img.src=ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* Also try Firebase Storage as a first attempt, fall back to base64 RTDB if CORS/fails */
+function uploadFileWithFallback(file, storagePath, onProgress, maxW, maxH){
+  return new Promise(async (resolve, reject)=>{
+    // First attempt: Firebase Storage
+    try{
+      const ref=storage.ref().child(storagePath);
+      const task=ref.put(file,{contentType:file.type});
+      await new Promise((res2, rej2)=>{
+        task.on(
+          firebase.storage.TaskEvent.STATE_CHANGED,
+          snap=>{ const pct=Math.round((snap.bytesTransferred/snap.totalBytes)*100); if(onProgress) onProgress(pct); },
+          err=>rej2(err),
+          ()=>task.snapshot.ref.getDownloadURL().then(res2).catch(rej2)
+        );
+      }).then(url=>resolve({url, mode:'storage'}));
+    }catch(storageErr){
+      // Fallback: resize + base64 → Realtime DB
+      console.warn('Storage upload failed, using base64 fallback:', storageErr.message||storageErr);
+      try{
+        if(onProgress) onProgress(30);
+        const b64=await resizeImageToBase64(file, maxW||1200, maxH||900, 0.82);
+        if(onProgress) onProgress(90);
+        resolve({url:b64, mode:'base64'});
+      }catch(b64Err){
+        reject(b64Err);
+      }
+    }
+  });
+}
+
+async function handleAvatarUpload(input){
+  const file=input.files[0]; input.value='';
+  if(!file) return;
+  if(!isAdmin){ toast('Please sign in first','error'); return; }
+  if(file.size>5*1024*1024){ toast('Max file size is 5 MB','error'); return; }
+  const ring=document.getElementById('av-ring');
+  ring.classList.add('active');
+  toast('Uploading profile photo...','info');
+  try{
+    const {url}=await uploadFileWithFallback(file,`profiles/avatar_${Date.now()}.jpg`,null,400,400);
+    await db.ref('profile').update({avatar:url});
+    toast('Profile photo updated!','success');
+  }catch(e){ toast('Upload failed: '+e.message,'error'); }
+  finally{ ring.classList.remove('active'); }
+}
+
+async function handleCoverUpload(input){
+  const file=input.files[0]; input.value='';
+  if(!file) return;
+  if(!isAdmin){ toast('Please sign in first','error'); return; }
+  if(file.size>10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
+  const overlay=document.getElementById('cover-uploading');
+  const pctEl=document.getElementById('cover-up-pct');
+  overlay.classList.add('active'); pctEl.textContent='0%';
+  try{
+    const {url}=await uploadFileWithFallback(file,`profiles/cover_${Date.now()}.jpg`,pct=>{pctEl.textContent=pct+'%';},1280,720);
+    await db.ref('profile').update({cover:url});
+    toast('Cover photo updated!','success');
+  }catch(e){ toast('Upload failed: '+e.message,'error'); }
+  finally{ overlay.classList.remove('active'); pctEl.textContent='0%'; }
+}
+
+async function modalAvatarUpload(input){
+  const file=input.files[0]; input.value='';
+  if(!file) return;
+  if(!isAdmin){ toast('Please sign in first','error'); return; }
+  if(file.size>5*1024*1024){ toast('Max file size is 5 MB','error'); return; }
+  // Show local preview immediately
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const c=document.getElementById('av-preview-circle');
+    c.innerHTML=`<img src="${e.target.result}" alt="preview">`;
+  };
+  reader.readAsDataURL(file);
+  const prog=document.getElementById('av-up-prog');
+  const fill=document.getElementById('av-up-fill');
+  const lbl=document.getElementById('av-up-lbl');
+  prog.classList.add('active'); fill.style.width='0%'; lbl.textContent='Uploading...';
+  try{
+    const {url,mode}=await uploadFileWithFallback(file,`profiles/avatar_${Date.now()}.jpg`,pct=>{
+      fill.style.width=pct+'%'; lbl.textContent=pct+'% done';
+    },400,400);
+    await db.ref('profile').update({avatar:url});
+    lbl.textContent='Upload complete!';
+    toast('Profile photo saved!','success');
+  }catch(e){ lbl.textContent='Upload failed'; toast('Upload failed: '+e.message,'error'); }
+  finally{ setTimeout(()=>{ prog.classList.remove('active'); fill.style.width='0%'; },1800); }
+}
+
+async function modalCoverUpload(input){
+  const file=input.files[0]; input.value='';
+  if(!file) return;
+  if(!isAdmin){ toast('Please sign in first','error'); return; }
+  if(file.size>10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
+  // Show local preview immediately
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const prev=document.getElementById('cover-uz-prev');
+    const inner=document.getElementById('cover-uz-inner');
+    prev.src=e.target.result; prev.classList.add('show'); inner.style.display='none';
+  };
+  reader.readAsDataURL(file);
+  const prog=document.getElementById('cover-up-prog');
+  const fill=document.getElementById('cover-up-fill');
+  const lbl=document.getElementById('cover-up-lbl');
+  prog.classList.add('active'); fill.style.width='0%'; lbl.textContent='Uploading...';
+  try{
+    const {url,mode}=await uploadFileWithFallback(file,`profiles/cover_${Date.now()}.jpg`,pct=>{
+      fill.style.width=pct+'%'; lbl.textContent=pct+'% done';
+    },1280,720);
+    await db.ref('profile').update({cover:url});
+    lbl.textContent='Upload complete!';
+    toast('Cover photo saved!','success');
+  }catch(e){ lbl.textContent='Upload failed'; toast('Upload failed: '+e.message,'error'); }
+  finally{ setTimeout(()=>{ prog.classList.remove('active'); fill.style.width='0%'; },1800); }
+}
+
+/* ── Username ── */
+function openUsernameModal(){
+  if(!isAdmin){ toast('Please sign in first'); return; }
+  const inp=document.getElementById('username-input');
+  inp.value=_pd.username||'';
+  previewUsername(inp.value);
+  openModal('username-modal');
+}
+
+function previewUsername(val){
+  const clean=val.toLowerCase().replace(/[^a-z0-9_]/g,'');
+  document.getElementById('username-input').value=clean;
+  const base=window.location.origin+window.location.pathname.replace(/index\.html$/,'');
+  document.getElementById('un-url-prev').innerHTML=
+    `URL: <b>${base}?u=${clean||'username'}</b>`;
+  const chk=document.getElementById('un-check');
+  if(!clean){ chk.className='un-check'; chk.innerHTML=''; return; }
+  if(clean.length<3){
+    chk.className='un-check err';
+    chk.innerHTML='<i class="fa-solid fa-xmark"></i> Minimum 3 characters required';
+    return;
+  }
+  chk.className='un-check ok';
+  chk.innerHTML='<i class="fa-solid fa-check"></i> Looks great!';
+}
+
+async function saveUsername(){
+  if(!isAdmin) return;
+  const val=document.getElementById('username-input').value.trim();
+  if(!val||val.length<3){ toast('Minimum 3 characters required'); return; }
+  if(!/^[a-z0-9_]{3,20}$/.test(val)){ toast('Only a-z, 0-9 and _ allowed'); return; }
+  try{
+    await db.ref('profile').update({username:val});
+    closeModal('username-modal');
+    toast('@'+val+' is set!','success');
+    document.getElementById('username-prompt').style.display='none';
+  }catch(e){ toast('Error: '+e.message,'error'); }
+}
+
+/* ── Share ── */
+let _qrGenerated=false;
+let _qrLibPromise=null;
+function loadQRLib(){
+  if(typeof QRCode!=='undefined') return Promise.resolve();
+  if(_qrLibPromise) return _qrLibPromise;
+  _qrLibPromise=new Promise((resolve,reject)=>{
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+    s.onload=()=>resolve();
+    s.onerror=()=>reject(new Error('QR library failed to load'));
+    document.head.appendChild(s);
+  });
+  return _qrLibPromise;
+}
+
+function openShareModal(){
+  const username=_pd.username||'';
+  const base=window.location.origin+window.location.pathname.replace(/index\.html$/,'');
+  const url=username ? `${base}?u=${username}` : base;
+
+  document.getElementById('share-url-input').value=url;
+
+  const name=_pd.name||'Ibrahim Khalil';
+  const txt=`Check out ${name}'s DevCard!`;
+  document.getElementById('share-fb').href=
+    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+  document.getElementById('share-wa').href=
+    `https://wa.me/?text=${encodeURIComponent(txt+' '+url)}`;
+  document.getElementById('share-tw').href=
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent(url)}`;
+
+  const qrEl=document.getElementById('qr-code');
+  qrEl.innerHTML='<p style="font-size:.7rem;color:var(--text2)">Loading QR...</p>';
+  _qrGenerated=false;
+  loadQRLib().then(()=>{
+    if(_qrGenerated) return;
+    qrEl.innerHTML='';
+    try{
+      new QRCode(qrEl,{text:url,width:160,height:160,
+        colorDark:'#2e8b00',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
+      _qrGenerated=true;
+    }catch(_e){
+      qrEl.innerHTML='<p style="font-size:.7rem;color:var(--text2)">QR unavailable</p>';
+    }
+  }).catch(()=>{
+    qrEl.innerHTML='<p style="font-size:.7rem;color:var(--text2)">QR unavailable</p>';
+  });
+  openModal('share-modal');
+}
+
+function copyProfileUrl(){
+  const val=document.getElementById('share-url-input').value;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(val)
+      .then(()=>toast('URL copied!','success'))
+      .catch(()=>fallbackCopy(val));
+  } else { fallbackCopy(val); }
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text; ta.style.cssText='position:fixed;left:-9999px;top:-9999px';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('URL copied!','success'); }
+  catch(_e){ toast('Copy failed','error'); }
+  document.body.removeChild(ta);
+}
+
+/* ── Profile Data (Realtime) ── */
+const profileRef=db.ref('profile');
+profileRef.on('value',snap=>{
+  const d=snap.val()||{};
+  _pd=d;
+
+  const _s=(id,val,prop='textContent')=>{ const el=document.getElementById(id); if(el) el[prop]=val; };
+  const _si=(id,val)=>{ const el=document.getElementById(id); if(el) el.innerHTML=val; };
+
+  _si('pf-name-el', escH(d.name||'Ibrahim Khalil')+' <span class="verified"><i class="fa-solid fa-circle-check"></i></span>');
+  _s('pf-bio-el',   d.bio||'Time is relative, but one-way.');
+  _s('pf-role-type',d.role||'Digital creator');
+  _s('vibe-text', d.vibe||'Current vibe...');
+  const vibeInp=document.getElementById('vibe-input');
+  if(vibeInp) vibeInp.value=d.vibe||'';
+
+  const avD=document.getElementById('av-display');
+  if(avD){
+    avD.innerHTML=d.avatar
+      ?`<img class="av-img" src="${escH(d.avatar)}" alt="avatar">`
+      :`<div class="av-icon-ph"><i class="fa-solid fa-user"></i></div>`;
+  }
+  const avc=document.getElementById('av-preview-circle');
+  if(avc) avc.innerHTML=d.avatar
+    ?`<img src="${escH(d.avatar)}" alt="av">`
+    :`<i class="fa-solid fa-user"></i>`;
+
+  const cw=document.getElementById('cover-wrap');
+  if(cw){
+    cw.querySelectorAll('.cover-img').forEach(el=>el.remove());
+    if(d.cover){
+      const img=document.createElement('img');
+      img.className='cover-img'; img.src=d.cover; img.alt='cover';
+      cw.prepend(img);
+      const cp=document.getElementById('cover-uz-prev');
+      const ci=document.getElementById('cover-uz-inner');
+      if(cp){ cp.src=d.cover; cp.classList.add('show'); }
+      if(ci) ci.style.display='none';
+    }
+  }
+
+  // Meta chips
+  const chips=[];
+  if(d.role)     chips.push({icon:'fa-solid fa-briefcase',text:escH(d.role)});
+  if(d.location) chips.push({icon:'fa-solid fa-location-dot',text:escH(d.location)});
+  if(d.school)   chips.push({icon:'fa-solid fa-school',text:escH(d.school)});
+  if(d.college)  chips.push({icon:'fa-solid fa-graduation-cap',text:escH(d.college)});
+  if(d.email)    chips.push({icon:'fa-solid fa-envelope',
+    text:`<a href="mailto:${escH(d.email)}">${escH(d.email)}</a>`});
+  if(d.phone)    chips.push({icon:'fa-solid fa-mobile-screen',
+    text:`<a href="tel:${escH(d.phone)}">${escH(d.phone)}</a>`});
+  if(d.address)  chips.push({icon:'fa-solid fa-map-pin',text:escH(d.address)});
+  _si('pf-meta', chips.map(c=>`<div class="pf-meta-chip"><i class="${c.icon}"></i>${c.text}</div>`).join(''));
+
+  // Socials
+  const socs=[];
+  if(d.github)    socs.push({i:'fa-brands fa-github',u:d.github,l:'GitHub'});
+  if(d.linkedin)  socs.push({i:'fa-brands fa-linkedin',u:d.linkedin,l:'LinkedIn'});
+  if(d.instagram) socs.push({i:'fa-brands fa-instagram',u:'https://instagram.com/'+d.instagram,l:'Instagram'});
+  if(d.facebook)  socs.push({i:'fa-brands fa-facebook-f',u:d.facebook,l:'Facebook'});
+  if(d.youtube)   socs.push({i:'fa-brands fa-youtube',u:d.youtube,l:'YouTube'});
+  if(d.twitter)   socs.push({i:'fa-brands fa-x-twitter',u:d.twitter,l:'X'});
+  if(d.website)   socs.push({i:'fa-solid fa-globe',u:d.website,l:'Website'});
+  _si('pf-socials', socs.map(x=>`<a class="soc-link" href="${escH(x.u)}" target="_blank" rel="noopener">
+    <i class="${x.i}"></i>${x.l}</a>`).join(''));
+
+  if(isAdmin){
+    const up=document.getElementById('username-prompt');
+    if(up) up.style.display=d.username?'none':'flex';
+  }
+  const cvBtn=document.getElementById('cv-dl-btn');
+  if(cvBtn){
+    cvBtn.innerHTML=d.cv
+      ? '<i class="fa-solid fa-file-arrow-down"></i> Download CV'
+      : (isAdmin
+        ? '<i class="fa-solid fa-plus"></i> Add Your CV'
+        : '<i class="fa-solid fa-file-arrow-down"></i> Download CV');
+  }
+
+  document.title='DevCard — '+(d.name||'Ibrahim Khalil');
+});
+
+/* ── Profile Edit ── */
+function openProfileModal(){
+  if(!isAdmin){ toast('Please sign in first'); openLoginModal(); return; }
+  const d=_pd;
+  ['name','role','bio','location','school','college','email','phone','address','cv',
+   'instagram','facebook','github','youtube','linkedin','website','twitter'
+  ].forEach(k=>{
+    const el=document.getElementById('pf-'+k);
+    if(el) el.value=d[k]||'';
+  });
+  switchTab('tab-basic');
+  openModal('profile-modal');
+}
+
+function saveProfile(){
+  if(!isAdmin){ toast('Please sign in first'); return; }
+  const strFields=['name','role','bio','location','school','college','email','phone','address','cv',
+    'instagram','facebook','github','youtube','linkedin','website','twitter'];
+  const data={};
+  strFields.forEach(k=>{
+    const el=document.getElementById('pf-'+k);
+    if(el) data[k]=el.value.trim();
+  });
+  ['vibe','avatar','cover','username','views','likes','dislikes'].forEach(k=>{
+    if(_pd[k]!==undefined) data[k]=_pd[k];
+  });
+  profileRef.set(data)
+    .then(()=>{ closeModal('profile-modal'); toast('Profile saved!','success'); })
+    .catch(e=>toast('Error: '+e.message,'error'));
+}
+
+function saveVibe(){
+  if(!isAdmin) return;
+  const v=document.getElementById('vibe-input').value.trim();
+  if(!v){ toast('Enter a vibe'); return; }
+  profileRef.update({vibe:v}).then(()=>toast('Vibe updated!','success'));
+}
+
+/* ── Skills ── */
+const skillsRef=db.ref('skills');
+skillsRef.on('value',snap=>{
+  const w=document.getElementById('skills-wrap'), d=snap.val();
+  if(!d){
+    w.innerHTML='<div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-code" style="font-size:1.5rem;margin-bottom:6px;display:block;"></i>No skills added yet</div>';
+    return;
+  }
+  w.innerHTML=Object.keys(d).map(k=>{
+    const s=d[k];
+    return`<div class="skill-card">
+      <button class="skill-del" onclick="delSkill('${k}')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="skill-card-header">
+        <span class="skill-name">${escH(s.name||'')}</span>
+        <span class="skill-pct">${s.level||50}%</span>
+      </div>
+      <div class="skill-track">
+        <div class="skill-fill" style="width:${s.level||50}%"></div>
+      </div>
+    </div>`;
+  }).join('');
+});
+
+function openSkillModal(){
+  if(!isAdmin){ toast('Please sign in first'); return; }
+  document.getElementById('sk-name').value='';
+  document.getElementById('sk-level').value=75;
+  document.getElementById('sk-pct-lbl').textContent=75;
+  openModal('skill-modal');
+}
+function addSkill(){
+  const n=document.getElementById('sk-name').value.trim();
+  const l=parseInt(document.getElementById('sk-level').value)||75;
+  if(!n){ toast('Enter skill name','error'); return; }
+  skillsRef.push({name:n,level:l})
+    .then(()=>{ closeModal('skill-modal'); toast('Skill added!','success'); })
+    .catch(e=>toast('Error: '+e.message,'error'));
+}
+function delSkill(k){
+  if(!confirm('Delete this skill?')) return;
+  skillsRef.child(k).remove().then(()=>toast('Skill removed'));
+}
+
+/* ── Experience ── */
+const expRef=db.ref('experience');
+expRef.on('value',snap=>{
+  _expData=snap.val()||{};
+  const w=document.getElementById('exp-wrap'), d=snap.val();
+  if(!d){
+    w.innerHTML='<div class="empty"><i class="fa-solid fa-briefcase" style="font-size:1.5rem;margin-bottom:6px;display:block;"></i>No experience added yet</div>';
+    return;
+  }
+  w.innerHTML=Object.keys(d).reverse().map(k=>{
+    const e=d[k];
+    return`<div class="tl-item fade-in">
+      <div class="tl-dot"><i class="fa-solid fa-briefcase"></i></div>
+      <div class="tl-card">
+        <div class="tl-role">${escH(e.role||'')}</div>
+        <div class="tl-org"><i class="fa-solid fa-building" style="font-size:.65rem;color:var(--text3);"></i>${escH(e.org||'')}</div>
+        <div class="tl-date"><i class="fa-regular fa-calendar"></i>${escH(e.date||'')}</div>
+        <div class="tl-desc">${escH(e.desc||'')}</div>
+        <div class="item-actions">
+          <button class="ia-btn" onclick="editExp('${k}')"><i class="fa-solid fa-pen"></i> Edit</button>
+          <button class="ia-btn del" onclick="delExp('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+});
+
+function openExpModal(){
+  if(!isAdmin){ toast('Please sign in first'); return; }
+  ['ex-id','ex-role','ex-org','ex-date','ex-desc'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('exp-modal-title').innerHTML=
+    '<i class="fa-solid fa-briefcase" style="color:var(--accent);margin-right:8px;"></i>Add Experience';
+  openModal('exp-modal');
+}
+function editExp(k){
+  if(!isAdmin) return;
+  const e=_expData[k]; if(!e) return;
+  document.getElementById('ex-id').value=k;
+  document.getElementById('ex-role').value=e.role||'';
+  document.getElementById('ex-org').value=e.org||'';
+  document.getElementById('ex-date').value=e.date||'';
+  document.getElementById('ex-desc').value=e.desc||'';
+  document.getElementById('exp-modal-title').innerHTML=
+    '<i class="fa-solid fa-pen" style="color:var(--accent);margin-right:8px;"></i>Edit Experience';
+  openModal('exp-modal');
+}
+function saveExp(){
+  const id=document.getElementById('ex-id').value;
+  const data={
+    role:document.getElementById('ex-role').value.trim(),
+    org:document.getElementById('ex-org').value.trim(),
+    date:document.getElementById('ex-date').value.trim(),
+    desc:document.getElementById('ex-desc').value.trim()
+  };
+  if(!data.role){ toast('Enter job title','error'); return; }
+  const ref=id ? expRef.child(id) : expRef.push();
+  ref.set(data)
+    .then(()=>{ closeModal('exp-modal'); toast('Experience saved!','success'); })
+    .catch(e=>toast('Error: '+e.message,'error'));
+}
+function delExp(k){
+  if(!confirm('Delete this experience?')) return;
+  expRef.child(k).remove().then(()=>toast('Deleted'));
+}
+
+/* ── Projects ── */
+const projectsRef=db.ref('projects');
+projectsRef.on('value',snap=>{
+  _projData=snap.val()||{};
+  const w=document.getElementById('projects-wrap'), d=snap.val();
+  if(!d){
+    w.innerHTML='<div class="empty"><i class="fa-solid fa-diagram-project" style="font-size:1.5rem;margin-bottom:6px;display:block;"></i>No projects added yet</div>';
+    return;
+  }
+  w.innerHTML=Object.keys(d).map(k=>{
+    const p=d[k];
+    const tags=(p.tags||'').split(',').map(t=>t.trim()).filter(Boolean);
+    const imgEl=p.image
+      ? `<img class="project-img" src="${escH(p.image)}" alt="${escH(p.title||'')}" loading="lazy">`
+      : `<div class="project-img-ph"><i class="fa-solid fa-code"></i><small>NO PREVIEW</small></div>`;
+    const tagHtml=tags.length
+      ? `<div class="project-tags">${tags.map(t=>`<span class="project-tag">${escH(t)}</span>`).join('')}</div>`
+      : '';
+    const links=[];
+    if(p.demo) links.push(`<a class="proj-link live" href="${escH(p.demo)}" target="_blank" rel="noopener">
+      <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>`);
+    if(p.code) links.push(`<a class="proj-link" href="${escH(p.code)}" target="_blank" rel="noopener">
+      <i class="fa-brands fa-github"></i> Source</a>`);
+    return`<div class="project-card fade-in">
+      ${imgEl}
+      <div class="project-body">
+        <div class="project-header">
+          <div class="project-title">${escH(p.title||'')}</div>
+          ${p.demo?'<span class="project-status"><i class="fa-solid fa-circle" style="font-size:.4rem;"></i> Live</span>':''}
+        </div>
+        <div class="project-desc">${escH(p.desc||'')}</div>
+        ${tagHtml}
+        ${links.length?`<div class="project-links">${links.join('')}</div>`:''}
+        <div class="item-actions">
+          <button class="ia-btn" onclick="editProject('${k}')"><i class="fa-solid fa-pen"></i> Edit</button>
+          <button class="ia-btn del" onclick="delProject('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+});
+
+function openProjectModal(){
+  if(!isAdmin){ toast('Please sign in first'); return; }
+  ['pr-id','pr-title','pr-desc','pr-image','pr-tags','pr-demo','pr-code'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('proj-modal-title').innerHTML=
+    '<i class="fa-solid fa-diagram-project" style="color:var(--accent);margin-right:8px;"></i>New Project';
+  openModal('project-modal');
+}
+function editProject(k){
+  if(!isAdmin) return;
+  const p=_projData[k]; if(!p) return;
+  document.getElementById('pr-id').value=k;
+  document.getElementById('pr-title').value=p.title||'';
+  document.getElementById('pr-desc').value=p.desc||'';
+  document.getElementById('pr-image').value=p.image||'';
+  document.getElementById('pr-tags').value=p.tags||'';
+  document.getElementById('pr-demo').value=p.demo||'';
+  document.getElementById('pr-code').value=p.code||'';
+  document.getElementById('proj-modal-title').innerHTML=
+    '<i class="fa-solid fa-pen" style="color:var(--accent);margin-right:8px;"></i>Edit Project';
+  openModal('project-modal');
+}
+function saveProject(){
+  const id=document.getElementById('pr-id').value;
+  const data={
+    title:document.getElementById('pr-title').value.trim(),
+    desc:document.getElementById('pr-desc').value.trim(),
+    image:document.getElementById('pr-image').value.trim(),
+    tags:document.getElementById('pr-tags').value.trim(),
+    demo:document.getElementById('pr-demo').value.trim(),
+    code:document.getElementById('pr-code').value.trim()
+  };
+  if(!data.title){ toast('Enter project title','error'); return; }
+  const ref=id ? projectsRef.child(id) : projectsRef.push();
+  ref.set(data)
+    .then(()=>{ closeModal('project-modal'); toast('Project saved!','success'); })
+    .catch(e=>toast('Error: '+e.message,'error'));
+}
+function delProject(k){
+  if(!confirm('Delete this project?')) return;
+  projectsRef.child(k).remove().then(()=>toast('Deleted'));
+}
+
+/* ── Reviews & Ratings (open to everyone — no login required) ── */
+let _reviewData={};
+const reviewsRef=db.ref('reviews');
+
+function starsHTML(rating){
+  const r=Math.max(0,Math.min(5,Number(rating)||0));
+  let html='';
+  for(let i=1;i<=5;i++){
+    if(r>=i) html+='<i class="fa-solid fa-star"></i>';
+    else if(r>=i-0.5) html+='<i class="fa-solid fa-star-half-stroke"></i>';
+    else html+='<i class="fa-regular fa-star"></i>';
+  }
+  return html;
+}
+function fmtReviewDate(ts){
+  if(!ts) return'';
+  try{
+    return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  }catch(_e){ return''; }
+}
+function isValidContact(v){
+  const email=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phone=/^[0-9+\-\s().]{7,20}$/;
+  return email.test(v)||phone.test(v);
+}
+
+reviewsRef.on('value',snap=>{
+  const d=snap.val()||{};
+  _reviewData=d;
+  const keys=Object.keys(d);
+  const count=keys.length;
+  const avg=count ? keys.reduce((sum,k)=>sum+(Number(d[k].rating)||0),0)/count : 0;
+
+  _s2('rating-avg', count ? avg.toFixed(1) : '0.0');
+  _si2('rating-avg-stars', starsHTML(avg));
+  _s2('rating-count', count ? (count+(count===1?' review':' reviews')) : 'No reviews yet');
+  _s2('top-review-count', count);
+  _s2('top-review-avg', count ? avg.toFixed(1) : '0.0');
+
+  const w=document.getElementById('reviews-wrap');
+  if(!count){
+    w.innerHTML='<div class="empty"><i class="fa-solid fa-star" style="font-size:1.5rem;margin-bottom:6px;display:block;"></i>No reviews yet — be the first!</div>';
+    return;
+  }
+  w.innerHTML=keys.sort((a,b)=>(d[b].ts||0)-(d[a].ts||0)).map(k=>{
+    const r=d[k];
+    return`<div class="review-card fade-in">
+      <div class="review-card-head">
+        <div class="review-name">${escH(r.name||'Anonymous')}</div>
+        <div class="review-stars">${starsHTML(r.rating)}</div>
+      </div>
+      ${r.comment?`<div class="review-comment">${escH(r.comment)}</div>`:''}
+      <div class="review-date"><i class="fa-regular fa-calendar"></i> ${fmtReviewDate(r.ts)}</div>
+      <div class="item-actions">
+        <button class="ia-btn del" onclick="delReview('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+});
+
+// Small local helpers (textContent/innerHTML setters) — kept distinct from
+// the ones inside profileRef.on() which are scoped to that callback only.
+function _s2(id,val){ const el=document.getElementById(id); if(el) el.textContent=val; }
+function _si2(id,val){ const el=document.getElementById(id); if(el) el.innerHTML=val; }
+
+function openReviewModal(){
+  document.getElementById('rv-name').value='';
+  document.getElementById('rv-contact').value='';
+  document.getElementById('rv-comment').value='';
+  document.getElementById('rv-rating').value='0';
+  document.querySelectorAll('#rv-star-select i').forEach(s=>{ s.className='fa-regular fa-star'; });
+  openModal('review-modal');
+}
+
+function setReviewStar(v){
+  document.getElementById('rv-rating').value=v;
+  document.querySelectorAll('#rv-star-select i').forEach(s=>{
+    const val=parseInt(s.dataset.val);
+    s.className= val<=v ? 'fa-solid fa-star' : 'fa-regular fa-star';
+  });
+}
+
+function submitReview(){
+  const name=document.getElementById('rv-name').value.trim();
+  const contact=document.getElementById('rv-contact').value.trim();
+  const comment=document.getElementById('rv-comment').value.trim();
+  const rating=parseInt(document.getElementById('rv-rating').value)||0;
+  if(!name){ toast('Enter your name','error'); return; }
+  if(!contact||!isValidContact(contact)){ toast('Enter a valid email or mobile number','error'); return; }
+  if(rating<1){ toast('Please select a star rating','error'); return; }
+  reviewsRef.push({name,contact,rating,comment,ts:Date.now()})
+    .then(()=>{ closeModal('review-modal'); toast('Thanks for your review!','success'); })
+    .catch(e=>toast('Error: '+e.message,'error'));
+}
+
+function delReview(k){
+  if(!isAdmin){ toast('Please sign in first'); return; }
+  if(!confirm('Delete this review?')) return;
+  reviewsRef.child(k).remove().then(()=>toast('Review removed'));
+}
+
+/* ── Utility ── */
+function escH(s){
+  if(s==null) return'';
+  return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function fmtNum(n){
+  n=Number(n)||0;
+  if(n>=1e6) return(n/1e6).toFixed(1).replace(/\.0$/,'')+'M';
+  if(n>=1e3) return(n/1e3).toFixed(1).replace(/\.0$/,'')+'K';
+  return String(n);
+}
+
+// Export all functions to window for inline onclick handlers
+window.openLoginModal=openLoginModal;
+window.openShareModal=openShareModal;
+window.openProfileModal=openProfileModal;
+window.openExpModal=openExpModal;
+window.openSkillModal=openSkillModal;
+window.openProjectModal=openProjectModal;
+window.openUsernameModal=openUsernameModal;
+window.googleLogin=googleLogin;
+window.emailLogin=emailLogin;
+window.doLogout=doLogout;
+window.saveProfile=saveProfile;
+window.saveVibe=saveVibe;
+window.saveExp=saveExp;
+window.saveProject=saveProject;
+window.saveUsername=saveUsername;
+window.addSkill=addSkill;
+window.delSkill=delSkill;
+window.editExp=editExp;
+window.delExp=delExp;
+window.editProject=editProject;
+window.delProject=delProject;
+window.copyProfileUrl=copyProfileUrl;
+window.handleLike=handleLike;
+window.handleDislike=handleDislike;
+window.closeModal=closeModal;
+window.openModal=openModal;
+window.switchTab=switchTab;
+window.previewUsername=previewUsername;
+window.handleAvatarUpload=handleAvatarUpload;
+window.handleCoverUpload=handleCoverUpload;
+window.modalAvatarUpload=modalAvatarUpload;
+window.modalCoverUpload=modalCoverUpload;
+window.downloadVCard=downloadVCard;
+window.downloadCV=downloadCV;
+window.openReviewModal=openReviewModal;
+window.setReviewStar=setReviewStar;
+window.submitReview=submitReview;
+window.delReview=delReview;
+
+window._fbReady = true;
+
+} catch(e) {
+  console.error('Firebase init error:', e);
+  ['openLoginModal','openShareModal','openProfileModal','openExpModal',
+   'openSkillModal','openProjectModal','openUsernameModal','googleLogin',
+   'emailLogin','doLogout','saveProfile','saveVibe','saveExp','saveProject',
+   'saveUsername','addSkill','delSkill','editExp','delExp','editProject','delProject',
+   'copyProfileUrl','handleLike','handleDislike','closeModal','openModal','switchTab',
+   'previewUsername','handleAvatarUpload','handleCoverUpload','modalAvatarUpload',
+   'modalCoverUpload','downloadVCard','downloadCV','openReviewModal','setReviewStar',
+   'submitReview','delReview'
+  ].forEach(function(fn){
+    if(typeof window[fn]==='undefined'){
+      window[fn]=function(){ alert('Firebase not loaded. Please refresh the page.'); };
+    }
+  });
+  var toastEl=document.getElementById('toast');
+  if(toastEl){
+    toastEl.textContent='Firebase connection failed. Please refresh.';
+    toastEl.className='toast show error';
+  }
+}
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', _safeInit);
+} else {
+  _safeInit();
+}
+</script>
+</body>
+</html>
