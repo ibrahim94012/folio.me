@@ -106,12 +106,12 @@ header{
 .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
 .cover-overlay{position:absolute;inset:0;
   background:linear-gradient(to top,rgba(0,0,0,.62) 0%,rgba(0,0,0,.05) 55%);z-index:1;}
-.cover-badge{position:absolute;bottom:14px;left:18px;z-index:3;color:#fff;}
+.cover-badge{position:absolute;bottom:14px;left:18px;z-index:3;color:#fff;max-width:calc(50% - 24px);}
 .cover-badge h2{font-family:'Space Grotesk',sans-serif;font-size:1.32rem;font-weight:700;
   text-shadow:0 2px 8px rgba(0,0,0,.55);line-height:1.2;}
 .cover-badge p{font-size:.7rem;opacity:.88;margin-top:3px;font-weight:500;letter-spacing:.04em;}
 /* Vibe cloud */
-.vibe-cloud-wrap{position:absolute;bottom:93px;left:55%;z-index:4;white-space:nowrap;}
+.vibe-cloud-wrap{position:absolute;bottom:93px;left:50%;transform:translateX(-10%);z-index:4;white-space:nowrap;max-width:calc(100% - 130px);overflow:hidden;}
 .vibe-cloud{display:inline-flex;align-items:center;gap:7px;
   background:rgba(245,245,240,0.95);backdrop-filter:blur(14px);
   border-radius:20px 20px 20px 5px;padding:8px 15px;
@@ -695,8 +695,168 @@ section{;background:var(--panel);padding:1.2rem 1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-}
     }
+
+/* ── MOBILE RESPONSIVE ── */
+@media (max-width: 540px) {
+
+  /* Wrap & global */
+  .wrap { padding-bottom: 3rem; }
+
+  /* Header */
+  header { padding: .55rem .85rem; }
+  .logo { font-size: 1rem; gap: 6px; }
+  .logo-icon { width: 30px; height: 30px; font-size: .8rem; }
+  .nav-signin-btn { font-size: .72rem; padding: 5px 10px; }
+  .hd-right { gap: 5px; }
+  .icon-btn { width: 32px; height: 32px; font-size: .78rem; }
+  .settings-trigger { width: 32px; height: 32px; font-size: .78rem; }
+
+  /* Cover */
+  .cover-wrap { height: 170px; border-radius: 0 0 18px 18px; }
+  .cover-badge h2 { font-size: 1.12rem; }
+  .vibe-cloud-wrap { left: 48%; bottom: 80px; }
+  .vibe-cloud { font-size: .72rem; padding: 6px 11px; gap: 5px; }
+  .vibe-text-el { max-width: 130px; }
+  .vibe-edit-wrap { padding: 4px 4px 4px 10px; }
+  .vibe-edit-wrap input { width: 120px; }
+  .cover-cam-btn { font-size: .66rem; padding: 5px 10px; }
+
+  /* Avatar row */
+  .av-row { padding: 0 .75rem; margin-top: -28px; gap: .75rem; }
+  .av-wrap { width: 92px; height: 92px; }
+  .av-img, .av-icon-ph { width: 92px; height: 92px; }
+  .av-icon-ph { font-size: 2.2rem; }
+  .online-dot { width: 13px; height: 13px; }
+  .av-cam-btn { width: 26px; height: 26px; font-size: .6rem; }
+
+  /* Stats / reaction row */
+  .stats-row { gap: 4px; flex-wrap: wrap; }
+  .stat-count { font-size: .7rem; }
+  .stat-view-lbl { font-size: .65rem; }
+  .icon-react { width: 34px; height: 28px; font-size: .9rem; }
+  .reaction-row { gap: 4px; width: 72px; }
+  .icon-react.review-btn { width: 72px; height: 22px; font-size: .6rem; }
+  .name-reaction-group { gap: 4px; }
+  .pf-name { font-size: 1.08rem; gap: 5px; }
+
+  /* Profile info */
+  .pf-info { padding: .25rem .75rem .85rem; }
+  .pf-bio { font-size: .84rem; }
+  .pf-meta-chip { font-size: .72rem; padding: 3px 9px; }
+  .pf-type-row { font-size: .72rem; }
+
+  /* Action buttons */
+  .action-btns { gap: 7px; }
+  .ab-row { gap: 5px; }
+  .ab-btn { height: 34px; font-size: .76rem; }
+  .ab-btn.cv-dl { height: 42px; font-size: .84rem; }
+
+  /* Username prompt */
+  .username-prompt { padding: .75rem .85rem; gap: 8px; }
+  .up-text strong { font-size: .8rem; }
+  .up-text span { font-size: .68rem; }
+
+  /* Social links */
+  .soc-link { font-size: .72rem; padding: 5px 10px; gap: 5px; }
+
+  /* Sections */
+  section { padding: 1rem .85rem; }
+  .sec-title { font-size: .9rem; }
+  .sec-icon { width: 28px; height: 28px; font-size: .78rem; border-radius: 8px; }
+
+  /* Skills grid — 1 column on very small screens */
+  .skills-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 360px) {
+    .skills-grid { grid-template-columns: 1fr; }
+  }
+  .skill-card { padding: .7rem; }
+  .skill-name { font-size: .74rem; }
+  .skill-pct { font-size: .58rem; }
+
+  /* Timeline */
+  .timeline { padding-left: 26px; }
+  .timeline::before { left: 8px; }
+  .tl-dot { left: -26px; width: 17px; height: 17px; }
+  .tl-dot i { font-size: .42rem; }
+  .tl-card { padding: .75rem .85rem; }
+  .tl-role { font-size: .86rem; }
+  .tl-org { font-size: .7rem; }
+  .tl-date { font-size: .57rem; }
+  .tl-desc { font-size: .76rem; }
+
+  /* Projects */
+  .project-img { height: 140px; }
+  .project-img-ph { height: 140px; font-size: 1.7rem; }
+  .project-body { padding: .8rem .9rem; }
+  .project-title { font-size: .88rem; }
+  .project-desc { font-size: .75rem; }
+  .project-tag { font-size: .58rem; padding: 2px 8px; }
+  .proj-link { font-size: .68rem; padding: 7px; }
+
+  /* Reviews */
+  .rating-avg-num { font-size: 1.55rem; }
+  .rating-avg-stars { font-size: .85rem; }
+  .review-card { padding: .75rem .85rem; }
+  .review-name { font-size: .8rem; }
+  .review-comment { font-size: .76rem; }
+  .rating-summary { gap: 9px; padding: .75rem .85rem; }
+
+  /* Modals */
+  .modal { border-radius: 18px 18px 0 0; max-height: 95vh; }
+  .modal-header { padding: .85rem 1.1rem .75rem; }
+  .modal-body { padding: 1rem 1.1rem 0; }
+  .modal-title { font-size: .98rem; }
+  .tab-btn { font-size: .6rem; padding: 7px 5px; }
+
+  /* Forms inside modal */
+  .form-label { font-size: .57rem; }
+  .fg-input { font-size: .82rem; padding: .6rem .85rem; }
+  .btn { font-size: .82rem; padding: 11px 18px; }
+  .form-row { grid-template-columns: 1fr; }
+
+  /* Upload zone */
+  .uz-inner { padding: 1.1rem; gap: 6px; }
+  .uz-inner i { font-size: 1.65rem; }
+  .uz-inner b { font-size: .74rem; }
+  .uz-inner small { font-size: .66rem; }
+
+  /* Login brand */
+  .login-brand { font-size: 1.45rem; }
+  .login-sub { font-size: .78rem; }
+
+  /* Share modal */
+  .share-url-box { padding: 8px 10px; }
+  .share-url-box input { font-size: .62rem; }
+  .copy-btn { font-size: .63rem; padding: 5px 10px; }
+  .soc-share-btn { font-size: .7rem; padding: 8px; gap: 4px; }
+
+  /* Settings list */
+  .s-main { font-size: .84rem; }
+  .s-sub { font-size: .67rem; }
+  .s-icon-wrap { width: 32px; height: 32px; border-radius: 9px; }
+
+  /* Toast */
+  .toast { font-size: .7rem; padding: 9px 18px 9px 14px; bottom: 20px; }
+
+  /* Star select */
+  .star-select { font-size: 1.5rem; gap: 5px; }
+
+  /* Item actions */
+  .ia-btn { font-size: .65rem; padding: 6px; }
+}
+
+/* Extra-small (< 380px) */
+@media (max-width: 380px) {
+  .cover-wrap { height: 150px; }
+  .av-wrap { width: 82px; height: 82px; }
+  .av-img, .av-icon-ph { width: 82px; height: 82px; }
+  .vibe-cloud-wrap { display: none; } /* hide on tiny screens */
+  .pf-name { font-size: .95rem; }
+  .ab-btn { font-size: .7rem; height: 32px; }
+  .ab-btn.cv-dl { height: 38px; font-size: .78rem; }
+  .skills-grid { grid-template-columns: 1fr; }
+}
 </style>
   <!-- Firebase SDK -->
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -1786,43 +1946,31 @@ function resizeImageToBase64(file, maxW, maxH, quality){
   });
 }
 
-/* Also try Firebase Storage as a first attempt, fall back to base64 RTDB if CORS/fails */
+/* Base64 + RTDB only — Firebase Storage is bypassed entirely to avoid CORS issues */
 function uploadFileWithFallback(file, storagePath, onProgress, maxW, maxH){
   return new Promise(async (resolve, reject)=>{
-    // First attempt: Firebase Storage
     try{
-      const ref=storage.ref().child(storagePath);
-      const task=ref.put(file,{contentType:file.type||'image/jpeg'});
-      const url=await new Promise((res2, rej2)=>{
-        task.on(
-          firebase.storage.TaskEvent.STATE_CHANGED,
-          snap=>{ const pct=Math.round((snap.bytesTransferred/snap.totalBytes)*100); if(onProgress) onProgress(pct); },
-          err=>rej2(err),
-          ()=>task.snapshot.ref.getDownloadURL().then(res2).catch(rej2)
-        );
-      });
-      resolve({url, mode:'storage'});
-    }catch(storageErr){
-      // Fallback: resize + base64 → Realtime DB
-      // 400/CORS/storage errors all go here
-      console.warn('Storage upload failed, using base64 fallback:', storageErr.message||storageErr);
-      try{
-        if(onProgress) onProgress(20);
-        const quality = file.size > 2*1024*1024 ? 0.65 : 0.78;
-        const b64=await resizeImageToBase64(file, maxW||1200, maxH||900, quality);
+      if(onProgress) onProgress(15);
+      const quality = file.size > 2*1024*1024 ? 0.65 : 0.80;
+      const b64=await resizeImageToBase64(file, maxW||1200, maxH||900, quality);
+      if(onProgress) onProgress(70);
+      // If still too large for RTDB (~9.5MB limit), compress further
+      if(b64.length > 9*1024*1024){
         if(onProgress) onProgress(80);
-        // Check if base64 is too large for RTDB (hard limit ~9.5MB)
-        if(b64.length > 9*1024*1024){
-          const b64small=await resizeImageToBase64(file, Math.round((maxW||1200)*0.6), Math.round((maxH||900)*0.6), 0.55);
-          if(onProgress) onProgress(95);
-          resolve({url:b64small, mode:'base64'});
-        } else {
-          if(onProgress) onProgress(95);
-          resolve({url:b64, mode:'base64'});
-        }
-      }catch(b64Err){
-        reject(b64Err);
+        const b64small=await resizeImageToBase64(
+          file,
+          Math.round((maxW||1200)*0.55),
+          Math.round((maxH||900)*0.55),
+          0.55
+        );
+        if(onProgress) onProgress(95);
+        resolve({url:b64small, mode:'base64'});
+      } else {
+        if(onProgress) onProgress(95);
+        resolve({url:b64, mode:'base64'});
       }
+    }catch(err){
+      reject(err);
     }
   });
 }
