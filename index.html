@@ -699,10 +699,10 @@ section{;background:var(--panel);padding:1.2rem 1rem;
     }
 </style>
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -885,20 +885,6 @@ section{;background:var(--panel);padding:1.2rem 1rem;
   </div>
 </div><!-- /profile-card -->
 
-<!-- SKILLS -->
-<section class="fade-in">
-  <div class="sec-header">
-    <div class="sec-icon"><i class="fa-solid fa-code"></i></div>
-    <div class="sec-title">Skills</div>
-    <button class="sec-add-btn" onclick="openSkillModal()">
-      <i class="fa-solid fa-plus"></i>
-    </button>
-  </div>
-  <div class="skills-grid" id="skills-wrap">
-    <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
-  </div>
-</section>
-
 <!-- EXPERIENCE -->
 <section class="fade-in">
   <div class="sec-header">
@@ -909,6 +895,20 @@ section{;background:var(--panel);padding:1.2rem 1rem;
     </button>
   </div>
   <div class="timeline" id="exp-wrap">
+    <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="fade-in">
+  <div class="sec-header">
+    <div class="sec-icon"><i class="fa-solid fa-code"></i></div>
+    <div class="sec-title">Skills</div>
+    <button class="sec-add-btn" onclick="openSkillModal()">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+  </div>
+  <div class="skills-grid" id="skills-wrap">
     <div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>
   </div>
 </section>
@@ -959,7 +959,7 @@ section{;background:var(--panel);padding:1.2rem 1rem;
       </div>
     </div>
     <div class="modal-body">
-      <div class="login-brand">Folio<span>.me</span></div>
+      <div class="login-brand">Dev<span>Card</span></div>
       <div class="login-sub">Sign in with Google or email to manage your profile</div>
       <div id="logged-in-view" style="display:none">
         <div class="user-card">
@@ -1476,14 +1476,16 @@ try {
 function safeGet(id){ return document.getElementById(id)||{textContent:'',innerHTML:'',style:{},classList:{add:function(){},remove:function(){},toggle:function(){}},value:''}; }
 
 /* ── Firebase Init ── */
-const fbCfg={
-  apiKey:"AIzaSyA_vr4EXR57ap2CRxlS1JpK6wHqIwlU8Rc",
-  authDomain:"devcard-6b634.firebaseapp.com",
-  databaseURL:"https://devcard-6b634-default-rtdb.firebaseio.com",
-  projectId:"devcard-6b634",
-  storageBucket:"devcard-6b634.appspot.com",
-  messagingSenderId:"754891867884",
-  appId:"1:754891867884:web:f6ff7e2f8d2fcf8ae147c9"
+
+const fbCfg = {
+  apiKey: "AIzaSyCVuIKCqxdf4Fbu5DMZCOBfhSG8JJK-woI",
+  authDomain: "foliodotme.firebaseapp.com",
+  databaseURL: "https://foliodotme-default-rtdb.firebaseio.com",
+  projectId: "foliodotme",
+  storageBucket: "foliodotme.firebasestorage.app",
+  messagingSenderId: "756420809024",
+  appId: "1:756420809024:web:b363933a09ac01d09e6aa5",
+  measurementId: "G-JJYE5F4VD2"
 };
 firebase.initializeApp(fbCfg);
 const auth=firebase.auth();
@@ -1593,7 +1595,9 @@ function doLogout(){
 }
 
 auth.onAuthStateChanged(u=>{
-  const realUser = u || null;
+  // Treat anonymous sessions (used only so visitors can write without a real login)
+  // as "logged out" for UI/admin purposes — only a real Google/email account is admin.
+  const realUser = (u && !u.isAnonymous) ? u : null;
   isAdmin = !!realUser;
   document.body.classList.toggle('admin-mode',isAdmin);
 
@@ -1606,9 +1610,14 @@ auth.onAuthStateChanged(u=>{
     lb.style.display='flex';
     if(navBtn) navBtn.style.display='none';
   } else {
-    // Logged out: show sign-in btn in nav, hide avatar
+    // Logged out (or anonymous): show sign-in btn in nav, hide avatar
     lb.style.display='none';
     if(navBtn) navBtn.style.display='flex';
+    // No session at all yet — sign in anonymously in the background so
+    // visitors can like/dislike/review/view without ever seeing a login screen.
+    if(!u){
+      auth.signInAnonymously().catch(err=>console.warn('Anonymous sign-in failed:',err.message||err));
+    }
   }
 
   document.getElementById('edit-pf-btn').style.display=isAdmin?'flex':'none';
@@ -1629,13 +1638,13 @@ function avUrl(n){
     +'&background=2e8b00&color=fff&bold=true&size=96';
 }
 
-/* ── Profile Views ── */
+/* ── Profile Views (one count per device, not per browser tab/session) ── */
 function trackView(){
   const key='dc_viewed_'+window.location.pathname;
   if(localStorage.getItem(key)) return;
   localStorage.setItem(key,'1');
   db.ref('profile/views').transaction(v=>(v||0)+1)
-    .catch(()=>{}); // silently ignore if rules block it
+    .catch(e=>console.warn('View count failed:',e.message||e));
 }
 
 /* ── Realtime counters ── */
@@ -1652,13 +1661,15 @@ db.ref('profile/views').on('value',s=>{
 /* ── Like / Dislike ── */
 function handleLike(){
   if(_myReaction==='like'){
-    db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1)).catch(()=>{});
+    db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
+      .catch(e=>toast('Error: '+e.message,'error'));
     _myReaction='';
   } else {
     if(_myReaction==='dislike')
-      db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1)).catch(()=>{});
+      db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
+        .catch(e=>toast('Error: '+e.message,'error'));
     db.ref('profile/likes').transaction(v=>(v||0)+1)
-      .catch(()=>toast('Could not save reaction — check DB rules','error'));
+      .catch(e=>toast('Error: '+e.message,'error'));
     _myReaction='like';
   }
   localStorage.setItem('dc_reaction',_myReaction);
@@ -1667,13 +1678,15 @@ function handleLike(){
 
 function handleDislike(){
   if(_myReaction==='dislike'){
-    db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1)).catch(()=>{});
+    db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
+      .catch(e=>toast('Error: '+e.message,'error'));
     _myReaction='';
   } else {
     if(_myReaction==='like')
-      db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1)).catch(()=>{});
+      db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
+        .catch(e=>toast('Error: '+e.message,'error'));
     db.ref('profile/dislikes').transaction(v=>(v||0)+1)
-      .catch(()=>toast('Could not save reaction — check DB rules','error'));
+      .catch(e=>toast('Error: '+e.message,'error'));
     _myReaction='dislike';
   }
   localStorage.setItem('dc_reaction',_myReaction);
@@ -1744,33 +1757,28 @@ function downloadCV(){
   toast('Opening CV...','success');
 }
 
-/* ── Image Upload — Pure Base64 → Realtime DB (Firebase Storage বাদ) ── */
-function compressToBase64(file, maxW, maxH){
+/* ── Image helpers — Base64 approach (no CORS/Storage issues) ── */
+
+/**
+ * Resizes an image file to the given maxWidth/maxHeight and returns a base64 JPEG string.
+ * This avoids Firebase Storage CORS (ERR_FAILED) entirely — images are stored in RTDB.
+ */
+function resizeImageToBase64(file, maxW, maxH, quality){
   return new Promise((resolve, reject)=>{
     const reader=new FileReader();
-    reader.onerror=()=>reject(new Error('Cannot read file'));
+    reader.onerror=()=>reject(new Error('FileReader failed'));
     reader.onload=ev=>{
       const img=new Image();
-      img.onerror=()=>reject(new Error('Cannot decode image'));
+      img.onerror=()=>reject(new Error('Image decode failed'));
       img.onload=()=>{
-        const attempts=[
-          {w:maxW,              h:maxH,              q:0.82},
-          {w:maxW,              h:maxH,              q:0.65},
-          {w:Math.round(maxW*.75),h:Math.round(maxH*.75),q:0.60},
-          {w:Math.round(maxW*.50),h:Math.round(maxH*.50),q:0.50},
-        ];
-        let result='';
-        for(const a of attempts){
-          let sw=img.width, sh=img.height;
-          const r=Math.min(a.w/sw, a.h/sh, 1);
-          sw=Math.round(sw*r); sh=Math.round(sh*r);
-          const c=document.createElement('canvas');
-          c.width=sw; c.height=sh;
-          c.getContext('2d').drawImage(img,0,0,sw,sh);
-          result=c.toDataURL('image/jpeg',a.q);
-          if(result.length < 3*1024*1024) break;
-        }
-        resolve(result);
+        let w=img.width, h=img.height;
+        const ratio=Math.min(maxW/w, maxH/h, 1);
+        w=Math.round(w*ratio); h=Math.round(h*ratio);
+        const canvas=document.createElement('canvas');
+        canvas.width=w; canvas.height=h;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg', quality||0.82));
       };
       img.src=ev.target.result;
     };
@@ -1778,17 +1786,58 @@ function compressToBase64(file, maxW, maxH){
   });
 }
 
+/* Also try Firebase Storage as a first attempt, fall back to base64 RTDB if CORS/fails */
+function uploadFileWithFallback(file, storagePath, onProgress, maxW, maxH){
+  return new Promise(async (resolve, reject)=>{
+    // First attempt: Firebase Storage
+    try{
+      const ref=storage.ref().child(storagePath);
+      const task=ref.put(file,{contentType:file.type||'image/jpeg'});
+      const url=await new Promise((res2, rej2)=>{
+        task.on(
+          firebase.storage.TaskEvent.STATE_CHANGED,
+          snap=>{ const pct=Math.round((snap.bytesTransferred/snap.totalBytes)*100); if(onProgress) onProgress(pct); },
+          err=>rej2(err),
+          ()=>task.snapshot.ref.getDownloadURL().then(res2).catch(rej2)
+        );
+      });
+      resolve({url, mode:'storage'});
+    }catch(storageErr){
+      // Fallback: resize + base64 → Realtime DB
+      // 400/CORS/storage errors all go here
+      console.warn('Storage upload failed, using base64 fallback:', storageErr.message||storageErr);
+      try{
+        if(onProgress) onProgress(20);
+        const quality = file.size > 2*1024*1024 ? 0.65 : 0.78;
+        const b64=await resizeImageToBase64(file, maxW||1200, maxH||900, quality);
+        if(onProgress) onProgress(80);
+        // Check if base64 is too large for RTDB (hard limit ~9.5MB)
+        if(b64.length > 9*1024*1024){
+          const b64small=await resizeImageToBase64(file, Math.round((maxW||1200)*0.6), Math.round((maxH||900)*0.6), 0.55);
+          if(onProgress) onProgress(95);
+          resolve({url:b64small, mode:'base64'});
+        } else {
+          if(onProgress) onProgress(95);
+          resolve({url:b64, mode:'base64'});
+        }
+      }catch(b64Err){
+        reject(b64Err);
+      }
+    }
+  });
+}
+
 async function handleAvatarUpload(input){
   const file=input.files[0]; input.value='';
   if(!file) return;
   if(!isAdmin){ toast('Please sign in first','error'); return; }
-  if(file.size>10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
+  if(file.size>5*1024*1024){ toast('Max file size is 5 MB','error'); return; }
   const ring=document.getElementById('av-ring');
   ring.classList.add('active');
   toast('Uploading profile photo...','info');
   try{
-    const b64=await compressToBase64(file,400,400);
-    await db.ref('profile').update({avatar:b64});
+    const {url}=await uploadFileWithFallback(file,`profiles/avatar_${Date.now()}.jpg`,null,400,400);
+    await db.ref('profile').update({avatar:url});
     toast('Profile photo updated!','success');
   }catch(e){ toast('Upload failed: '+e.message,'error'); }
   finally{ ring.classList.remove('active'); }
@@ -1803,39 +1852,37 @@ async function handleCoverUpload(input){
   const pctEl=document.getElementById('cover-up-pct');
   overlay.classList.add('active'); pctEl.textContent='0%';
   try{
-    pctEl.textContent='30%';
-    const b64=await compressToBase64(file,1200,675);
-    pctEl.textContent='80%';
-    await db.ref('profile').update({cover:b64});
-    pctEl.textContent='100%';
+    const {url}=await uploadFileWithFallback(file,`profiles/cover_${Date.now()}.jpg`,pct=>{pctEl.textContent=pct+'%';},1280,720);
+    await db.ref('profile').update({cover:url});
     toast('Cover photo updated!','success');
   }catch(e){ toast('Upload failed: '+e.message,'error'); }
-  finally{ setTimeout(()=>{ overlay.classList.remove('active'); pctEl.textContent='0%'; },600); }
+  finally{ overlay.classList.remove('active'); pctEl.textContent='0%'; }
 }
 
 async function modalAvatarUpload(input){
   const file=input.files[0]; input.value='';
   if(!file) return;
   if(!isAdmin){ toast('Please sign in first','error'); return; }
-  if(file.size>10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
+  if(file.size>5*1024*1024){ toast('Max file size is 5 MB','error'); return; }
+  // Show local preview immediately
   const reader=new FileReader();
   reader.onload=e=>{
     const c=document.getElementById('av-preview-circle');
-    c.innerHTML=`<img src="${e.target.result}" alt="preview" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+    c.innerHTML=`<img src="${e.target.result}" alt="preview">`;
   };
   reader.readAsDataURL(file);
   const prog=document.getElementById('av-up-prog');
   const fill=document.getElementById('av-up-fill');
   const lbl=document.getElementById('av-up-lbl');
-  prog.classList.add('active'); fill.style.width='0%'; lbl.textContent='Compressing...';
+  prog.classList.add('active'); fill.style.width='0%'; lbl.textContent='Uploading...';
   try{
-    fill.style.width='40%'; lbl.textContent='40% — compressing';
-    const b64=await compressToBase64(file,400,400);
-    fill.style.width='75%'; lbl.textContent='75% — saving...';
-    await db.ref('profile').update({avatar:b64});
-    fill.style.width='100%'; lbl.textContent='Done!';
+    const {url,mode}=await uploadFileWithFallback(file,`profiles/avatar_${Date.now()}.jpg`,pct=>{
+      fill.style.width=pct+'%'; lbl.textContent=pct+'% done';
+    },400,400);
+    await db.ref('profile').update({avatar:url});
+    lbl.textContent='Upload complete!';
     toast('Profile photo saved!','success');
-  }catch(e){ lbl.textContent='Failed'; toast('Upload failed: '+e.message,'error'); }
+  }catch(e){ lbl.textContent='Upload failed'; toast('Upload failed: '+e.message,'error'); }
   finally{ setTimeout(()=>{ prog.classList.remove('active'); fill.style.width='0%'; },1800); }
 }
 
@@ -1844,6 +1891,7 @@ async function modalCoverUpload(input){
   if(!file) return;
   if(!isAdmin){ toast('Please sign in first','error'); return; }
   if(file.size>10*1024*1024){ toast('Max file size is 10 MB','error'); return; }
+  // Show local preview immediately
   const reader=new FileReader();
   reader.onload=e=>{
     const prev=document.getElementById('cover-uz-prev');
@@ -1854,15 +1902,15 @@ async function modalCoverUpload(input){
   const prog=document.getElementById('cover-up-prog');
   const fill=document.getElementById('cover-up-fill');
   const lbl=document.getElementById('cover-up-lbl');
-  prog.classList.add('active'); fill.style.width='0%'; lbl.textContent='Compressing...';
+  prog.classList.add('active'); fill.style.width='0%'; lbl.textContent='Uploading...';
   try{
-    fill.style.width='40%'; lbl.textContent='40% — compressing';
-    const b64=await compressToBase64(file,1200,675);
-    fill.style.width='75%'; lbl.textContent='75% — saving...';
-    await db.ref('profile').update({cover:b64});
-    fill.style.width='100%'; lbl.textContent='Done!';
+    const {url,mode}=await uploadFileWithFallback(file,`profiles/cover_${Date.now()}.jpg`,pct=>{
+      fill.style.width=pct+'%'; lbl.textContent=pct+'% done';
+    },1280,720);
+    await db.ref('profile').update({cover:url});
+    lbl.textContent='Upload complete!';
     toast('Cover photo saved!','success');
-  }catch(e){ lbl.textContent='Failed'; toast('Upload failed: '+e.message,'error'); }
+  }catch(e){ lbl.textContent='Upload failed'; toast('Upload failed: '+e.message,'error'); }
   finally{ setTimeout(()=>{ prog.classList.remove('active'); fill.style.width='0%'; },1800); }
 }
 
@@ -1929,7 +1977,7 @@ function openShareModal(){
   document.getElementById('share-url-input').value=url;
 
   const name=_pd.name||'Ibrahim Khalil';
-  const txt=`Check out ${name}'s profile on Folio.me!`;
+  const txt=`Check out ${name}'s DevCard!`;
   document.getElementById('share-fb').href=
     `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
   document.getElementById('share-wa').href=
@@ -2052,7 +2100,7 @@ profileRef.on('value',snap=>{
         : '<i class="fa-solid fa-file-arrow-down"></i> Download CV');
   }
 
-  document.title='Folio.me — '+(d.name||'Ibrahim Khalil');
+  document.title='DevCard — '+(d.name||'Ibrahim Khalil');
 });
 
 /* ── Profile Edit ── */
