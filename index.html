@@ -349,8 +349,8 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
 .sec-add-btn:hover{background:var(--accent);color:#fff;}
 .admin-mode .sec-add-btn{display:flex;}
 
-/* Skills — upgraded cards */
-.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+/* Skills — upgraded cards (auto-arrange: fills the row edge-to-edge on any device) */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;}
 .skill-card{
   background:var(--panel2);border:1.5px solid var(--border);
   border-radius:var(--radius);padding:.8rem;
@@ -698,7 +698,7 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
   .cover-cam-btn { font-size: .66rem; padding: 5px 10px; }
 
   /* Avatar row */
-  .av-row { padding: 0 .75rem; margin-top: -15px; gap: .75rem; }
+  .av-row { padding: 0 .75rem; margin-top: -36px; gap: .75rem; }
   .av-wrap { width: 108px; height: 108px; }
   .av-img, .av-icon-ph { width: 108px; height: 108px; border-width: 3px; }
   .av-icon-ph { font-size: 2.6rem; }
@@ -741,7 +741,7 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
   .sec-icon { width: 28px; height: 28px; font-size: .78rem; border-radius: 8px; }
 
   /* Skills grid */
-  .skills-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  /* Skills grid auto-arranges via auto-fit — no manual override needed */
   .skill-card { padding: .7rem; }
   .skill-name { font-size: .74rem; }
   .skill-pct { font-size: .58rem; }
@@ -827,7 +827,7 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
   .pf-name { font-size: .95rem; }
   .ab-btn { font-size: .7rem; height: 32px; }
   .ab-btn.cv-dl { height: 38px; font-size: .78rem; }
-  .skills-grid { grid-template-columns: 1fr; }
+  /* Skills grid auto-arranges via auto-fit — no manual override needed */
 }
 </style>
   <!-- Firebase SDK -->
@@ -1717,7 +1717,10 @@ auth.onAuthStateChanged(u=>{
     });
   } else {
     document.getElementById('username-prompt').style.display='none';
-    trackView();
+    // Wait until we actually have a session (anonymous sign-in completes
+    // asynchronously) before attempting to write the view — calling this
+    // while u is still null would hit Firebase before auth is ready.
+    if(u) trackView();
   }
   applyReactionUI(_myReaction);
 });
@@ -1731,12 +1734,16 @@ function avUrl(n){
    Strategy:
    1. Generate a stable device ID from browser fingerprint signals.
    2. Store it in localStorage AND IndexedDB so it survives cache clears.
-   3. Write the ID to Firebase RTDB under /viewers/<deviceId>.
-      Firebase only counts the node once (set, not push), so duplicate
-      visits from the same device never increment the counter.
-   4. Listen to /profile/views which is kept in sync by a Cloud-style
-      server rule; here we just count unique /viewers/* nodes client-side
-      and update /profile/views accordingly.
+   3. Check localStorage FIRST (fast, no network needed) — if this device
+      already has the "viewed" flag, skip everything, no Firebase calls.
+   4. Otherwise, write the ID to Firebase RTDB under /viewers/<deviceId>
+      directly with .set() — no read-before-write. This matters because
+      requiring read permission on /viewers (to check snap.exists()) is
+      a common cause of views silently failing under stricter security
+      rules. A write-only rule like ".write": "!data.exists()" is enough
+      to guarantee each device is only ever counted once server-side.
+   5. Only increment /profile/views if the viewer write actually
+      succeeded (i.e. this is genuinely the first time for this device).
 */
 function _genDeviceId(){
   // Build a fingerprint from stable, non-identifying signals
@@ -1794,15 +1801,30 @@ function _getOrCreateDeviceId(){
 }
 
 async function trackView(){
+  const VIEWED_FLAG = 'dc_viewed_profile';
   try{
+    // Fast path: already counted on this device, no network needed.
+    if(localStorage.getItem(VIEWED_FLAG)==='1') return;
+
     const deviceId = await _getOrCreateDeviceId();
     const viewerRef = db.ref('viewers/' + deviceId);
-    const snap = await viewerRef.once('value');
-    if(snap.exists()) return; // already counted this device
-    // Mark this device as seen (value = first-seen timestamp)
-    await viewerRef.set(Date.now());
-    // Increment the public counter
+
+    // Write directly — no read-before-write. If a security rule like
+    // ".write": "!data.exists()" is in place, this naturally fails
+    // (permission-denied) on a repeat device, which we treat as
+    // "already counted" rather than an error to surface.
+    try{
+      await viewerRef.set(Date.now());
+    }catch(writeErr){
+      // Could mean "already viewed" (good) or a transient/auth issue (bad).
+      // Don't lock out future attempts — just skip this load and let the
+      // next page view retry naturally.
+      return;
+    }
+
+    // First time this device has been seen — bump the public counter.
     await db.ref('profile/views').transaction(v => (v||0) + 1);
+    localStorage.setItem(VIEWED_FLAG,'1');
   }catch(e){ console.warn('View count failed:', e.message||e); }
 }
 
@@ -2314,7 +2336,7 @@ function saveProfile(){
     const el=document.getElementById('pf-'+k);
     if(el) data[k]=el.value.trim();
   });
-  ['avatar','cover','username','views','likes','dislikes'].forEach(k=>{
+  ['avatar','cover','username','views','likes','dislikes','metaOrder'].forEach(k=>{
     if(_pd[k]!==undefined) data[k]=_pd[k];
   });
   profileRef.set(data)
