@@ -108,18 +108,6 @@ header{
 .cover-badge h2{font-family:'Space Grotesk',sans-serif;font-size:1.32rem;font-weight:700;
   text-shadow:0 2px 8px rgba(0,0,0,.55);line-height:1.2;}
 .cover-badge p{font-size:.7rem;opacity:.88;margin-top:3px;font-weight:500;letter-spacing:.04em;}
-/* Vibe cloud */
-.vibe-cloud-wrap{position:absolute;bottom:14px;right:18px;z-index:4;white-space:nowrap;max-width:calc(50% - 24px);}
-.vibe-cloud{display:inline-flex;align-items:center;gap:7px;
-  background:rgba(245,245,240,0.95);backdrop-filter:blur(14px);
-  border-radius:20px 20px 20px 5px;padding:8px 15px;
-  font-size:.78rem;color:var(--text);
-  box-shadow:0 4px 18px rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.8);}
-.vibe-dot{width:8px;height:8px;border-radius:50%;background:var(--green);
-  box-shadow:0 0 7px var(--green);flex-shrink:0;animation:vd 2s ease-in-out infinite;}
-@keyframes vd{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.45;transform:scale(.82);}}
-.vibe-text-el{font-weight:500;max-width:170px;overflow:hidden;text-overflow:ellipsis;}
-
 
 /* Cover cam btn */
 .cover-cam-btn{position:absolute;bottom:10px;right:10px;z-index:4;
@@ -198,6 +186,9 @@ header{
 .pf-meta-chip i{font-size:.77rem;color:var(--accent2);}
 .pf-meta-chip a{color:inherit;text-decoration:none;}
 .pf-meta-chip a:hover{color:var(--accent);}
+.admin-mode .pf-meta-chip{cursor:grab;user-select:none;transition:opacity .15s,transform .15s;}
+.admin-mode .pf-meta-chip:active{cursor:grabbing;}
+.pf-meta-chip.dragging{opacity:.4;transform:scale(.96);}
 
 /* Username prompt */
 .username-prompt{background:linear-gradient(135deg,rgba(46,139,0,.07),var(--panel2));
@@ -704,12 +695,10 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
   /* Cover */
   .cover-wrap { height: 175px; border-radius: 0 0 18px 18px; }
   .cover-badge h2 { font-size: 1.12rem; }
-  .vibe-cloud { font-size: .72rem; padding: 6px 11px; gap: 5px; }
-  .vibe-text-el { max-width: 120px; }
   .cover-cam-btn { font-size: .66rem; padding: 5px 10px; }
 
   /* Avatar row */
-  .av-row { padding: 0 .75rem; margin-top: -36px; gap: .75rem; }
+  .av-row { padding: 0 .75rem; margin-top: -15px; gap: .75rem; }
   .av-wrap { width: 108px; height: 108px; }
   .av-img, .av-icon-ph { width: 108px; height: 108px; border-width: 3px; }
   .av-icon-ph { font-size: 2.6rem; }
@@ -835,7 +824,6 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
   .av-wrap { width: 92px; height: 92px; }
   .av-img, .av-icon-ph { width: 92px; height: 92px; }
   .av-icon-ph { font-size: 2.2rem; }
-  .vibe-cloud-wrap { display: none; }
   .pf-name { font-size: .95rem; }
   .ab-btn { font-size: .7rem; height: 32px; }
   .ab-btn.cv-dl { height: 38px; font-size: .78rem; }
@@ -876,14 +864,6 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
   <!-- Cover -->
   <div class="cover-wrap" id="cover-wrap">
     <div class="cover-overlay"></div>
-
-    <!-- Vibe cloud (visitor) -->
-    <div class="vibe-cloud-wrap" id="vibe-cloud-wrap">
-      <div class="vibe-cloud">
-        <div class="vibe-dot"></div>
-        <span class="vibe-text-el" id="vibe-text">Current vibe...</span>
-      </div>
-    </div>
 
     <button class="cover-cam-btn" id="cover-cam-btn"
       onclick="document.getElementById('cover-file-input').click()">
@@ -1094,7 +1074,7 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
     </div>
     <div class="modal-body">
       <div class="login-brand">Folio<span>.me</span></div>
-      <div class="login-sub">Sign in with Google or email to manage your profile</div>
+        <div class="login-sub">Sign in with Google to manage your profile</div>
       <div id="logged-in-view" style="display:none">
         <div class="user-card">
           <img id="u-photo" src="" alt="">
@@ -1113,18 +1093,6 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
         <button class="btn google" onclick="googleLogin()">
           <svg class="g-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66 2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Continue with Google
-        </button>
-        <div class="or-div">or sign in with email</div>
-        <div class="form-group">
-          <label class="form-label"><i class="fa-solid fa-envelope"></i> Email</label>
-          <input class="fg-input" type="email" id="adm-email" placeholder="admin@example.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label"><i class="fa-solid fa-lock"></i> Password</label>
-          <input class="fg-input" type="password" id="adm-pass" placeholder="••••••••">
-        </div>
-        <button class="btn" onclick="emailLogin()">
-          <i class="fa-solid fa-key"></i> Sign In
         </button>
       </div>
     </div>
@@ -1706,23 +1674,6 @@ function googleLogin(){
     .catch(e=>toast('Error: '+e.message,'error'));
 }
 
-function emailLogin(){
-  const e=document.getElementById('adm-email').value.trim();
-  const pw=document.getElementById('adm-pass').value;
-  if(!e||!pw){ toast('Enter email and password','error'); return; }
-  auth.signInWithEmailAndPassword(e,pw)
-    .then(()=>{ closeModal('login-modal'); toast('Login successful!','success'); })
-    .catch(err=>{
-      if(['auth/user-not-found','auth/invalid-credential','auth/invalid-email'].includes(err.code)){
-        auth.createUserWithEmailAndPassword(e,pw)
-          .then(()=>{ closeModal('login-modal'); toast('Account created & signed in!','success'); })
-          .catch(e2=>toast('Error: '+e2.message,'error'));
-      } else {
-        toast('Error: '+err.message,'error');
-      }
-    });
-}
-
 function doLogout(){
   auth.signOut().then(()=>toast('Signed out','info'));
 }
@@ -1754,6 +1705,11 @@ auth.onAuthStateChanged(u=>{
   }
 
   document.getElementById('edit-pf-btn').style.display=isAdmin?'flex':'none';
+
+  document.querySelectorAll('#pf-meta .pf-meta-chip').forEach(c=>{
+    c.setAttribute('draggable', isAdmin?'true':'false');
+  });
+  initMetaDrag();
 
   if(isAdmin){
     db.ref('profile/username').once('value').then(s=>{
@@ -2224,7 +2180,6 @@ profileRef.on('value',snap=>{
   _si('pf-name-el', escH(d.name||'Ibrahim Khalil')+' <span class="verified"><i class="fa-solid fa-circle-check"></i></span>');
   _s('pf-bio-el',   d.bio||'Time is relative, but one-way.');
   _s('pf-role-type',d.role||'Digital creator');
-  _s('vibe-text', d.vibe||'Current vibe...');
 
   const avD=document.getElementById('av-display');
   if(avD){
@@ -2251,18 +2206,26 @@ profileRef.on('value',snap=>{
     }
   }
 
-  // Meta chips
-  const chips=[];
-  if(d.role)     chips.push({icon:'fa-solid fa-briefcase',text:escH(d.role)});
-  if(d.location) chips.push({icon:'fa-solid fa-location-dot',text:escH(d.location)});
-  if(d.school)   chips.push({icon:'fa-solid fa-school',text:escH(d.school)});
-  if(d.college)  chips.push({icon:'fa-solid fa-graduation-cap',text:escH(d.college)});
-  if(d.email)    chips.push({icon:'fa-solid fa-envelope',
-    text:`<a href="mailto:${escH(d.email)}">${escH(d.email)}</a>`});
-  if(d.phone)    chips.push({icon:'fa-solid fa-mobile-screen',
-    text:`<a href="tel:${escH(d.phone)}">${escH(d.phone)}</a>`});
-  if(d.address)  chips.push({icon:'fa-solid fa-map-pin',text:escH(d.address)});
-  _si('pf-meta', chips.map(c=>`<div class="pf-meta-chip"><i class="${c.icon}"></i>${c.text}</div>`).join(''));
+  // Meta chips (draggable to reorder when signed in)
+  const chipDefs={
+    role:    d.role     ? {icon:'fa-solid fa-briefcase',text:escH(d.role)} : null,
+    location:d.location ? {icon:'fa-solid fa-location-dot',text:escH(d.location)} : null,
+    school:  d.school   ? {icon:'fa-solid fa-school',text:escH(d.school)} : null,
+    college: d.college  ? {icon:'fa-solid fa-graduation-cap',text:escH(d.college)} : null,
+    email:   d.email    ? {icon:'fa-solid fa-envelope',text:`<a href="mailto:${escH(d.email)}">${escH(d.email)}</a>`} : null,
+    phone:   d.phone    ? {icon:'fa-solid fa-mobile-screen',text:`<a href="tel:${escH(d.phone)}">${escH(d.phone)}</a>`} : null,
+    address: d.address  ? {icon:'fa-solid fa-map-pin',text:escH(d.address)} : null,
+  };
+  const defaultOrder=['role','location','school','college','email','phone','address'];
+  let order=Array.isArray(d.metaOrder)&&d.metaOrder.length?d.metaOrder.slice():defaultOrder;
+  // Include any keys missing from saved order (new fields filled in later)
+  defaultOrder.forEach(k=>{ if(!order.includes(k)) order.push(k); });
+  order=order.filter(k=>chipDefs[k]);
+  _si('pf-meta', order.map(k=>{
+    const c=chipDefs[k];
+    return `<div class="pf-meta-chip" data-key="${k}" draggable="${isAdmin?'true':'false'}"><i class="${c.icon}"></i>${c.text}</div>`;
+  }).join(''));
+  initMetaDrag();
 
   // Socials
   const socs=[];
@@ -2306,6 +2269,42 @@ function openProfileModal(){
   openModal('profile-modal');
 }
 
+/* ── Drag-to-reorder pf-meta chips (admin only) ── */
+let _metaDragEl=null;
+function initMetaDrag(){
+  const wrap=document.getElementById('pf-meta');
+  if(!wrap||!isAdmin) return;
+  const chips=[...wrap.querySelectorAll('.pf-meta-chip')];
+  chips.forEach(chip=>{
+    if(chip.dataset.dragBound) return;
+    chip.dataset.dragBound='1';
+    chip.addEventListener('dragstart',e=>{
+      _metaDragEl=chip;
+      chip.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+    });
+    chip.addEventListener('dragend',()=>{
+      chip.classList.remove('dragging');
+      _metaDragEl=null;
+      saveMetaOrder();
+    });
+    chip.addEventListener('dragover',e=>{
+      e.preventDefault();
+      if(!_metaDragEl||_metaDragEl===chip) return;
+      const rect=chip.getBoundingClientRect();
+      const after=(e.clientX - rect.left) > rect.width/2;
+      wrap.insertBefore(_metaDragEl, after ? chip.nextSibling : chip);
+    });
+  });
+}
+function saveMetaOrder(){
+  if(!isAdmin) return;
+  const wrap=document.getElementById('pf-meta');
+  if(!wrap) return;
+  const order=[...wrap.querySelectorAll('.pf-meta-chip')].map(c=>c.dataset.key);
+  profileRef.update({metaOrder:order}).then(()=>toast('Order saved!','success'));
+}
+
 function saveProfile(){
   if(!isAdmin){ toast('Please sign in first'); return; }
   const strFields=['name','role','bio','location','school','college','email','phone','address','cv',
@@ -2315,7 +2314,7 @@ function saveProfile(){
     const el=document.getElementById('pf-'+k);
     if(el) data[k]=el.value.trim();
   });
-  ['vibe','avatar','cover','username','views','likes','dislikes'].forEach(k=>{
+  ['avatar','cover','username','views','likes','dislikes'].forEach(k=>{
     if(_pd[k]!==undefined) data[k]=_pd[k];
   });
   profileRef.set(data)
@@ -2641,7 +2640,6 @@ window.openSkillModal=openSkillModal;
 window.openProjectModal=openProjectModal;
 window.openUsernameModal=openUsernameModal;
 window.googleLogin=googleLogin;
-window.emailLogin=emailLogin;
 window.doLogout=doLogout;
 window.saveProfile=saveProfile;
 window.saveExp=saveExp;
@@ -2677,7 +2675,7 @@ window._fbReady = true;
   console.error('Firebase init error:', e);
   ['openLoginModal','openShareModal','openProfileModal','openExpModal',
    'openSkillModal','openProjectModal','openUsernameModal','googleLogin',
-   'emailLogin','doLogout','saveProfile','saveExp','saveProject',
+   'doLogout','saveProfile','saveExp','saveProject',
    'saveUsername','addSkill','delSkill','editExp','delExp','editProject','delProject',
    'copyProfileUrl','handleLike','handleDislike','closeModal','openModal','switchTab',
    'previewUsername','handleAvatarUpload','handleCoverUpload','modalAvatarUpload',
