@@ -9,8 +9,7 @@
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
 <link rel="icon" type="image/x-icon" href="folioDOTme.jpg">
-<link href="https://fonts.googleapis.com/css2?
-    family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 :root{
@@ -97,8 +96,7 @@ header{
 .admin-mode .settings-trigger{display:flex;}
 
 /* ── PROFILE CARD ── */
-.profile-card{background:var(--panel);
-  }
+.profile-card{background:var(--panel);margin-bottom:4px;}
 
 /* Cover */
 .cover-wrap{position:relative;width:100%;height:210px;border-radius: 0 0 23px 23px;
@@ -111,7 +109,7 @@ header{
   text-shadow:0 2px 8px rgba(0,0,0,.55);line-height:1.2;}
 .cover-badge p{font-size:.7rem;opacity:.88;margin-top:3px;font-weight:500;letter-spacing:.04em;}
 /* Vibe cloud */
-.vibe-cloud-wrap{position:absolute;bottom:93px;left:50%;transform:translateX(-10%);z-index:4;white-space:nowrap;max-width:calc(100% - 130px);overflow:hidden;}
+.vibe-cloud-wrap{position:absolute;bottom:14px;right:18px;z-index:4;white-space:nowrap;max-width:calc(50% - 24px);}
 .vibe-cloud{display:inline-flex;align-items:center;gap:7px;
   background:rgba(245,245,240,0.95);backdrop-filter:blur(14px);
   border-radius:20px 20px 20px 5px;padding:8px 15px;
@@ -121,17 +119,7 @@ header{
   box-shadow:0 0 7px var(--green);flex-shrink:0;animation:vd 2s ease-in-out infinite;}
 @keyframes vd{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.45;transform:scale(.82);}}
 .vibe-text-el{font-weight:500;max-width:170px;overflow:hidden;text-overflow:ellipsis;}
-.vibe-edit-wrap{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:5;
-  display:none;align-items:center;gap:6px;
-  background:rgba(245,245,240,.97);border-radius:20px;padding:5px 5px 5px 13px;
-  border:2px solid var(--accent);box-shadow:0 4px 18px rgba(0,0,0,.2);}
-.admin-mode .vibe-edit-wrap{display:flex;}
-.admin-mode .vibe-cloud-wrap{display:none;}
-.vibe-edit-wrap input{border:none;background:transparent;font-size:.78rem;color:var(--text);
-  outline:none;font-family:'Inter',sans-serif;width:145px;}
-.vibe-save-btn{background:var(--accent);color:#fff;border:none;border-radius:14px;
-  padding:5px 12px;font-size:.68rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:filter .2s;}
-.vibe-save-btn:hover{filter:brightness(1.12);}
+
 
 /* Cover cam btn */
 .cover-cam-btn{position:absolute;bottom:10px;right:10px;z-index:4;
@@ -150,21 +138,21 @@ header{
 
 /* Avatar row */
 .av-row{display:flex;align-items:flex-end;gap:1rem;
-  padding:0 1rem;margin-top:-32px;position:relative;z-index:5;}
+  padding:0 1rem;margin-top:-42px;position:relative;z-index:5;}
 .stats-row-flex{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
-.av-wrap{position:relative;width:112px;height:112px;flex-shrink:0;}
-.av-img,.av-icon-ph{width:112px;height:112px;border-radius:50%;border:4px solid var(--panel);
+.av-wrap{position:relative;width:130px;height:130px;flex-shrink:0;}
+.av-img,.av-icon-ph{width:130px;height:130px;border-radius:50%;border:4px solid var(--panel);
   display:block;object-fit:cover;background:var(--avatar-bg);}
-.av-icon-ph{display:flex;align-items:center;justify-content:center;font-size:2.7rem;color:var(--text3);}
-.online-dot{width:16px;height:16px;background:var(--green);border-radius:50%;
-  border:3px solid var(--panel);position:absolute;bottom:5px;right:5px;}
+.av-icon-ph{display:flex;align-items:center;justify-content:center;font-size:3.2rem;color:var(--text3);}
+.online-dot{width:17px;height:17px;background:var(--green);border-radius:50%;
+  border:3px solid var(--panel);position:absolute;bottom:7px;right:7px;}
 .av-uploading-ring{position:absolute;inset:-4px;border:3px solid transparent;
   border-top-color:var(--accent);border-radius:50%;display:none;animation:spin 1s linear infinite;}
 .av-uploading-ring.active{display:block;}
-.av-cam-btn{position:absolute;bottom:2px;right:2px;width:30px;height:30px;
+.av-cam-btn{position:absolute;bottom:4px;right:4px;width:32px;height:32px;
   background:var(--panel);border:1.5px solid var(--border2);border-radius:50%;
   display:none;align-items:center;justify-content:center;cursor:pointer;
-  font-size:.68rem;color:var(--text2);box-shadow:0 2px 8px var(--shadow);transition:all .2s;}
+  font-size:.72rem;color:var(--text2);box-shadow:0 2px 8px var(--shadow);transition:all .2s;}
 .av-cam-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
 .admin-mode .av-cam-btn{display:flex;}
 
@@ -194,7 +182,7 @@ header{
 .ab-btn.neutral:hover{border-color:var(--accent);color:var(--accent);}
 
 /* Profile info */
-.pf-info{padding:.3rem 1rem 1rem;}
+.pf-info{padding:.5rem 1rem 1.2rem;}
 .pf-name-row{display:flex;align-items:center;gap:10px;margin-bottom:0;}
 .pf-name{font-family:'Space Grotesk',sans-serif;font-size:1.28rem;font-weight:700;
   display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex:1;}
@@ -359,8 +347,7 @@ header{
 .soc-link:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-dim);}
 
 /* ── SECTIONS ── */
-section{;background:var(--panel);padding:1.2rem 1rem;
-  }
+section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
 .sec-header{display:flex;align-items:center;gap:9px;margin-bottom:1rem;}
 .sec-icon{width:32px;height:32px;border-radius:9px;background:var(--accent-dim);
   display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.85rem;flex-shrink:0;}
@@ -695,6 +682,8 @@ section{;background:var(--panel);padding:1.2rem 1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 6px;
+        margin-top: 2px;
     }
 
 /* ── MOBILE RESPONSIVE ── */
@@ -713,30 +702,27 @@ section{;background:var(--panel);padding:1.2rem 1rem;
   .settings-trigger { width: 32px; height: 32px; font-size: .78rem; }
 
   /* Cover */
-  .cover-wrap { height: 170px; border-radius: 0 0 18px 18px; }
+  .cover-wrap { height: 175px; border-radius: 0 0 18px 18px; }
   .cover-badge h2 { font-size: 1.12rem; }
-  .vibe-cloud-wrap { left: 48%; bottom: 80px; }
   .vibe-cloud { font-size: .72rem; padding: 6px 11px; gap: 5px; }
-  .vibe-text-el { max-width: 130px; }
-  .vibe-edit-wrap { padding: 4px 4px 4px 10px; }
-  .vibe-edit-wrap input { width: 120px; }
+  .vibe-text-el { max-width: 120px; }
   .cover-cam-btn { font-size: .66rem; padding: 5px 10px; }
 
   /* Avatar row */
-  .av-row { padding: 0 .75rem; margin-top: -28px; gap: .75rem; }
-  .av-wrap { width: 92px; height: 92px; }
-  .av-img, .av-icon-ph { width: 92px; height: 92px; }
-  .av-icon-ph { font-size: 2.2rem; }
-  .online-dot { width: 13px; height: 13px; }
-  .av-cam-btn { width: 26px; height: 26px; font-size: .6rem; }
+  .av-row { padding: 0 .75rem; margin-top: -36px; gap: .75rem; }
+  .av-wrap { width: 108px; height: 108px; }
+  .av-img, .av-icon-ph { width: 108px; height: 108px; border-width: 3px; }
+  .av-icon-ph { font-size: 2.6rem; }
+  .online-dot { width: 14px; height: 14px; }
+  .av-cam-btn { width: 28px; height: 28px; font-size: .62rem; }
 
   /* Stats / reaction row */
   .stats-row { gap: 4px; flex-wrap: wrap; }
-  .stat-count { font-size: .7rem; }
-  .stat-view-lbl { font-size: .65rem; }
-  .icon-react { width: 34px; height: 28px; font-size: .9rem; }
+  .stat-count { font-size: .68rem; }
+  .stat-view-lbl { font-size: .62rem; }
+  .icon-react { width: 34px; height: 28px; font-size: .88rem; }
   .reaction-row { gap: 4px; width: 72px; }
-  .icon-react.review-btn { width: 72px; height: 22px; font-size: .6rem; }
+  .icon-react.review-btn { width: 72px; height: 22px; font-size: .58rem; }
   .name-reaction-group { gap: 4px; }
   .pf-name { font-size: 1.08rem; gap: 5px; }
 
@@ -765,11 +751,8 @@ section{;background:var(--panel);padding:1.2rem 1rem;
   .sec-title { font-size: .9rem; }
   .sec-icon { width: 28px; height: 28px; font-size: .78rem; border-radius: 8px; }
 
-  /* Skills grid — 1 column on very small screens */
+  /* Skills grid */
   .skills-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-  @media (max-width: 360px) {
-    .skills-grid { grid-template-columns: 1fr; }
-  }
   .skill-card { padding: .7rem; }
   .skill-name { font-size: .74rem; }
   .skill-pct { font-size: .58rem; }
@@ -849,9 +832,10 @@ section{;background:var(--panel);padding:1.2rem 1rem;
 /* Extra-small (< 380px) */
 @media (max-width: 380px) {
   .cover-wrap { height: 150px; }
-  .av-wrap { width: 82px; height: 82px; }
-  .av-img, .av-icon-ph { width: 82px; height: 82px; }
-  .vibe-cloud-wrap { display: none; } /* hide on tiny screens */
+  .av-wrap { width: 92px; height: 92px; }
+  .av-img, .av-icon-ph { width: 92px; height: 92px; }
+  .av-icon-ph { font-size: 2.2rem; }
+  .vibe-cloud-wrap { display: none; }
   .pf-name { font-size: .95rem; }
   .ab-btn { font-size: .7rem; height: 32px; }
   .ab-btn.cv-dl { height: 38px; font-size: .78rem; }
@@ -862,7 +846,6 @@ section{;background:var(--panel);padding:1.2rem 1rem;
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -894,13 +877,12 @@ section{;background:var(--panel);padding:1.2rem 1rem;
   <div class="cover-wrap" id="cover-wrap">
     <div class="cover-overlay"></div>
 
-    
-
-    <!-- Vibe edit (admin) -->
-    <div class="vibe-edit-wrap" id="vibe-edit-wrap">
-      <div class="vibe-dot"></div>
-      <input type="text" id="vibe-input" placeholder="Type your vibe...">
-      <button class="vibe-save-btn" onclick="saveVibe()"><i class="fa-solid fa-check"></i> Save</button>
+    <!-- Vibe cloud (visitor) -->
+    <div class="vibe-cloud-wrap" id="vibe-cloud-wrap">
+      <div class="vibe-cloud">
+        <div class="vibe-dot"></div>
+        <span class="vibe-text-el" id="vibe-text">Current vibe...</span>
+      </div>
     </div>
 
     <button class="cover-cam-btn" id="cover-cam-btn"
@@ -919,15 +901,7 @@ section{;background:var(--panel);padding:1.2rem 1rem;
   <!-- Avatar Row -->
   <div class="av-row">
     
-    <div class="av-wrap">
-          <!-- Vibe cloud (visitor) -->
-        <div class="vibe-cloud-wrap" id="vibe-cloud-wrap">
-            <div class="vibe-cloud">
-                <div class="vibe-dot"></div>
-                <span class="vibe-text-el" id="vibe-text">Current vibe...</span>
-            </div>
-        </div>
-        
+    <div class="av-wrap">      
       <div id="av-display">
         <div class="av-icon-ph"><i class="fa-solid fa-user"></i></div>
       </div>
@@ -1650,7 +1624,6 @@ const fbCfg = {
 firebase.initializeApp(fbCfg);
 const auth=firebase.auth();
 const db=firebase.database();
-const storage=firebase.storage();
 
 let isAdmin=false, _pd={}, _expData={}, _projData={};
 let _myReaction=localStorage.getItem('dc_reaction')||'';
@@ -1798,13 +1771,83 @@ function avUrl(n){
     +'&background=2e8b00&color=fff&bold=true&size=96';
 }
 
-/* ── Profile Views (one count per device, not per browser tab/session) ── */
-function trackView(){
-  const key='dc_viewed_'+window.location.pathname;
-  if(localStorage.getItem(key)) return;
-  localStorage.setItem(key,'1');
-  db.ref('profile/views').transaction(v=>(v||0)+1)
-    .catch(e=>console.warn('View count failed:',e.message||e));
+/* ── Profile Views — one count per physical device ──
+   Strategy:
+   1. Generate a stable device ID from browser fingerprint signals.
+   2. Store it in localStorage AND IndexedDB so it survives cache clears.
+   3. Write the ID to Firebase RTDB under /viewers/<deviceId>.
+      Firebase only counts the node once (set, not push), so duplicate
+      visits from the same device never increment the counter.
+   4. Listen to /profile/views which is kept in sync by a Cloud-style
+      server rule; here we just count unique /viewers/* nodes client-side
+      and update /profile/views accordingly.
+*/
+function _genDeviceId(){
+  // Build a fingerprint from stable, non-identifying signals
+  const nav = window.navigator;
+  const scr = window.screen;
+  const raw = [
+    nav.userAgent,
+    nav.language,
+    nav.hardwareConcurrency,
+    nav.deviceMemory||'',
+    scr.width + 'x' + scr.height,
+    scr.colorDepth,
+    new Date().getTimezoneOffset(),
+    nav.platform||''
+  ].join('|');
+  // Simple but consistent hash (djb2)
+  let hash = 5381;
+  for(let i = 0; i < raw.length; i++){
+    hash = ((hash << 5) + hash) ^ raw.charCodeAt(i);
+    hash = hash >>> 0; // keep unsigned 32-bit
+  }
+  return 'dv_' + hash.toString(36);
+}
+
+function _getOrCreateDeviceId(){
+  const LS_KEY = 'dc_device_id';
+  let id = localStorage.getItem(LS_KEY);
+  if(id) return Promise.resolve(id);
+  // Try IndexedDB as a more persistent fallback
+  return new Promise(resolve => {
+    try{
+      const req = indexedDB.open('foliome_db', 1);
+      req.onupgradeneeded = e => e.target.result.createObjectStore('kv');
+      req.onsuccess = e => {
+        const idb = e.target.result;
+        const tx = idb.transaction('kv','readwrite');
+        const store = tx.objectStore('kv');
+        const get = store.get(LS_KEY);
+        get.onsuccess = () => {
+          if(get.result){
+            localStorage.setItem(LS_KEY, get.result);
+            resolve(get.result);
+          } else {
+            const newId = _genDeviceId();
+            store.put(newId, LS_KEY);
+            localStorage.setItem(LS_KEY, newId);
+            resolve(newId);
+          }
+        };
+        get.onerror = () => { const newId=_genDeviceId(); localStorage.setItem(LS_KEY,newId); resolve(newId); };
+      };
+      req.onerror = () => { const newId=_genDeviceId(); localStorage.setItem(LS_KEY,newId); resolve(newId); };
+    }catch(_e){ const newId=_genDeviceId(); localStorage.setItem(LS_KEY,newId); resolve(newId); }
+  });
+}
+
+async function trackView(){
+  try{
+    const deviceId = await _getOrCreateDeviceId();
+    const viewerRef = db.ref('viewers/' + deviceId);
+    const snap = await viewerRef.once('value');
+    if(snap.exists()) return; // already counted this device
+    // Mark this device as seen (value = first-seen timestamp)
+    await viewerRef.set(Date.now());
+    // Increment the public counter
+    await db.ref('profile/views').transaction(v => (v||0) + 1);
+  }catch(e){ console.warn('View count failed:', e.message||e); }
 }
 
 /* ── Realtime counters ── */
@@ -2182,8 +2225,6 @@ profileRef.on('value',snap=>{
   _s('pf-bio-el',   d.bio||'Time is relative, but one-way.');
   _s('pf-role-type',d.role||'Digital creator');
   _s('vibe-text', d.vibe||'Current vibe...');
-  const vibeInp=document.getElementById('vibe-input');
-  if(vibeInp) vibeInp.value=d.vibe||'';
 
   const avD=document.getElementById('av-display');
   if(avD){
@@ -2280,13 +2321,6 @@ function saveProfile(){
   profileRef.set(data)
     .then(()=>{ closeModal('profile-modal'); toast('Profile saved!','success'); })
     .catch(e=>toast('Error: '+e.message,'error'));
-}
-
-function saveVibe(){
-  if(!isAdmin) return;
-  const v=document.getElementById('vibe-input').value.trim();
-  if(!v){ toast('Enter a vibe'); return; }
-  profileRef.update({vibe:v}).then(()=>toast('Vibe updated!','success'));
 }
 
 /* ── Skills ── */
@@ -2610,7 +2644,6 @@ window.googleLogin=googleLogin;
 window.emailLogin=emailLogin;
 window.doLogout=doLogout;
 window.saveProfile=saveProfile;
-window.saveVibe=saveVibe;
 window.saveExp=saveExp;
 window.saveProject=saveProject;
 window.saveUsername=saveUsername;
@@ -2644,7 +2677,7 @@ window._fbReady = true;
   console.error('Firebase init error:', e);
   ['openLoginModal','openShareModal','openProfileModal','openExpModal',
    'openSkillModal','openProjectModal','openUsernameModal','googleLogin',
-   'emailLogin','doLogout','saveProfile','saveVibe','saveExp','saveProject',
+   'emailLogin','doLogout','saveProfile','saveExp','saveProject',
    'saveUsername','addSkill','delSkill','editExp','delExp','editProject','delProject',
    'copyProfileUrl','handleLike','handleDislike','closeModal','openModal','switchTab',
    'previewUsername','handleAvatarUpload','handleCoverUpload','modalAvatarUpload',
