@@ -66,6 +66,76 @@ header{
 }
 .logo-text{display:flex;align-items:baseline;gap:1px;}
 .logo-text em{color:var(--accent);font-style:normal;}
+
+/* ── HOME PAGE ── */
+.home-hero{
+  text-align:center;padding:2.6rem 1.2rem 1.8rem;
+}
+.home-hero-icon{
+  width:64px;height:64px;border-radius:18px;margin:0 auto .9rem;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1.7rem;box-shadow:0 8px 22px rgba(46,139,0,.3);
+}
+.home-hero h1{
+  font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.7rem;
+  letter-spacing:-.03em;color:var(--text);margin-bottom:.5rem;
+}
+.home-hero h1 span{color:var(--accent);}
+.home-hero p{
+  font-size:.85rem;color:var(--text2);line-height:1.6;
+  max-width:380px;margin:0 auto 1.3rem;
+}
+.home-signin-btn{
+  display:inline-flex;align-items:center;gap:9px;width:auto;
+  padding:11px 22px;background:#fff;color:var(--text);
+  border:1.5px solid var(--border2);border-radius:14px;
+  font-weight:700;font-size:.85rem;cursor:pointer;
+  box-shadow:0 4px 14px var(--shadow);transition:all .2s;
+}
+.home-signin-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px var(--shadow);}
+
+.home-list-head{
+  display:flex;align-items:center;gap:8px;font-weight:700;font-size:.92rem;
+  color:var(--text);padding:0 1rem;margin-bottom:.8rem;
+}
+.home-list-head i{color:var(--accent);}
+.home-account-list{
+  display:flex;flex-direction:column;gap:8px;padding:0 1rem 2.5rem;
+}
+.home-loading{
+  display:flex;align-items:center;gap:9px;justify-content:center;
+  padding:2rem 1rem;color:var(--text2);font-size:.82rem;
+}
+.home-empty{
+  text-align:center;padding:2rem 1rem;color:var(--text3);font-size:.82rem;
+}
+.home-acc-card{
+  display:flex;align-items:center;gap:12px;background:var(--panel);
+  border-radius:16px;padding:.7rem .85rem;text-decoration:none;color:inherit;
+  border:1px solid var(--border2);transition:all .18s;cursor:pointer;
+}
+.home-acc-card:hover{transform:translateY(-1px);box-shadow:0 6px 16px var(--shadow);border-color:var(--accent);}
+.home-acc-avatar{
+  width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;
+  background:var(--avatar-bg);display:flex;align-items:center;justify-content:center;
+  color:var(--text3);font-size:1.2rem;
+}
+.home-acc-info{flex:1;min-width:0;}
+.home-acc-name{font-weight:700;font-size:.88rem;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.home-acc-role{font-size:.74rem;color:var(--text2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.home-acc-arrow{color:var(--text3);font-size:.85rem;flex-shrink:0;}
+
+/* ── PROFILE NOT FOUND ── */
+.pnf-box{
+  text-align:center;padding:3.5rem 1.5rem;
+}
+.pnf-box i{font-size:2.6rem;color:var(--text3);margin-bottom:1rem;display:block;}
+.pnf-box h2{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.4rem;}
+.pnf-box p{font-size:.84rem;color:var(--text2);margin-bottom:1.3rem;}
+.pnf-box .btn{display:inline-flex;width:auto;padding:10px 20px;}
 .logo-badge{
   font-size:.45rem;font-weight:700;letter-spacing:.12em;
   background:var(--accent-dim);color:var(--accent);
@@ -840,7 +910,7 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
 
 <!-- HEADER -->
 <header>
-  <a class="logo" href="#">
+  <a class="logo" href="./">
     <div class="logo-text">Folio<em>.me</em></div>
   </a>
   <div class="hd-right">
@@ -858,8 +928,38 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
   </div>
 </header>
 
+<!-- HOME PAGE (shown when no ?u= profile is requested) -->
+<div id="home-page" style="display:none">
+  <div class="home-hero">
+    <div class="home-hero-icon"><i class="fa-solid fa-id-card-clip"></i></div>
+    <h1>Folio<span>.me</span></h1>
+    <p>আপনার নিজস্ব ডিজিটাল পরিচয়পত্র তৈরি করুন। নিচের তালিকা থেকে একটি প্রোফাইল ভিজিট করুন অথবা সাইন ইন করে নিজের প্রোফাইল তৈরি করুন।</p>
+    <button class="btn home-signin-btn" id="home-signin-btn" onclick="openLoginModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" style="flex-shrink:0"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66 2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      <span id="home-signin-label">Sign in &amp; create your profile</span>
+    </button>
+  </div>
+
+  <div class="home-list-head">
+    <i class="fa-solid fa-users"></i> All Profiles
+  </div>
+  <div id="home-account-list" class="home-account-list">
+    <div class="home-loading"><div class="spin-ring"></div> Loading profiles...</div>
+  </div>
+</div>
+
+<!-- PROFILE NOT FOUND -->
+<div id="profile-not-found" style="display:none">
+  <div class="pnf-box">
+    <i class="fa-solid fa-circle-question"></i>
+    <h2>প্রোফাইলটি খুঁজে পাওয়া যায়নি</h2>
+    <p>এই নামে কোনো প্রোফাইল তৈরি হয়নি, অথবা লিংকটি ভুল।</p>
+    <a class="btn" href="./"><i class="fa-solid fa-house"></i> হোমে ফিরে যান</a>
+  </div>
+</div>
+
 <!-- PROFILE CARD -->
-<div class="profile-card fade-in">
+<div class="profile-card fade-in" id="profile-card" style="display:none">
 
   <!-- Cover -->
   <div class="cover-wrap" id="cover-wrap">
@@ -1081,8 +1181,8 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
           <div><div class="uc-name" id="u-name"></div><div class="uc-email" id="u-email"></div></div>
         </div>
         <div class="btn-row">
-          <button class="btn outline" onclick="closeModal('login-modal')">
-            <i class="fa-solid fa-xmark"></i> Close
+          <button class="btn outline" id="goto-my-profile-btn" style="display:none" onclick="gotoMyProfile()">
+            <i class="fa-solid fa-id-card"></i> আমার প্রোফাইল
           </button>
           <button class="btn danger" onclick="doLogout()">
             <i class="fa-solid fa-right-from-bracket"></i> Sign Out
@@ -1594,7 +1694,19 @@ const auth=firebase.auth();
 const db=firebase.database();
 
 let isAdmin=false, _pd={}, _expData={}, _projData={};
-let _myReaction=localStorage.getItem('dc_reaction')||'';
+let _myReaction='';
+
+/* ── Multi-tenant routing state ──
+   viewedUid = the uid of the profile currently being displayed (from ?u=username)
+   myUid     = the uid of the currently signed-in (real, non-anonymous) user
+   All per-profile data lives under /users/{viewedUid}/...
+   Username → uid lookup lives at /usernames/{username}
+   A lightweight mirror for the home page list lives at /directory/{uid}
+*/
+let viewedUid=null, myUid=null;
+let _routeMode=null; // 'home' | 'profile' — set synchronously before any async lookup
+function uref(path){ return db.ref('users/'+viewedUid+(path?'/'+path:'')); }
+
 
 /* ── Toast ── */
 let _toastTimer;
@@ -1654,17 +1766,25 @@ function switchTab(id){
 /* ── Auth ── */
 function openLoginModal(){
   const u=auth.currentUser;
-  if(u){
+  if(u && !u.isAnonymous){
     document.getElementById('logged-in-view').style.display='block';
     document.getElementById('login-form-view').style.display='none';
     document.getElementById('u-photo').src=u.photoURL||avUrl(u.displayName||'U');
     document.getElementById('u-name').textContent=u.displayName||'User';
     document.getElementById('u-email').textContent=u.email||'';
+    const gotoBtn=document.getElementById('goto-my-profile-btn');
+    if(gotoBtn) gotoBtn.style.display=(viewedUid===u.uid)?'none':'flex';
   } else {
     document.getElementById('logged-in-view').style.display='none';
     document.getElementById('login-form-view').style.display='block';
   }
   openModal('login-modal');
+}
+
+function gotoMyProfile(){
+  const u=auth.currentUser;
+  if(!u||u.isAnonymous) return;
+  routeAfterLogin(u.uid);
 }
 
 function googleLogin(){
@@ -1680,9 +1800,11 @@ function doLogout(){
 
 auth.onAuthStateChanged(u=>{
   // Treat anonymous sessions (used only so visitors can write without a real login)
-  // as "logged out" for UI/admin purposes — only a real Google/email account is admin.
+  // as "logged out" for UI/admin purposes — only a real Google account is admin.
   const realUser = (u && !u.isAnonymous) ? u : null;
-  isAdmin = !!realUser;
+  myUid = realUser ? realUser.uid : null;
+  // Admin only when signed in AND viewing your own profile page.
+  isAdmin = !!(realUser && viewedUid && realUser.uid===viewedUid);
   document.body.classList.toggle('admin-mode',isAdmin);
 
   const lb=document.getElementById('login-btn');
@@ -1704,26 +1826,57 @@ auth.onAuthStateChanged(u=>{
     }
   }
 
-  document.getElementById('edit-pf-btn').style.display=isAdmin?'flex':'none';
+  const epb=document.getElementById('edit-pf-btn');
+  if(epb) epb.style.display=isAdmin?'flex':'none';
 
   document.querySelectorAll('#pf-meta .pf-meta-chip').forEach(c=>{
     c.setAttribute('draggable', isAdmin?'true':'false');
   });
   initMetaDrag();
 
-  if(isAdmin){
-    db.ref('profile/username').once('value').then(s=>{
-      document.getElementById('username-prompt').style.display=s.val()?'none':'flex';
-    });
-  } else {
-    document.getElementById('username-prompt').style.display='none';
-    // Wait until we actually have a session (anonymous sign-in completes
-    // asynchronously) before attempting to write the view — calling this
-    // while u is still null would hit Firebase before auth is ready.
-    if(u) trackView();
+  if(viewedUid){
+    // We're on a profile page.
+    if(isAdmin){
+      uref('profile/username').once('value').then(s=>{
+        const up=document.getElementById('username-prompt');
+        if(up) up.style.display=s.val()?'none':'flex';
+      });
+    } else {
+      const up=document.getElementById('username-prompt');
+      if(up) up.style.display='none';
+      // Wait until we actually have a session (anonymous sign-in completes
+      // asynchronously) before attempting to write the view — calling this
+      // while u is still null would hit Firebase before auth is ready.
+      if(u) trackView();
+    }
+    applyReactionUI(_myReaction);
+  } else if(realUser && _routeMode==='home'){
+    // We're on the Home page and just got a real login — route them to
+    // their own profile, creating it (with a username) if it's their first time.
+    routeAfterLogin(realUser.uid);
   }
-  applyReactionUI(_myReaction);
 });
+
+/* After a successful login from the Home page: send the user to their own
+   profile, or — if this is their first time — make them pick a username
+   first (which creates their account), then redirect. */
+function routeAfterLogin(uid){
+  db.ref('users/'+uid+'/profile/username').once('value').then(s=>{
+    const existing=s.val();
+    if(existing){
+      window.location.href='./?u='+encodeURIComponent(existing);
+    } else {
+      _firstTimeUid=uid;
+      closeModal('login-modal');
+      const inp=document.getElementById('username-input');
+      if(inp) inp.value='';
+      previewUsername('');
+      openModal('username-modal');
+      toast('স্বাগতম! আপনার প্রোফাইলের জন্য একটি ইউজারনেম বেছে নিন','info');
+    }
+  }).catch(e=>toast('Error: '+e.message,'error'));
+}
+let _firstTimeUid=null;
 
 function avUrl(n){
   return'https://ui-avatars.com/api/?name='+encodeURIComponent(n)
@@ -1801,13 +1954,13 @@ function _getOrCreateDeviceId(){
 }
 
 async function trackView(){
-  const VIEWED_FLAG = 'dc_viewed_profile';
+  const VIEWED_FLAG = 'dc_viewed_'+viewedUid;
   try{
     // Fast path: already counted on this device, no network needed.
     if(localStorage.getItem(VIEWED_FLAG)==='1') return;
 
     const deviceId = await _getOrCreateDeviceId();
-    const viewerRef = db.ref('viewers/' + deviceId);
+    const viewerRef = uref('viewers/' + deviceId);
 
     // Write directly — no read-before-write. If a security rule like
     // ".write": "!data.exists()" is in place, this naturally fails
@@ -1823,54 +1976,57 @@ async function trackView(){
     }
 
     // First time this device has been seen — bump the public counter.
-    await db.ref('profile/views').transaction(v => (v||0) + 1);
+    await uref('profile/views').transaction(v => (v||0) + 1);
     localStorage.setItem(VIEWED_FLAG,'1');
   }catch(e){ console.warn('View count failed:', e.message||e); }
 }
 
 /* ── Realtime counters ── */
-db.ref('profile/likes').on('value',s=>{
-  document.getElementById('like-count').textContent=fmtNum(s.val()||0);
+function initReactionListeners(){
+uref('profile/likes').on('value',s=>{
+  const el=document.getElementById('like-count'); if(el) el.textContent=fmtNum(s.val()||0);
 });
-db.ref('profile/dislikes').on('value',s=>{
-  document.getElementById('dislike-count').textContent=fmtNum(s.val()||0);
+uref('profile/dislikes').on('value',s=>{
+  const el=document.getElementById('dislike-count'); if(el) el.textContent=fmtNum(s.val()||0);
 });
-db.ref('profile/views').on('value',s=>{
-  document.getElementById('eng-views').textContent=fmtNum(s.val()||0);
+uref('profile/views').on('value',s=>{
+  const el=document.getElementById('eng-views'); if(el) el.textContent=fmtNum(s.val()||0);
 });
+}
 
 /* ── Like / Dislike ── */
+function _reactionKey(){ return 'dc_reaction_'+viewedUid; }
 function handleLike(){
   if(_myReaction==='like'){
-    db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
+    uref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
       .catch(e=>toast('Error: '+e.message,'error'));
     _myReaction='';
   } else {
     if(_myReaction==='dislike')
-      db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
+      uref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
         .catch(e=>toast('Error: '+e.message,'error'));
-    db.ref('profile/likes').transaction(v=>(v||0)+1)
+    uref('profile/likes').transaction(v=>(v||0)+1)
       .catch(e=>toast('Error: '+e.message,'error'));
     _myReaction='like';
   }
-  localStorage.setItem('dc_reaction',_myReaction);
+  localStorage.setItem(_reactionKey(),_myReaction);
   applyReactionUI(_myReaction);
 }
 
 function handleDislike(){
   if(_myReaction==='dislike'){
-    db.ref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
+    uref('profile/dislikes').transaction(v=>Math.max(0,(v||0)-1))
       .catch(e=>toast('Error: '+e.message,'error'));
     _myReaction='';
   } else {
     if(_myReaction==='like')
-      db.ref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
+      uref('profile/likes').transaction(v=>Math.max(0,(v||0)-1))
         .catch(e=>toast('Error: '+e.message,'error'));
-    db.ref('profile/dislikes').transaction(v=>(v||0)+1)
+    uref('profile/dislikes').transaction(v=>(v||0)+1)
       .catch(e=>toast('Error: '+e.message,'error'));
     _myReaction='dislike';
   }
-  localStorage.setItem('dc_reaction',_myReaction);
+  localStorage.setItem(_reactionKey(),_myReaction);
   applyReactionUI(_myReaction);
 }
 
@@ -2006,7 +2162,7 @@ async function handleAvatarUpload(input){
   toast('Uploading profile photo...','info');
   try{
     const {url}=await uploadFileWithFallback(file,`profiles/avatar_${Date.now()}.jpg`,null,400,400);
-    await db.ref('profile').update({avatar:url});
+    await uref('profile').update({avatar:url});
     toast('Profile photo updated!','success');
   }catch(e){ toast('Upload failed: '+e.message,'error'); }
   finally{ ring.classList.remove('active'); }
@@ -2022,7 +2178,7 @@ async function handleCoverUpload(input){
   overlay.classList.add('active'); pctEl.textContent='0%';
   try{
     const {url}=await uploadFileWithFallback(file,`profiles/cover_${Date.now()}.jpg`,pct=>{pctEl.textContent=pct+'%';},1280,720);
-    await db.ref('profile').update({cover:url});
+    await uref('profile').update({cover:url});
     toast('Cover photo updated!','success');
   }catch(e){ toast('Upload failed: '+e.message,'error'); }
   finally{ overlay.classList.remove('active'); pctEl.textContent='0%'; }
@@ -2048,7 +2204,7 @@ async function modalAvatarUpload(input){
     const {url,mode}=await uploadFileWithFallback(file,`profiles/avatar_${Date.now()}.jpg`,pct=>{
       fill.style.width=pct+'%'; lbl.textContent=pct+'% done';
     },400,400);
-    await db.ref('profile').update({avatar:url});
+    await uref('profile').update({avatar:url});
     lbl.textContent='Upload complete!';
     toast('Profile photo saved!','success');
   }catch(e){ lbl.textContent='Upload failed'; toast('Upload failed: '+e.message,'error'); }
@@ -2076,7 +2232,7 @@ async function modalCoverUpload(input){
     const {url,mode}=await uploadFileWithFallback(file,`profiles/cover_${Date.now()}.jpg`,pct=>{
       fill.style.width=pct+'%'; lbl.textContent=pct+'% done';
     },1280,720);
-    await db.ref('profile').update({cover:url});
+    await uref('profile').update({cover:url});
     lbl.textContent='Upload complete!';
     toast('Cover photo saved!','success');
   }catch(e){ lbl.textContent='Upload failed'; toast('Upload failed: '+e.message,'error'); }
@@ -2110,15 +2266,38 @@ function previewUsername(val){
 }
 
 async function saveUsername(){
-  if(!isAdmin) return;
+  const targetUid = _firstTimeUid || (isAdmin ? viewedUid : null);
+  if(!targetUid){ toast('Please sign in first'); return; }
   const val=document.getElementById('username-input').value.trim();
   if(!val||val.length<3){ toast('Minimum 3 characters required'); return; }
   if(!/^[a-z0-9_]{3,20}$/.test(val)){ toast('Only a-z, 0-9 and _ allowed'); return; }
   try{
-    await db.ref('profile').update({username:val});
+    // Enforce uniqueness — username must be free, or already owned by this user.
+    const check=await db.ref('usernames/'+val).once('value');
+    const ownerUid=check.val();
+    if(ownerUid && ownerUid!==targetUid){
+      toast('এই ইউজারনেমটি ইতিমধ্যে নেওয়া হয়ে গেছে','error');
+      return;
+    }
+    const oldUsername = _firstTimeUid ? null : (_pd.username||null);
+    const updates={};
+    if(oldUsername && oldUsername!==val) updates['usernames/'+oldUsername]=null;
+    updates['usernames/'+val]=targetUid;
+    updates['users/'+targetUid+'/profile/username']=val;
+    updates['directory/'+targetUid+'/username']=val;
+    await db.ref().update(updates);
+
+    if(_firstTimeUid){
+      // First-time account creation from the Home page — send them to their
+      // brand-new profile now that the username (and account) exists.
+      toast('@'+val+' তৈরি হয়েছে!','success');
+      window.location.href='./?u='+encodeURIComponent(val);
+      return;
+    }
     closeModal('username-modal');
     toast('@'+val+' is set!','success');
-    document.getElementById('username-prompt').style.display='none';
+    const up=document.getElementById('username-prompt');
+    if(up) up.style.display='none';
   }catch(e){ toast('Error: '+e.message,'error'); }
 }
 
@@ -2191,7 +2370,9 @@ function fallbackCopy(text){
 }
 
 /* ── Profile Data (Realtime) ── */
-const profileRef=db.ref('profile');
+let profileRef;
+function initProfileListener(){
+profileRef=uref('profile');
 profileRef.on('value',snap=>{
   const d=snap.val()||{};
   _pd=d;
@@ -2275,7 +2456,15 @@ profileRef.on('value',snap=>{
   }
 
   document.title='Folio.me — '+(d.name||'Ibrahim Khalil');
+
+  // Keep the lightweight home-page directory entry in sync (owner only)
+  if(isAdmin && d.username){
+    db.ref('directory/'+viewedUid).update({
+      username:d.username, name:d.name||'', role:d.role||'', avatar:d.avatar||''
+    }).catch(()=>{});
+  }
 });
+}
 
 /* ── Profile Edit ── */
 function openProfileModal(){
@@ -2345,7 +2534,9 @@ function saveProfile(){
 }
 
 /* ── Skills ── */
-const skillsRef=db.ref('skills');
+let skillsRef;
+function initSkillsListener(){
+skillsRef=uref('skills');
 skillsRef.on('value',snap=>{
   const w=document.getElementById('skills-wrap'), d=snap.val();
   if(!d){
@@ -2366,6 +2557,7 @@ skillsRef.on('value',snap=>{
     </div>`;
   }).join('');
 });
+}
 
 function openSkillModal(){
   if(!isAdmin){ toast('Please sign in first'); return; }
@@ -2388,7 +2580,9 @@ function delSkill(k){
 }
 
 /* ── Experience ── */
-const expRef=db.ref('experience');
+let expRef;
+function initExpListener(){
+expRef=uref('experience');
 expRef.on('value',snap=>{
   _expData=snap.val()||{};
   const w=document.getElementById('exp-wrap'), d=snap.val();
@@ -2413,6 +2607,7 @@ expRef.on('value',snap=>{
     </div>`;
   }).join('');
 });
+}
 
 function openExpModal(){
   if(!isAdmin){ toast('Please sign in first'); return; }
@@ -2455,7 +2650,9 @@ function delExp(k){
 }
 
 /* ── Projects ── */
-const projectsRef=db.ref('projects');
+let projectsRef;
+function initProjectsListener(){
+projectsRef=uref('projects');
 projectsRef.on('value',snap=>{
   _projData=snap.val()||{};
   const w=document.getElementById('projects-wrap'), d=snap.val();
@@ -2495,6 +2692,7 @@ projectsRef.on('value',snap=>{
     </div>`;
   }).join('');
 });
+}
 
 function openProjectModal(){
   if(!isAdmin){ toast('Please sign in first'); return; }
@@ -2542,7 +2740,7 @@ function delProject(k){
 
 /* ── Reviews & Ratings (open to everyone — no login required) ── */
 let _reviewData={};
-const reviewsRef=db.ref('reviews');
+let reviewsRef;
 
 function starsHTML(rating){
   const r=Math.max(0,Math.min(5,Number(rating)||0));
@@ -2566,6 +2764,8 @@ function isValidContact(v){
   return email.test(v)||phone.test(v);
 }
 
+function initReviewsListener(){
+reviewsRef=uref('reviews');
 reviewsRef.on('value',snap=>{
   const d=snap.val()||{};
   _reviewData=d;
@@ -2599,6 +2799,7 @@ reviewsRef.on('value',snap=>{
     </div>`;
   }).join('');
 });
+}
 
 // Small local helpers (textContent/innerHTML setters) — kept distinct from
 // the ones inside profileRef.on() which are scoped to that callback only.
@@ -2663,6 +2864,7 @@ window.openProjectModal=openProjectModal;
 window.openUsernameModal=openUsernameModal;
 window.googleLogin=googleLogin;
 window.doLogout=doLogout;
+window.gotoMyProfile=gotoMyProfile;
 window.saveProfile=saveProfile;
 window.saveExp=saveExp;
 window.saveProject=saveProject;
@@ -2690,6 +2892,105 @@ window.openReviewModal=openReviewModal;
 window.setReviewStar=setReviewStar;
 window.submitReview=submitReview;
 window.delReview=delReview;
+
+/* ══════════════ Routing / Boot ══════════════
+   No ?u= param  -> Home page (list of accounts + sign in)
+   ?u=username   -> resolve to a uid and load that profile's data
+*/
+function showHomePage(){
+  document.getElementById('home-page').style.display='block';
+  document.getElementById('profile-not-found').style.display='none';
+  document.getElementById('profile-card').style.display='none';
+  loadHomeAccountList();
+}
+function showProfileNotFound(){
+  document.getElementById('home-page').style.display='none';
+  document.getElementById('profile-not-found').style.display='block';
+  document.getElementById('profile-card').style.display='none';
+}
+function showProfilePage(){
+  document.getElementById('home-page').style.display='none';
+  document.getElementById('profile-not-found').style.display='none';
+  document.getElementById('profile-card').style.display='block';
+}
+
+function loadHomeAccountList(){
+  const listEl=document.getElementById('home-account-list');
+  db.ref('directory').once('value').then(snap=>{
+    const d=snap.val()||{};
+    const entries=Object.values(d).filter(e=>e&&e.username);
+    if(!entries.length){
+      listEl.innerHTML='<div class="home-empty"><i class="fa-solid fa-user-slash" style="font-size:1.3rem;margin-bottom:8px;display:block;"></i>এখনো কোনো প্রোফাইল তৈরি হয়নি — প্রথম হোন!</div>';
+      return;
+    }
+    entries.sort((a,b)=>(a.name||a.username).localeCompare(b.name||b.username));
+    listEl.innerHTML=entries.map(e=>{
+      const avatarHtml=e.avatar
+        ? `<img class="home-acc-avatar" src="${escH(e.avatar)}" alt="">`
+        : `<div class="home-acc-avatar"><i class="fa-solid fa-user"></i></div>`;
+      return `<a class="home-acc-card" href="./?u=${encodeURIComponent(e.username)}">
+        ${avatarHtml}
+        <div class="home-acc-info">
+          <div class="home-acc-name">${escH(e.name||('@'+e.username))}</div>
+          <div class="home-acc-role">${escH(e.role||('@'+e.username))}</div>
+        </div>
+        <i class="fa-solid fa-chevron-right home-acc-arrow"></i>
+      </a>`;
+    }).join('');
+  }).catch(()=>{
+    listEl.innerHTML='<div class="home-empty">প্রোফাইল লোড করা যায়নি</div>';
+  });
+}
+
+async function boot(){
+  const params=new URLSearchParams(window.location.search);
+  const uParam=(params.get('u')||'').trim().toLowerCase();
+  _routeMode = uParam ? 'profile' : 'home';
+
+  if(!uParam){
+    showHomePage();
+    return;
+  }
+
+  try{
+    const snap=await db.ref('usernames/'+uParam).once('value');
+    const uid=snap.val();
+    if(!uid){
+      showProfileNotFound();
+      return;
+    }
+    viewedUid=uid;
+    _myReaction=localStorage.getItem(_reactionKey())||'';
+    showProfilePage();
+    initReactionListeners();
+    initProfileListener();
+    initSkillsListener();
+    initExpListener();
+    initProjectsListener();
+    initReviewsListener();
+    applyReactionUI(_myReaction);
+    // isAdmin depends on viewedUid, which just became available — re-evaluate
+    // against whatever auth state we already have.
+    const cu=auth.currentUser;
+    if(cu && !cu.isAnonymous && cu.uid===viewedUid){
+      isAdmin=true;
+      document.body.classList.add('admin-mode');
+      const epb=document.getElementById('edit-pf-btn');
+      if(epb) epb.style.display='flex';
+      uref('profile/username').once('value').then(s=>{
+        const up=document.getElementById('username-prompt');
+        if(up) up.style.display=s.val()?'none':'flex';
+      });
+    } else if(cu) {
+      // Some session exists (anonymous or a different real user) — count the view.
+      trackView();
+    }
+  }catch(e){
+    console.error('Profile load failed:',e);
+    showProfileNotFound();
+  }
+}
+boot();
 
 window._fbReady = true;
 
