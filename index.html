@@ -750,9 +750,19 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
 <script>
 function _safeInit(){try{
 
-const fbCfg={apiKey:"AIzaSyCVuIKCqxdf4Fbu5DMZCOBfhSG8JJK-woI",authDomain:"foliodotme.firebaseapp.com",databaseURL:"https://foliodotme-default-rtdb.firebaseio.com",projectId:"foliodotme",storageBucket:"foliodotme.firebasestorage.app",messagingSenderId:"756420809024",appId:"1:756420809024:web:b363933a09ac01d09e6aa5"};
-firebase.initializeApp(fbCfg);
-const auth=firebase.auth(),db=firebase.database(),storage=firebase.storage();
+let auth,db,storage;
+try{
+  const fbCfg={apiKey:"AIzaSyCVuIKCqxdf4Fbu5DMZCOBfhSG8JJK-woI",authDomain:"foliodotme.firebaseapp.com",databaseURL:"https://foliodotme-default-rtdb.firebaseio.com",projectId:"foliodotme",storageBucket:"foliodotme.firebasestorage.app",messagingSenderId:"756420809024",appId:"1:756420809024:web:b363933a09ac01d09e6aa5"};
+  if(typeof firebase==='undefined')throw new Error('Firebase SDK did not load (check network/ad-blocker/CDN access).');
+  firebase.initializeApp(fbCfg);
+  auth=firebase.auth();db=firebase.database();storage=firebase.storage();
+}catch(fbErr){
+  console.error('Firebase init failed, app will run in limited mode:',fbErr);
+  const stub={once:()=>Promise.reject(fbErr),on:()=>{},off:()=>{},update:()=>Promise.reject(fbErr),child:()=>stub};
+  auth=auth||{currentUser:null,signInAnonymously:()=>Promise.reject(fbErr),signInWithPopup:()=>Promise.reject(fbErr),onAuthStateChanged:()=>{}};
+  db=db||{ref:()=>stub};
+  storage=storage||{ref:()=>({put:()=>{throw fbErr;}})};
+}
 
 let isAdmin=false,_currentUid=null,_myUid=null,_pd={},_expData={},_projData={},_myReaction='';
 let _pL=null,_sL=null,_eL=null,_prL=null,_rxL=null,_rvL=null,_vL=null;
@@ -1025,7 +1035,7 @@ function delSkill(k){if(!isAdmin||!_myUid)return;if(!confirm('Delete this skill?
 window.delSkill=delSkill;
 
 /* EXPERIENCE */
-function openExpModal(k){if(!isAdmin){toast('Sign in first');return;}const isE=!!k;document.getElementById('exp-modal-title').innerHTML=`<i class="fa-solid fa-briefcase" style="color:var(--accent);margin-right:8px;"></i>${isE?'Edit':'Add'} Experience`;document.getElementById('exp-edit-key').value=k||'';['role','org','start','end','desc'].forEach(f=>{document.getElementById('exp-'+f).value=(isE&&_expData[k]?_expData[k][f]||''):'';});openModal('exp-modal');}
+function openExpModal(k){if(!isAdmin){toast('Sign in first');return;}const isE=!!k;document.getElementById('exp-modal-title').innerHTML=`<i class="fa-solid fa-briefcase" style="color:var(--accent);margin-right:8px;"></i>${isE?'Edit':'Add'} Experience`;document.getElementById('exp-edit-key').value=k||'';['role','org','start','end','desc'].forEach(f=>{document.getElementById('exp-'+f).value=(isE&&_expData[k])?(_expData[k][f]||''):'';});openModal('exp-modal');}
 window.openExpModal=openExpModal;
 function editExp(k){openExpModal(k);}window.editExp=editExp;
 function saveExp(){if(!isAdmin||!_myUid){toast('Permission denied','error');return;}const k=document.getElementById('exp-edit-key').value;const data={role:document.getElementById('exp-role').value.trim(),org:document.getElementById('exp-org').value.trim(),start:document.getElementById('exp-start').value,end:document.getElementById('exp-end').value,desc:document.getElementById('exp-desc').value.trim()};if(!data.role){toast('Enter job title','error');return;}const ref=k?db.ref('users/'+_myUid+'/experience/'+k):db.ref('users/'+_myUid+'/experience').push();(k?ref.update(data):ref.set(data)).then(()=>{closeModal('exp-modal');toast((k?'Updated':'Added')+'!','success');}).catch(e=>toast('Error: '+e.message,'error'));}
@@ -1034,7 +1044,7 @@ function delExp(k){if(!isAdmin||!_myUid)return;if(!confirm('Delete?'))return;db.
 window.delExp=delExp;
 
 /* PROJECTS */
-function openProjectModal(k){if(!isAdmin){toast('Sign in first');return;}const isE=!!k;document.getElementById('proj-modal-title').innerHTML=`<i class="fa-solid fa-diagram-project" style="color:var(--accent);margin-right:8px;"></i>${isE?'Edit':'Add'} Project`;document.getElementById('proj-edit-key').value=k||'';['name','desc','tags','url','gh','img'].forEach(f=>{document.getElementById('proj-'+f).value=(isE&&_projData[k]?_projData[k][f]||''):'';});openModal('project-modal');}
+function openProjectModal(k){if(!isAdmin){toast('Sign in first');return;}const isE=!!k;document.getElementById('proj-modal-title').innerHTML=`<i class="fa-solid fa-diagram-project" style="color:var(--accent);margin-right:8px;"></i>${isE?'Edit':'Add'} Project`;document.getElementById('proj-edit-key').value=k||'';['name','desc','tags','url','gh','img'].forEach(f=>{document.getElementById('proj-'+f).value=(isE&&_projData[k])?(_projData[k][f]||''):'';});openModal('project-modal');}
 window.openProjectModal=openProjectModal;
 function editProject(k){openProjectModal(k);}window.editProject=editProject;
 function saveProject(){if(!isAdmin||!_myUid){toast('Permission denied','error');return;}const k=document.getElementById('proj-edit-key').value;const data={name:document.getElementById('proj-name').value.trim(),desc:document.getElementById('proj-desc').value.trim(),tags:document.getElementById('proj-tags').value.trim(),url:document.getElementById('proj-url').value.trim(),gh:document.getElementById('proj-gh').value.trim(),img:document.getElementById('proj-img').value.trim()};if(!data.name){toast('Enter project name','error');return;}const ref=k?db.ref('users/'+_myUid+'/projects/'+k):db.ref('users/'+_myUid+'/projects').push();(k?ref.update(data):ref.set(data)).then(()=>{closeModal('project-modal');toast((k?'Updated':'Added')+'!','success');}).catch(e=>toast('Error: '+e.message,'error'));}
