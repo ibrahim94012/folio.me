@@ -142,6 +142,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:.7r
 .pf-meta-chip i{font-size:.77rem;color:var(--accent2);}
 .pf-meta-chip a{color:inherit;text-decoration:none;}
 .pf-meta-chip a:hover{color:var(--accent);}
+.pf-meta-chip.mc-draggable{cursor:grab;touch-action:none;user-select:none;transition:transform .15s,opacity .15s;}
+.pf-meta-chip.mc-draggable:active{cursor:grabbing;}
+.pf-meta-chip.chip-dragging{opacity:.45;box-shadow:0 4px 14px rgba(0,0,0,.18);transform:scale(1.05);z-index:5;}
+.pf-meta-chip.mc-draggable i.mc-drag-handle{margin-left:2px;font-size:.62rem;color:var(--text3);opacity:.6;}
 
 /* USERNAME PROMPT */
 .username-prompt{background:linear-gradient(135deg,rgba(46,139,0,.07),var(--panel2));border:1.5px solid var(--accent);border-radius:var(--radius);padding:.85rem 1rem;margin-bottom:.8rem;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .22s;}
@@ -508,6 +512,15 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
 
     <section class="fade-in">
       <div class="sec-header">
+        <div class="sec-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="sec-title">Education</div>
+        <button class="sec-add-btn" onclick="openEduModal()"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <div class="timeline" id="edu-wrap"><div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div></div>
+    </section>
+
+    <section class="fade-in">
+      <div class="sec-header">
         <div class="sec-icon"><i class="fa-solid fa-diagram-project"></i></div>
         <div class="sec-title">Projects</div>
         <button class="sec-add-btn" onclick="openProjectModal()"><i class="fa-solid fa-plus"></i></button>
@@ -573,6 +586,7 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
         <div class="s-item" onclick="closeModal('settings-modal');openUsernameModal()"><div class="s-icon-wrap"><i class="fa-solid fa-at s-icon"></i></div><div class="s-text"><div class="s-main">Change Username</div><div class="s-sub">Custom profile URL</div></div><i class="fa-solid fa-chevron-right s-arrow"></i></div>
         <div class="s-item" onclick="closeModal('settings-modal');openSkillModal()"><div class="s-icon-wrap"><i class="fa-solid fa-code s-icon"></i></div><div class="s-text"><div class="s-main">Add Skill</div><div class="s-sub">Update your skill set</div></div><i class="fa-solid fa-chevron-right s-arrow"></i></div>
         <div class="s-item" onclick="closeModal('settings-modal');openExpModal()"><div class="s-icon-wrap"><i class="fa-solid fa-briefcase s-icon"></i></div><div class="s-text"><div class="s-main">Add Experience</div><div class="s-sub">Work history</div></div><i class="fa-solid fa-chevron-right s-arrow"></i></div>
+        <div class="s-item" onclick="closeModal('settings-modal');openEduModal()"><div class="s-icon-wrap"><i class="fa-solid fa-graduation-cap s-icon"></i></div><div class="s-text"><div class="s-main">Add Education</div><div class="s-sub">Schools, degrees</div></div><i class="fa-solid fa-chevron-right s-arrow"></i></div>
         <div class="s-item" onclick="closeModal('settings-modal');openProjectModal()"><div class="s-icon-wrap"><i class="fa-solid fa-diagram-project s-icon"></i></div><div class="s-text"><div class="s-main">Add Project</div><div class="s-sub">Showcase your work</div></div><i class="fa-solid fa-chevron-right s-arrow"></i></div>
         <div class="s-item" onclick="closeModal('settings-modal');openShareModal()"><div class="s-icon-wrap"><i class="fa-solid fa-share-nodes s-icon"></i></div><div class="s-text"><div class="s-main">Share Profile</div><div class="s-sub">QR code &amp; link</div></div><i class="fa-solid fa-chevron-right s-arrow"></i></div>
         <div class="s-item danger" onclick="doLogout();closeModal('settings-modal')"><div class="s-icon-wrap"><i class="fa-solid fa-right-from-bracket s-icon"></i></div><div class="s-text"><div class="s-main">Sign Out</div></div></div>
@@ -658,14 +672,26 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
         <button class="btn" onclick="saveProfile()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
       </div>
       <div class="tab-pane" id="tab-social">
-        <div class="form-group"><label class="form-label">GitHub</label><div class="input-icon-wrap"><i class="inp-icon fa-brands fa-github"></i><input class="fg-input" type="text" id="pf-github" placeholder="https://github.com/username"></div></div>
-        <div class="form-group"><label class="form-label">LinkedIn</label><div class="input-icon-wrap"><i class="inp-icon fa-brands fa-linkedin"></i><input class="fg-input" type="text" id="pf-linkedin" placeholder="https://linkedin.com/in/..."></div></div>
-        <div class="form-group"><label class="form-label">Instagram</label><div class="input-icon-wrap"><i class="inp-icon fa-brands fa-instagram"></i><input class="fg-input" type="text" id="pf-instagram" placeholder="username (no @)"></div></div>
-        <div class="form-group"><label class="form-label">Facebook</label><div class="input-icon-wrap"><i class="inp-icon fa-brands fa-facebook-f"></i><input class="fg-input" type="text" id="pf-facebook" placeholder="https://facebook.com/..."></div></div>
-        <div class="form-group"><label class="form-label">YouTube</label><div class="input-icon-wrap"><i class="inp-icon fa-brands fa-youtube"></i><input class="fg-input" type="text" id="pf-youtube" placeholder="https://youtube.com/@channel"></div></div>
-        <div class="form-group"><label class="form-label">TikTok</label><div class="input-icon-wrap"><i class="inp-icon fa-brands fa-tiktok"></i><input class="fg-input" type="text" id="pf-tiktok" placeholder="username (no @)"></div></div>
-        <button class="btn" onclick="saveProfile()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        <div class="form-group" style="margin-bottom:10px;"><button class="btn" type="button" onclick="openSocialModal()"><i class="fa-solid fa-plus"></i> Add Social Link</button></div>
+        <div id="social-edit-list"></div>
+        <div style="text-align:center;margin-top:14px;"><a href="#" onclick="migrateLegacySocials();return false;" style="font-size:.72rem;color:var(--text3);text-decoration:underline;">Import old social links (GitHub/LinkedIn/etc. set previously)</a></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOCIAL MODAL -->
+<div class="modal-overlay" id="social-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-handle"></div>
+      <div class="modal-title"><span id="social-modal-title"><i class="fa-solid fa-share-nodes" style="color:var(--accent);margin-right:8px;"></i>Add Social Link</span><button class="modal-close" onclick="closeModal('social-modal')"><i class="fa-solid fa-xmark"></i></button></div>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="social-edit-key">
+      <div class="form-group"><label class="form-label">Platform</label><select class="fg-input" id="social-platform" onchange="_onSocialPlatformChange(true)"></select></div>
+      <div class="form-group"><label class="form-label">Label</label><input class="fg-input" type="text" id="social-label" placeholder="Display name"></div>
+      <div class="form-group"><label class="form-label">URL / Link</label><div class="input-icon-wrap"><i class="inp-icon fa-solid fa-link" id="social-url-icon"></i><input class="fg-input" type="text" id="social-url" placeholder="https://..."></div></div>
+      <button class="btn" onclick="saveSocial()"><i class="fa-solid fa-floppy-disk"></i> Save Social Link</button>
     </div>
   </div>
 </div>
@@ -700,6 +726,26 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
       </div>
       <div class="form-group"><label class="form-label">Description</label><textarea class="fg-input" id="exp-desc" rows="3" placeholder="What did you do?"></textarea></div>
       <button class="btn" onclick="saveExp()"><i class="fa-solid fa-floppy-disk"></i> Save Experience</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDUCATION MODAL -->
+<div class="modal-overlay" id="edu-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-handle"></div>
+      <div class="modal-title"><span id="edu-modal-title"><i class="fa-solid fa-graduation-cap" style="color:var(--accent);margin-right:8px;"></i>Add Education</span><button class="modal-close" onclick="closeModal('edu-modal')"><i class="fa-solid fa-xmark"></i></button></div>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edu-edit-key">
+      <div class="form-group"><label class="form-label">Institution</label><input class="fg-input" type="text" id="edu-school" placeholder="University / School name"></div>
+      <div class="form-group"><label class="form-label">Degree / Field of Study</label><input class="fg-input" type="text" id="edu-degree" placeholder="e.g. B.Sc. in Computer Science"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Start</label><input class="fg-input" type="month" id="edu-start"></div>
+        <div class="form-group"><label class="form-label">End</label><input class="fg-input" type="month" id="edu-end"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="fg-input" id="edu-desc" rows="3" placeholder="Activities, achievements, GPA..."></textarea></div>
+      <button class="btn" onclick="saveEdu()"><i class="fa-solid fa-floppy-disk"></i> Save Education</button>
     </div>
   </div>
 </div>
@@ -764,8 +810,8 @@ try{
   storage=storage||{ref:()=>({put:()=>{throw fbErr;}})};
 }
 
-let isAdmin=false,_currentUid=null,_myUid=null,_pd={},_expData={},_projData={},_myReaction='';
-let _pL=null,_sL=null,_eL=null,_prL=null,_rxL=null,_rvL=null,_vL=null;
+let isAdmin=false,_currentUid=null,_myUid=null,_pd={},_expData={},_projData={},_eduData={},_socData={},_myReaction='';
+let _pL=null,_sL=null,_eL=null,_prL=null,_rxL=null,_rvL=null,_vL=null,_eduL=null,_scL=null;
 
 /* URL ROUTING */
 function gup(k){return new URLSearchParams(window.location.search).get(k);}
@@ -794,7 +840,7 @@ function openProfileByUsername(un){
 
 function openProfileByUid(uid,username){
   _detach();
-  _currentUid=uid;_pd={};_expData={};_projData={};
+  _currentUid=uid;_pd={};_expData={};_projData={};_eduData={};_socData={};
   history.pushState(null,'',(username?'?u='+username:'?uid='+uid));
   isAdmin=!!(_myUid&&_myUid===uid);
   document.body.classList.toggle('admin-mode',isAdmin);
@@ -824,10 +870,11 @@ function _resetUI(){
   const cb=cw.querySelector('.cover-badge');if(cb)cb.remove();
   ['like-count','dislike-count','eng-views','top-review-count'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='0';});
   document.getElementById('top-review-avg').textContent='0.0';
-  ['skills-wrap','exp-wrap','projects-wrap','reviews-wrap'].forEach(id=>{
+  ['skills-wrap','exp-wrap','edu-wrap','projects-wrap','reviews-wrap'].forEach(id=>{
     const e=document.getElementById(id);
     if(e)e.innerHTML='<div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>';
   });
+  const sel=document.getElementById('social-edit-list');if(sel)sel.innerHTML='';
 }
 
 /* HOME USERS LIST */
@@ -867,10 +914,12 @@ function _uRef(uid){return db.ref('users/'+uid);}
 
 function _attach(uid){
   const r=_uRef(uid);
-  _pL=r.child('profile').on('value',s=>{const d=s.val()||{};_pd=d;_renderProfile(d);if(isAdmin)document.getElementById('username-prompt').style.display=d.username?'none':'flex';});
+  _pL=r.child('profile').on('value',s=>{const d=s.val()||{};_pd=d;_renderProfile(d);_renderPfSocials();if(isAdmin)document.getElementById('username-prompt').style.display=d.username?'none':'flex';});
   _sL=r.child('skills').on('value',s=>_renderSkills(s.val()||{}));
   _eL=r.child('experience').on('value',s=>{_expData=s.val()||{};_renderExp(_expData);});
+  _eduL=r.child('education').on('value',s=>{_eduData=s.val()||{};_renderEdu(_eduData);});
   _prL=r.child('projects').on('value',s=>{_projData=s.val()||{};_renderProj(_projData);});
+  _scL=r.child('socials').on('value',s=>{_socData=s.val()||{};_renderSocialEditList(_socData);_renderPfSocials();});
   _rxL=r.child('reactions').on('value',s=>{const d=s.val()||{};const v=Object.values(d);document.getElementById('like-count').textContent=_fmtN(v.filter(x=>x==='like').length);document.getElementById('dislike-count').textContent=_fmtN(v.filter(x=>x==='dislike').length);});
   _vL=r.child('profile/views').on('value',s=>document.getElementById('eng-views').textContent=_fmtN(s.val()||0));
   _rvL=r.child('reviews').on('value',s=>_renderReviews(s.val()||{}));
@@ -879,8 +928,8 @@ function _attach(uid){
 function _detach(){
   if(!_currentUid)return;
   const r=_uRef(_currentUid);
-  try{if(_pL)r.child('profile').off('value',_pL);if(_sL)r.child('skills').off('value',_sL);if(_eL)r.child('experience').off('value',_eL);if(_prL)r.child('projects').off('value',_prL);if(_rxL)r.child('reactions').off('value',_rxL);if(_rvL)r.child('reviews').off('value',_rvL);if(_vL)r.child('profile/views').off('value',_vL);}catch(e){}
-  _pL=_sL=_eL=_prL=_rxL=_rvL=_vL=null;
+  try{if(_pL)r.child('profile').off('value',_pL);if(_sL)r.child('skills').off('value',_sL);if(_eL)r.child('experience').off('value',_eL);if(_eduL)r.child('education').off('value',_eduL);if(_prL)r.child('projects').off('value',_prL);if(_scL)r.child('socials').off('value',_scL);if(_rxL)r.child('reactions').off('value',_rxL);if(_rvL)r.child('reviews').off('value',_rvL);if(_vL)r.child('profile/views').off('value',_vL);}catch(e){}
+  _pL=_sL=_eL=_eduL=_prL=_scL=_rxL=_rvL=_vL=null;
 }
 
 /* RENDER PROFILE */
@@ -898,25 +947,64 @@ function _renderProfile(d){
   let cb=cw.querySelector('.cover-badge');
   if(!cb){cb=document.createElement('div');cb.className='cover-badge';cw.appendChild(cb);}
   cb.innerHTML=`<h2>${_esc(d.name||'')}</h2>${d.role?`<p>${_esc(d.role)}</p>`:''}`;
-  const meta=[];
-  if(d.location)meta.push({i:'fa-location-dot',t:_esc(d.location)});
-  if(d.school)meta.push({i:'fa-school',t:_esc(d.school)});
-  if(d.college)meta.push({i:'fa-graduation-cap',t:_esc(d.college)});
-  if(d.email)meta.push({i:'fa-envelope',t:`<a href="mailto:${_esc(d.email)}">${_esc(d.email)}</a>`});
-  if(d.phone)meta.push({i:'fa-mobile-screen',t:_esc(d.phone)});
-  if(d.website)meta.push({i:'fa-globe',t:`<a href="${_esc(d.website)}" target="_blank" rel="noopener">${_esc(d.website.replace(/^https?:\/\//,''))}</a>`});
-  document.getElementById('pf-meta').innerHTML=meta.map(m=>`<span class="pf-meta-chip"><i class="fa-solid ${m.i}"></i>${m.t}</span>`).join('');
-  const socs=[];
-  if(d.github)socs.push({i:'fa-brands fa-github',l:d.github,lb:'GitHub'});
-  if(d.linkedin)socs.push({i:'fa-brands fa-linkedin',l:d.linkedin,lb:'LinkedIn'});
-  if(d.instagram)socs.push({i:'fa-brands fa-instagram',l:`https://instagram.com/${d.instagram}`,lb:'Instagram'});
-  if(d.facebook)socs.push({i:'fa-brands fa-facebook-f',l:d.facebook,lb:'Facebook'});
-  if(d.youtube)socs.push({i:'fa-brands fa-youtube',l:d.youtube,lb:'YouTube'});
-  if(d.tiktok)socs.push({i:'fa-brands fa-tiktok',l:`https://tiktok.com/@${d.tiktok}`,lb:'TikTok'});
-  document.getElementById('pf-socials').innerHTML=socs.map(s=>`<a class="soc-link" href="${_esc(s.l)}" target="_blank" rel="noopener"><i class="${s.i}"></i>${s.lb}</a>`).join('');
+  const metaDefs={
+    location:{i:'fa-location-dot',t:()=>_esc(d.location)},
+    school:{i:'fa-school',t:()=>_esc(d.school)},
+    college:{i:'fa-graduation-cap',t:()=>_esc(d.college)},
+    email:{i:'fa-envelope',t:()=>`<a href="mailto:${_esc(d.email)}">${_esc(d.email)}</a>`},
+    phone:{i:'fa-mobile-screen',t:()=>_esc(d.phone)},
+    website:{i:'fa-globe',t:()=>`<a href="${_esc(d.website)}" target="_blank" rel="noopener">${_esc(d.website.replace(/^https?:\/\//,''))}</a>`}
+  };
+  const defKeys=Object.keys(metaDefs);
+  const savedOrder=Array.isArray(d.metaOrder)?d.metaOrder.filter(k=>defKeys.includes(k)):[];
+  const order=savedOrder.concat(defKeys.filter(k=>!savedOrder.includes(k)));
+  const draggable=isAdmin;
+  document.getElementById('pf-meta').innerHTML=order.filter(k=>d[k]).map(k=>`<span class="pf-meta-chip${draggable?' mc-draggable':''}" data-key="${k}"><i class="fa-solid ${metaDefs[k].i}"></i>${metaDefs[k].t()}</span>`).join('');
+  if(draggable)_initMetaChipDrag();
   document.getElementById('cv-dl-btn').style.display=d.cv?'flex':'none';
-  ['name','role','bio','location','school','college','email','phone','website','address','cv','github','linkedin','instagram','facebook','youtube','tiktok'].forEach(f=>{const el=document.getElementById('pf-'+f);if(el)el.value=d[f]||'';});
+  ['name','role','bio','location','school','college','email','phone','website','address','cv'].forEach(f=>{const el=document.getElementById('pf-'+f);if(el)el.value=d[f]||'';});
 }
+
+/* SOCIALS — merges legacy fixed fields (kept for backward compatibility) with the new dynamic socials list */
+const SOCIAL_PLATFORMS=[
+  {id:'github',label:'GitHub',icon:'fa-brands fa-github',ph:'https://github.com/username'},
+  {id:'linkedin',label:'LinkedIn',icon:'fa-brands fa-linkedin',ph:'https://linkedin.com/in/username'},
+  {id:'x',label:'X (Twitter)',icon:'fa-brands fa-x-twitter',ph:'https://x.com/username'},
+  {id:'instagram',label:'Instagram',icon:'fa-brands fa-instagram',ph:'https://instagram.com/username'},
+  {id:'facebook',label:'Facebook',icon:'fa-brands fa-facebook-f',ph:'https://facebook.com/username'},
+  {id:'youtube',label:'YouTube',icon:'fa-brands fa-youtube',ph:'https://youtube.com/@channel'},
+  {id:'tiktok',label:'TikTok',icon:'fa-brands fa-tiktok',ph:'https://tiktok.com/@username'},
+  {id:'telegram',label:'Telegram',icon:'fa-brands fa-telegram',ph:'https://t.me/username'},
+  {id:'whatsapp',label:'WhatsApp',icon:'fa-brands fa-whatsapp',ph:'https://wa.me/8801XXXXXXXXX'},
+  {id:'discord',label:'Discord',icon:'fa-brands fa-discord',ph:'https://discord.gg/invite'},
+  {id:'twitch',label:'Twitch',icon:'fa-brands fa-twitch',ph:'https://twitch.tv/username'},
+  {id:'pinterest',label:'Pinterest',icon:'fa-brands fa-pinterest',ph:'https://pinterest.com/username'},
+  {id:'snapchat',label:'Snapchat',icon:'fa-brands fa-snapchat',ph:'https://snapchat.com/add/username'},
+  {id:'reddit',label:'Reddit',icon:'fa-brands fa-reddit-alien',ph:'https://reddit.com/u/username'},
+  {id:'behance',label:'Behance',icon:'fa-brands fa-behance',ph:'https://behance.net/username'},
+  {id:'dribbble',label:'Dribbble',icon:'fa-brands fa-dribbble',ph:'https://dribbble.com/username'},
+  {id:'medium',label:'Medium',icon:'fa-brands fa-medium',ph:'https://medium.com/@username'},
+  {id:'threads',label:'Threads',icon:'fa-brands fa-threads',ph:'https://threads.net/@username'},
+  {id:'spotify',label:'Spotify',icon:'fa-brands fa-spotify',ph:'https://open.spotify.com/user/...'},
+  {id:'other',label:'Website / Other',icon:'fa-solid fa-link',ph:'https://...'}
+];
+function _renderPfSocials(){
+  const d=_pd||{};
+  const socs=[];
+  if(d.github)socs.push({icon:'fa-brands fa-github',url:d.github,label:'GitHub'});
+  if(d.linkedin)socs.push({icon:'fa-brands fa-linkedin',url:d.linkedin,label:'LinkedIn'});
+  if(d.instagram)socs.push({icon:'fa-brands fa-instagram',url:`https://instagram.com/${d.instagram}`,label:'Instagram'});
+  if(d.facebook)socs.push({icon:'fa-brands fa-facebook-f',url:d.facebook,label:'Facebook'});
+  if(d.youtube)socs.push({icon:'fa-brands fa-youtube',url:d.youtube,label:'YouTube'});
+  if(d.tiktok)socs.push({icon:'fa-brands fa-tiktok',url:`https://tiktok.com/@${d.tiktok}`,label:'TikTok'});
+  Object.values(_socData||{}).forEach(s=>{
+    const plat=SOCIAL_PLATFORMS.find(p=>p.id===s.platform)||SOCIAL_PLATFORMS[SOCIAL_PLATFORMS.length-1];
+    if(s.url)socs.push({icon:plat.icon,url:s.url,label:s.label||plat.label});
+  });
+  const el=document.getElementById('pf-socials');
+  if(el)el.innerHTML=socs.map(s=>`<a class="soc-link" href="${_esc(s.url)}" target="_blank" rel="noopener"><i class="${s.icon}"></i>${_esc(s.label)}</a>`).join('');
+}
+window._renderPfSocials=_renderPfSocials;
 
 /* RENDER SKILLS */
 function _renderSkills(d){
@@ -935,6 +1023,16 @@ function _renderExp(d){
   w.style.paddingLeft='';
   w.innerHTML=keys.sort((a,b)=>(d[b].start||'')>(d[a].start||'')?1:-1).map(k=>{const e=d[k];
     return`<div class="tl-item fade-in"><div class="tl-dot"><i class="fa-solid fa-briefcase"></i></div><div class="tl-card"><div class="tl-role">${_esc(e.role||'')}</div><div class="tl-org">${_esc(e.org||'')}</div><div class="tl-date">${_fmtDt(e.start)} \u2014 ${_fmtDt(e.end)}</div>${e.desc?`<div class="tl-desc">${_esc(e.desc)}</div>`:''}<div class="item-actions"><button class="ia-btn edit" onclick="editExp('${k}')"><i class="fa-solid fa-pen"></i> Edit</button><button class="ia-btn del" onclick="delExp('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button></div></div></div>`;
+  }).join('');
+}
+
+/* RENDER EDUCATION */
+function _renderEdu(d){
+  const w=document.getElementById('edu-wrap'),keys=Object.keys(d);
+  if(!keys.length){w.innerHTML='<div class="empty">No education added yet.</div>';w.style.paddingLeft='0';return;}
+  w.style.paddingLeft='';
+  w.innerHTML=keys.sort((a,b)=>(d[b].start||'')>(d[a].start||'')?1:-1).map(k=>{const e=d[k];
+    return`<div class="tl-item fade-in"><div class="tl-dot"><i class="fa-solid fa-graduation-cap"></i></div><div class="tl-card"><div class="tl-role">${_esc(e.school||'')}</div><div class="tl-org">${_esc(e.degree||'')}</div><div class="tl-date">${_fmtDt(e.start)} \u2014 ${_fmtDt(e.end)}</div>${e.desc?`<div class="tl-desc">${_esc(e.desc)}</div>`:''}<div class="item-actions"><button class="ia-btn edit" onclick="editEdu('${k}')"><i class="fa-solid fa-pen"></i> Edit</button><button class="ia-btn del" onclick="delEdu('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button></div></div></div>`;
   }).join('');
 }
 
@@ -995,7 +1093,7 @@ auth.onAuthStateChanged(u=>{
   const lb=document.getElementById('login-btn'),nb=document.getElementById('login-action-btn'),hb=document.getElementById('home-create-btn');
   if(real){lb.innerHTML=`<img src="${real.photoURL||''}" alt="">`;lb.style.display='flex';if(nb)nb.style.display='none';if(hb){hb.innerHTML='<i class="fa-solid fa-user"></i> My Profile';hb.onclick=goToMyProfile;}}
   else{lb.style.display='none';if(nb)nb.style.display='flex';if(hb){hb.innerHTML='<i class="fa-solid fa-plus"></i> Create Your Profile';hb.onclick=openLoginModal;}if(!u)auth.signInAnonymously().catch(()=>{});}
-  if(_currentUid){const was=isAdmin;isAdmin=!!(_myUid&&_myUid===_currentUid);if(was!==isAdmin){document.body.classList.toggle('admin-mode',isAdmin);document.getElementById('edit-pf-btn').style.display=isAdmin?'flex':'none';}if(isAdmin)db.ref('users/'+_currentUid+'/profile/username').once('value').then(s=>document.getElementById('username-prompt').style.display=s.val()?'none':'flex');}
+  if(_currentUid){const was=isAdmin;isAdmin=!!(_myUid&&_myUid===_currentUid);if(was!==isAdmin){document.body.classList.toggle('admin-mode',isAdmin);document.getElementById('edit-pf-btn').style.display=isAdmin?'flex':'none';if(_pd&&Object.keys(_pd).length)_renderProfile(_pd);}if(isAdmin)db.ref('users/'+_currentUid+'/profile/username').once('value').then(s=>document.getElementById('username-prompt').style.display=s.val()?'none':'flex');}
 });
 
 /* INITIAL LOAD */
@@ -1043,6 +1141,15 @@ window.saveExp=saveExp;
 function delExp(k){if(!isAdmin||!_myUid)return;if(!confirm('Delete?'))return;db.ref('users/'+_myUid+'/experience/'+k).remove().then(()=>toast('Deleted'));}
 window.delExp=delExp;
 
+/* EDUCATION */
+function openEduModal(k){if(!isAdmin){toast('Sign in first');return;}const isE=!!k;document.getElementById('edu-modal-title').innerHTML=`<i class="fa-solid fa-graduation-cap" style="color:var(--accent);margin-right:8px;"></i>${isE?'Edit':'Add'} Education`;document.getElementById('edu-edit-key').value=k||'';['school','degree','start','end','desc'].forEach(f=>{document.getElementById('edu-'+f).value=(isE&&_eduData[k])?(_eduData[k][f]||''):'';});openModal('edu-modal');}
+window.openEduModal=openEduModal;
+function editEdu(k){openEduModal(k);}window.editEdu=editEdu;
+function saveEdu(){if(!isAdmin||!_myUid){toast('Permission denied','error');return;}const k=document.getElementById('edu-edit-key').value;const data={school:document.getElementById('edu-school').value.trim(),degree:document.getElementById('edu-degree').value.trim(),start:document.getElementById('edu-start').value,end:document.getElementById('edu-end').value,desc:document.getElementById('edu-desc').value.trim()};if(!data.school){toast('Enter institution name','error');return;}const ref=k?db.ref('users/'+_myUid+'/education/'+k):db.ref('users/'+_myUid+'/education').push();(k?ref.update(data):ref.set(data)).then(()=>{closeModal('edu-modal');toast((k?'Updated':'Added')+'!','success');}).catch(e=>toast('Error: '+e.message,'error'));}
+window.saveEdu=saveEdu;
+function delEdu(k){if(!isAdmin||!_myUid)return;if(!confirm('Delete?'))return;db.ref('users/'+_myUid+'/education/'+k).remove().then(()=>toast('Deleted'));}
+window.delEdu=delEdu;
+
 /* PROJECTS */
 function openProjectModal(k){if(!isAdmin){toast('Sign in first');return;}const isE=!!k;document.getElementById('proj-modal-title').innerHTML=`<i class="fa-solid fa-diagram-project" style="color:var(--accent);margin-right:8px;"></i>${isE?'Edit':'Add'} Project`;document.getElementById('proj-edit-key').value=k||'';['name','desc','tags','url','gh','img'].forEach(f=>{document.getElementById('proj-'+f).value=(isE&&_projData[k])?(_projData[k][f]||''):'';});openModal('project-modal');}
 window.openProjectModal=openProjectModal;
@@ -1051,6 +1158,118 @@ function saveProject(){if(!isAdmin||!_myUid){toast('Permission denied','error');
 window.saveProject=saveProject;
 function delProject(k){if(!isAdmin||!_myUid)return;if(!confirm('Delete?'))return;db.ref('users/'+_myUid+'/projects/'+k).remove().then(()=>toast('Deleted'));}
 window.delProject=delProject;
+
+/* SOCIAL LINKS (dynamic, unlimited platforms) */
+function _renderSocialEditList(d){
+  const w=document.getElementById('social-edit-list');if(!w)return;
+  const keys=Object.keys(d||{});
+  if(!keys.length){w.innerHTML='<div class="empty">No social links yet. Tap "Add Social Link" above.</div>';return;}
+  w.innerHTML=keys.map(k=>{const s=d[k];const plat=SOCIAL_PLATFORMS.find(p=>p.id===s.platform)||SOCIAL_PLATFORMS[SOCIAL_PLATFORMS.length-1];
+    return`<div class="tl-item fade-in" style="margin-bottom:10px;"><div class="tl-dot"><i class="${plat.icon}"></i></div><div class="tl-card"><div class="tl-role">${_esc(s.label||plat.label)}</div><div class="tl-date" style="word-break:break-all;">${_esc(s.url||'')}</div><div class="item-actions"><button class="ia-btn edit" onclick="editSocial('${k}')"><i class="fa-solid fa-pen"></i> Edit</button><button class="ia-btn del" onclick="delSocial('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button></div></div></div>`;
+  }).join('');
+}
+function openSocialModal(k){
+  if(!isAdmin){toast('Sign in first');return;}
+  const isE=!!k;
+  document.getElementById('social-modal-title').innerHTML=`<i class="fa-solid fa-share-nodes" style="color:var(--accent);margin-right:8px;"></i>${isE?'Edit':'Add'} Social Link`;
+  document.getElementById('social-edit-key').value=k||'';
+  const sel=document.getElementById('social-platform');
+  if(!sel.options.length)sel.innerHTML=SOCIAL_PLATFORMS.map(p=>`<option value="${p.id}">${p.label}</option>`).join('');
+  const cur=(isE&&_socData[k])?_socData[k]:null;
+  sel.value=cur?cur.platform:'github';
+  document.getElementById('social-label').value=cur?(cur.label||''):'';
+  document.getElementById('social-url').value=cur?(cur.url||''):'';
+  _onSocialPlatformChange(!isE);
+  openModal('social-modal');
+}
+window.openSocialModal=openSocialModal;
+function editSocial(k){openSocialModal(k);}
+window.editSocial=editSocial;
+function _onSocialPlatformChange(autofillLabel){
+  const sel=document.getElementById('social-platform'),plat=SOCIAL_PLATFORMS.find(p=>p.id===sel.value)||SOCIAL_PLATFORMS[0];
+  document.getElementById('social-url-icon').className='inp-icon '+plat.icon;
+  document.getElementById('social-url').placeholder=plat.ph;
+  const lbEl=document.getElementById('social-label');
+  if(autofillLabel)lbEl.value=plat.label;
+}
+window._onSocialPlatformChange=_onSocialPlatformChange;
+function saveSocial(){
+  if(!isAdmin||!_myUid){toast('Permission denied','error');return;}
+  const k=document.getElementById('social-edit-key').value;
+  const platform=document.getElementById('social-platform').value;
+  const url=document.getElementById('social-url').value.trim();
+  const label=document.getElementById('social-label').value.trim();
+  if(!url){toast('Enter a URL','error');return;}
+  const data={platform,url,label};
+  const ref=k?db.ref('users/'+_myUid+'/socials/'+k):db.ref('users/'+_myUid+'/socials').push();
+  (k?ref.update(data):ref.set(data)).then(()=>{closeModal('social-modal');toast((k?'Updated':'Added')+'!','success');}).catch(e=>toast('Error: '+e.message,'error'));
+}
+window.saveSocial=saveSocial;
+function delSocial(k){if(!isAdmin||!_myUid)return;if(!confirm('Delete?'))return;db.ref('users/'+_myUid+'/socials/'+k).remove().then(()=>toast('Deleted'));}
+window.delSocial=delSocial;
+function migrateLegacySocials(){
+  if(!isAdmin||!_myUid){toast('Sign in first','error');return;}
+  const d=_pd||{};
+  const items=[];
+  if(d.github)items.push({platform:'github',url:d.github,label:'GitHub'});
+  if(d.linkedin)items.push({platform:'linkedin',url:d.linkedin,label:'LinkedIn'});
+  if(d.instagram)items.push({platform:'instagram',url:'https://instagram.com/'+d.instagram,label:'Instagram'});
+  if(d.facebook)items.push({platform:'facebook',url:d.facebook,label:'Facebook'});
+  if(d.youtube)items.push({platform:'youtube',url:d.youtube,label:'YouTube'});
+  if(d.tiktok)items.push({platform:'tiktok',url:'https://tiktok.com/@'+d.tiktok,label:'TikTok'});
+  if(!items.length){toast('No old social links found','info');return;}
+  const ref=db.ref('users/'+_myUid+'/socials');
+  Promise.all(items.map(it=>ref.push(it)))
+    .then(()=>db.ref('users/'+_myUid+'/profile').update({github:null,linkedin:null,instagram:null,facebook:null,youtube:null,tiktok:null}))
+    .then(()=>toast('Imported!','success'))
+    .catch(e=>toast('Error: '+e.message,'error'));
+}
+window.migrateLegacySocials=migrateLegacySocials;
+
+/* META CHIP DRAG REORDER (mouse: drag immediately; touch: long-press ~350ms then drag) */
+function _initMetaChipDrag(){
+  const wrap=document.getElementById('pf-meta');
+  if(!wrap)return;
+  wrap.querySelectorAll('.pf-meta-chip.mc-draggable').forEach(chip=>{
+    chip.addEventListener('pointerdown',e=>{
+      if(!isAdmin)return;
+      const isTouch=e.pointerType==='touch';
+      const startX=e.clientX,startY=e.clientY;
+      let dragging=false,pressTimer=null;
+      const startDrag=()=>{dragging=true;chip.classList.add('chip-dragging');};
+      if(isTouch)pressTimer=setTimeout(startDrag,350);
+      else startDrag();
+      const onMove=ev=>{
+        if(!dragging){
+          if(pressTimer&&Math.hypot(ev.clientX-startX,ev.clientY-startY)>10){clearTimeout(pressTimer);pressTimer=null;}
+          return;
+        }
+        ev.preventDefault();
+        const chips=[...wrap.querySelectorAll('.pf-meta-chip')];
+        const after=chips.find(el=>{
+          if(el===chip)return false;
+          const r=el.getBoundingClientRect();
+          return ev.clientX<r.left+r.width/2;
+        });
+        if(after)wrap.insertBefore(chip,after);
+        else wrap.appendChild(chip);
+      };
+      const onUp=()=>{
+        if(pressTimer){clearTimeout(pressTimer);pressTimer=null;}
+        if(dragging){
+          chip.classList.remove('chip-dragging');
+          const newOrder=[...wrap.querySelectorAll('.pf-meta-chip')].map(el=>el.dataset.key);
+          if(_myUid)db.ref('users/'+_myUid+'/profile').update({metaOrder:newOrder}).catch(()=>{});
+        }
+        document.removeEventListener('pointermove',onMove);
+        document.removeEventListener('pointerup',onUp);
+      };
+      document.addEventListener('pointermove',onMove);
+      document.addEventListener('pointerup',onUp);
+    });
+  });
+}
+window._initMetaChipDrag=_initMetaChipDrag;
 
 /* REVIEWS */
 function openReviewModal(){if(!_currentUid){toast('No profile loaded','error');return;}['rv-name','rv-contact','rv-comment'].forEach(id=>document.getElementById(id).value='');document.getElementById('rv-rating').value='0';document.querySelectorAll('#rv-star-select i').forEach(s=>s.className='fa-regular fa-star');openModal('review-modal');}
