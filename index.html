@@ -89,9 +89,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:.7r
 .cover-wrap{position:relative;width:100%;height:210px;border-radius:0 0 23px 23px;background:linear-gradient(135deg,#4caf50 0%,#2e8b00 55%,#0a7a5c 100%);overflow:hidden;}
 .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
 .cover-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.62) 0%,rgba(0,0,0,.05) 55%);z-index:1;}
-.cover-badge{position:absolute;bottom:14px;left:18px;z-index:3;color:#fff;max-width:calc(50% - 24px);}
-.cover-badge h2{font-family:'Space Grotesk',sans-serif;font-size:1.32rem;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.55);line-height:1.2;}
-.cover-badge p{font-size:.7rem;opacity:.88;margin-top:3px;font-weight:500;letter-spacing:.04em;}
 .cover-cam-btn{position:absolute;bottom:10px;right:10px;z-index:4;background:rgba(0,0,0,.5);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:9px;padding:6px 12px;font-size:.72rem;font-weight:600;cursor:pointer;display:none;align-items:center;gap:6px;backdrop-filter:blur(8px);transition:all .2s;}
 .cover-cam-btn:hover{background:rgba(0,0,0,.78);}
 .admin-mode .cover-cam-btn{display:flex;}
@@ -117,7 +114,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:.7r
 /* ACTION BTNS */
 .action-btns{display:flex;flex-direction:column;gap:8px;padding-left:8px;}
 .ab-row{display:flex;gap:6px;}
-.ab-btn{height:36px;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .18s;white-space:nowrap;}
+.ab-btn{height:36px;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;border-radius:7px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .18s;white-space:nowrap;text-decoration:none;}
 .ab-row .ab-btn{flex:1;min-width:0;}
 .ab-btn.green{background:var(--accent);color:#fff;}
 .ab-btn.green:hover{filter:brightness(1.1);}
@@ -157,13 +154,12 @@ header{display:flex;align-items:center;justify-content:space-between;padding:.7r
 
 /* REACTIONS */
 .name-reaction-group{display:flex;flex-direction:column;gap:5px;flex-shrink:0;}
-.reaction-row{display:flex;gap:5px;width:81px;}
+.reaction-row{display:flex;gap:5px;width:38px;}
 .icon-react{display:inline-flex;align-items:center;justify-content:center;width:38px;height:30px;border-radius:8px;border:1.5px solid var(--border2);background:var(--panel2);cursor:pointer;user-select:none;font-size:.98rem;color:var(--text3);transition:all .2s cubic-bezier(.34,1.56,.64,1);padding:0;}
 .icon-react i{transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
 .icon-react.like-btn:hover{border-color:rgba(46,139,0,.4);background:rgba(46,139,0,.08);color:var(--like);}
 .icon-react.like-btn.liked{background:linear-gradient(135deg,#2e8b00,#3aab00);border-color:transparent;color:#fff;box-shadow:0 3px 10px rgba(46,139,0,.35);}
-.icon-react.dislike-btn:hover{border-color:rgba(211,47,47,.35);background:rgba(211,47,47,.07);color:var(--dislike);}
-.icon-react.dislike-btn.disliked{background:linear-gradient(135deg,#d32f2f,#e53935);border-color:transparent;color:#fff;box-shadow:0 3px 10px rgba(211,47,47,.3);}
+
 .icon-react.review-btn{width:81px;height:24px;border-radius:7px;font-size:.64rem;font-weight:700;gap:4px;color:#b9790a;border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.1);}
 .icon-react.review-btn:hover{background:rgba(245,166,35,.2);border-color:#f5a623;color:#8a5a06;}
 @keyframes iconpop{0%{transform:scale(1);}45%{transform:scale(1.5) rotate(-14deg);}75%{transform:scale(.9) rotate(-5deg);}100%{transform:scale(1.15) rotate(-10deg);}}
@@ -308,8 +304,9 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
 .modal-close{background:none;border:none;color:var(--text3);font-size:1rem;cursor:pointer;padding:4px;border-radius:6px;}
 .modal-close:hover{color:var(--text);}
 .modal-body{padding:1.2rem 1.2rem 2rem;}
-.tab-row{display:flex;gap:4px;background:var(--panel2);border-radius:10px;padding:4px;}
-.tab-btn{flex:1;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:600;border:none;background:none;color:var(--text2);border-radius:8px;padding:8px 6px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:4px;}
+.tab-row{display:flex;gap:4px;background:var(--panel2);border-radius:10px;padding:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tab-row::-webkit-scrollbar{display:none;}
+.tab-btn{flex:0 0 auto;min-width:74px;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:600;border:none;background:none;color:var(--text2);border-radius:8px;padding:8px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;}
 .tab-btn.active{background:var(--panel);color:var(--accent);box-shadow:0 1px 6px var(--shadow);}
 .tab-pane{display:none;}.tab-pane.active{display:block;}
 .form-group{margin-bottom:1rem;}
@@ -373,11 +370,25 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
   .urc-avatar,.urc-av-ph{width:48px;height:48px;font-size:1.1rem;}
   .modal{border-radius:18px 18px 0 0;max-height:95vh;}
   .modal-body{padding:1rem 1.1rem 0;}
+  .av-row{flex-wrap:wrap;}
+  .stats-row{flex-wrap:wrap;gap:4px 5px;}
+  .pf-meta-chip{font-size:.7rem;padding:3px 9px;}
+  .ab-row{gap:5px;flex-wrap:wrap;}
+  .ab-row .ab-btn{flex:1 1 30%;font-size:.74rem;height:34px;padding:0 6px;}
+  .skills-grid{grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:8px;}
+  .sec-title{font-size:.92rem;}
+  .tab-btn{min-width:64px;font-size:.6rem;padding:7px 8px;}
+  .timeline{padding-left:26px;}
+  .tl-dot{left:-26px;width:17px;height:17px;}
+  .item-actions{flex-wrap:wrap;}
 }
 @media(max-width:380px){
   .cover-wrap{height:150px;}
   .av-wrap{width:92px;height:92px;}
   .av-img,.av-icon-ph{width:92px;height:92px;}
+  .ab-row .ab-btn{flex:1 1 100%;}
+  .reaction-row{width:34px;}
+  .icon-react{width:34px;height:28px;}
 }
 </style>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -450,14 +461,11 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
             <div class="name-reaction-group">
               <div class="reaction-row">
                 <button class="icon-react like-btn" id="like-btn" onclick="handleLike()"><i class="fa-solid fa-thumbs-up"></i></button>
-                <button class="icon-react dislike-btn" id="dislike-btn" onclick="handleDislike()"><i class="fa-solid fa-thumbs-down"></i></button>
               </div>
             </div>
           </div>
           <div class="stats-row">
             <span id="like-count" class="stat-count">0</span><span class="stat-view-lbl">Like</span>
-            <span class="stats-sep"></span>
-            <span id="dislike-count" class="stat-count">0</span><span class="stat-view-lbl">Dislike</span>
             <span class="stats-sep"></span>
             <span id="eng-views" class="stat-count">0</span><span class="stat-view-lbl">views</span>
           </div>
@@ -484,13 +492,22 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
           <div class="ab-row">
             <button class="ab-btn teal" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Share</button>
             <button class="ab-btn green" id="edit-pf-btn" onclick="openProfileModal()" style="display:none"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-            <button class="ab-btn contact-dl" onclick="downloadVCard()"><i class="fa-solid fa-address-card"></i> Contact</button>
+            <a class="ab-btn contact-dl" id="call-btn" href="#" style="display:none" onclick="if(this.getAttribute('href')==='#'){event.preventDefault();toast('No phone number set','error');}"><i class="fa-solid fa-phone"></i> Call</a>
           </div>
           <button class="ab-btn cv-dl" id="cv-dl-btn" onclick="downloadCV()" style="display:none"><i class="fa-solid fa-file-arrow-down"></i> Download CV</button>
         </div>
         <div class="pf-socials" id="pf-socials"></div>
       </div>
     </div>
+
+    <section class="fade-in">
+      <div class="sec-header">
+        <div class="sec-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="sec-title">Education</div>
+        <button class="sec-add-btn" onclick="openEduModal()"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <div class="timeline" id="edu-wrap"><div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div></div>
+    </section>
 
     <section class="fade-in">
       <div class="sec-header">
@@ -508,15 +525,6 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
         <button class="sec-add-btn" onclick="openExpModal()"><i class="fa-solid fa-plus"></i></button>
       </div>
       <div class="timeline" id="exp-wrap"><div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div></div>
-    </section>
-
-    <section class="fade-in">
-      <div class="sec-header">
-        <div class="sec-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-        <div class="sec-title">Education</div>
-        <button class="sec-add-btn" onclick="openEduModal()"><i class="fa-solid fa-plus"></i></button>
-      </div>
-      <div class="timeline" id="edu-wrap"><div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div></div>
     </section>
 
     <section class="fade-in">
@@ -641,6 +649,10 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
         <button class="tab-btn" onclick="switchTab('tab-basic')"><i class="fa-solid fa-user"></i> Basic</button>
         <button class="tab-btn" onclick="switchTab('tab-contact')"><i class="fa-solid fa-address-card"></i> Contact</button>
         <button class="tab-btn" onclick="switchTab('tab-social')"><i class="fa-solid fa-share-nodes"></i> Social</button>
+        <button class="tab-btn" onclick="switchTab('tab-skills')"><i class="fa-solid fa-code"></i> Skills</button>
+        <button class="tab-btn" onclick="switchTab('tab-experience')"><i class="fa-solid fa-briefcase"></i> Experience</button>
+        <button class="tab-btn" onclick="switchTab('tab-education')"><i class="fa-solid fa-graduation-cap"></i> Education</button>
+        <button class="tab-btn" onclick="switchTab('tab-projects')"><i class="fa-solid fa-diagram-project"></i> Projects</button>
       </div>
     </div>
     <div class="modal-body">
@@ -656,18 +668,13 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
         <div class="form-group"><label class="form-label">Full Name</label><input class="fg-input" type="text" id="pf-name" placeholder="Your Name"></div>
         <div class="form-group"><label class="form-label">Job Title / Role</label><input class="fg-input" type="text" id="pf-role" placeholder="Digital Creator"></div>
         <div class="form-group"><label class="form-label">Bio</label><textarea class="fg-input" id="pf-bio" rows="3" placeholder="Write about yourself..."></textarea></div>
-        <div class="form-group"><label class="form-label">Location</label><div class="input-icon-wrap"><i class="inp-icon fa-solid fa-location-dot"></i><input class="fg-input" type="text" id="pf-location" placeholder="Dhaka, Bangladesh"></div></div>
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">School</label><input class="fg-input" type="text" id="pf-school" placeholder="School name"></div>
-          <div class="form-group"><label class="form-label">College / Uni</label><input class="fg-input" type="text" id="pf-college" placeholder="College name"></div>
-        </div>
         <button class="btn" onclick="saveProfile()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
       </div>
       <div class="tab-pane" id="tab-contact">
+        <div class="form-group"><label class="form-label">Location</label><div class="input-icon-wrap"><i class="inp-icon fa-solid fa-location-dot"></i><input class="fg-input" type="text" id="pf-location" placeholder="Dhaka, Bangladesh"></div></div>
         <div class="form-group"><label class="form-label">Email</label><div class="input-icon-wrap"><i class="inp-icon fa-solid fa-envelope"></i><input class="fg-input" type="email" id="pf-email" placeholder="you@example.com"></div></div>
         <div class="form-group"><label class="form-label">Mobile</label><div class="input-icon-wrap"><i class="inp-icon fa-solid fa-mobile-screen"></i><input class="fg-input" type="tel" id="pf-phone" placeholder="+880 1XXX XXXXXX"></div></div>
         <div class="form-group"><label class="form-label">Website</label><div class="input-icon-wrap"><i class="inp-icon fa-solid fa-globe"></i><input class="fg-input" type="text" id="pf-website" placeholder="https://yoursite.com"></div></div>
-        <div class="form-group"><label class="form-label">Address</label><textarea class="fg-input" id="pf-address" rows="2" placeholder="Street, City, Country..."></textarea></div>
         <div class="form-group"><label class="form-label">CV / Resume Link</label><div class="input-icon-wrap"><i class="inp-icon fa-solid fa-file-arrow-down"></i><input class="fg-input" type="text" id="pf-cv" placeholder="https://drive.google.com/..."></div></div>
         <button class="btn" onclick="saveProfile()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
       </div>
@@ -675,6 +682,22 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
         <div class="form-group" style="margin-bottom:10px;"><button class="btn" type="button" onclick="openSocialModal()"><i class="fa-solid fa-plus"></i> Add Social Link</button></div>
         <div id="social-edit-list"></div>
         <div style="text-align:center;margin-top:14px;"><a href="#" onclick="migrateLegacySocials();return false;" style="font-size:.72rem;color:var(--text3);text-decoration:underline;">Import old social links (GitHub/LinkedIn/etc. set previously)</a></div>
+      </div>
+      <div class="tab-pane" id="tab-skills">
+        <div class="form-group" style="margin-bottom:10px;"><button class="btn" type="button" onclick="openSkillModal()"><i class="fa-solid fa-plus"></i> Add Skill</button></div>
+        <div id="skills-edit-list"></div>
+      </div>
+      <div class="tab-pane" id="tab-experience">
+        <div class="form-group" style="margin-bottom:10px;"><button class="btn" type="button" onclick="openExpModal()"><i class="fa-solid fa-plus"></i> Add Experience</button></div>
+        <div id="exp-edit-list"></div>
+      </div>
+      <div class="tab-pane" id="tab-education">
+        <div class="form-group" style="margin-bottom:10px;"><button class="btn" type="button" onclick="openEduModal()"><i class="fa-solid fa-plus"></i> Add Education</button></div>
+        <div id="edu-edit-list"></div>
+      </div>
+      <div class="tab-pane" id="tab-projects">
+        <div class="form-group" style="margin-bottom:10px;"><button class="btn" type="button" onclick="openProjectModal()"><i class="fa-solid fa-plus"></i> Add Project</button></div>
+        <div id="proj-edit-list"></div>
       </div>
     </div>
   </div>
@@ -700,12 +723,13 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
 <div class="modal-overlay" id="skill-modal">
   <div class="modal">
     <div class="modal-header"><div class="modal-handle"></div>
-      <div class="modal-title"><span><i class="fa-solid fa-code" style="color:var(--accent);margin-right:8px;"></i>Add Skill</span><button class="modal-close" onclick="closeModal('skill-modal')"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="modal-title"><span id="skill-modal-title"><i class="fa-solid fa-code" style="color:var(--accent);margin-right:8px;"></i>Add Skill</span><button class="modal-close" onclick="closeModal('skill-modal')"><i class="fa-solid fa-xmark"></i></button></div>
     </div>
     <div class="modal-body">
+      <input type="hidden" id="skill-edit-key">
       <div class="form-group"><label class="form-label">Skill Name</label><input class="fg-input" type="text" id="skill-name" placeholder="e.g. JavaScript"></div>
       <div class="form-group"><label class="form-label">Proficiency: <span id="skill-pct-lbl">80</span>%</label><div class="range-wrap"><input type="range" min="10" max="100" value="80" id="skill-pct-range" oninput="document.getElementById('skill-pct-lbl').textContent=this.value"><span class="range-val">80%</span></div></div>
-      <button class="btn" onclick="addSkill()"><i class="fa-solid fa-plus"></i> Add Skill</button>
+      <button class="btn" onclick="saveSkill()"><i class="fa-solid fa-floppy-disk"></i> Save Skill</button>
     </div>
   </div>
 </div>
@@ -810,7 +834,7 @@ try{
   storage=storage||{ref:()=>({put:()=>{throw fbErr;}})};
 }
 
-let isAdmin=false,_currentUid=null,_myUid=null,_pd={},_expData={},_projData={},_eduData={},_socData={},_myReaction='';
+let isAdmin=false,_currentUid=null,_myUid=null,_pd={},_expData={},_projData={},_eduData={},_socData={},_skillData={},_myReaction='';
 let _pL=null,_sL=null,_eL=null,_prL=null,_rxL=null,_rvL=null,_vL=null,_eduL=null,_scL=null;
 
 /* URL ROUTING */
@@ -840,7 +864,7 @@ function openProfileByUsername(un){
 
 function openProfileByUid(uid,username){
   _detach();
-  _currentUid=uid;_pd={};_expData={};_projData={};_eduData={};_socData={};
+  _currentUid=uid;_pd={};_expData={};_projData={};_eduData={};_socData={};_skillData={};
   history.pushState(null,'',(username?'?u='+username:'?uid='+uid));
   isAdmin=!!(_myUid&&_myUid===uid);
   document.body.classList.toggle('admin-mode',isAdmin);
@@ -867,14 +891,14 @@ function _resetUI(){
   document.getElementById('av-preview-circle').innerHTML='<i class="fa-solid fa-user"></i>';
   const cw=document.getElementById('cover-wrap');
   const ci=cw.querySelector('.cover-img');if(ci)ci.remove();
-  const cb=cw.querySelector('.cover-badge');if(cb)cb.remove();
-  ['like-count','dislike-count','eng-views','top-review-count'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='0';});
+  ['like-count','eng-views','top-review-count'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='0';});
   document.getElementById('top-review-avg').textContent='0.0';
   ['skills-wrap','exp-wrap','edu-wrap','projects-wrap','reviews-wrap'].forEach(id=>{
     const e=document.getElementById(id);
     if(e)e.innerHTML='<div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>';
   });
   const sel=document.getElementById('social-edit-list');if(sel)sel.innerHTML='';
+  ['skills-edit-list','exp-edit-list','edu-edit-list','proj-edit-list'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML='';});
 }
 
 /* HOME USERS LIST */
@@ -915,12 +939,12 @@ function _uRef(uid){return db.ref('users/'+uid);}
 function _attach(uid){
   const r=_uRef(uid);
   _pL=r.child('profile').on('value',s=>{const d=s.val()||{};_pd=d;_renderProfile(d);_renderPfSocials();if(isAdmin)document.getElementById('username-prompt').style.display=d.username?'none':'flex';});
-  _sL=r.child('skills').on('value',s=>_renderSkills(s.val()||{}));
+  _sL=r.child('skills').on('value',s=>{_skillData=s.val()||{};_renderSkills(_skillData);});
   _eL=r.child('experience').on('value',s=>{_expData=s.val()||{};_renderExp(_expData);});
-  _eduL=r.child('education').on('value',s=>{_eduData=s.val()||{};_renderEdu(_eduData);});
+  _eduL=r.child('education').on('value',s=>{_eduData=s.val()||{};_renderEdu(_eduData);_renderMetaChips();});
   _prL=r.child('projects').on('value',s=>{_projData=s.val()||{};_renderProj(_projData);});
   _scL=r.child('socials').on('value',s=>{_socData=s.val()||{};_renderSocialEditList(_socData);_renderPfSocials();});
-  _rxL=r.child('reactions').on('value',s=>{const d=s.val()||{};const v=Object.values(d);document.getElementById('like-count').textContent=_fmtN(v.filter(x=>x==='like').length);document.getElementById('dislike-count').textContent=_fmtN(v.filter(x=>x==='dislike').length);});
+  _rxL=r.child('reactions').on('value',s=>{const d=s.val()||{};const v=Object.values(d);document.getElementById('like-count').textContent=_fmtN(v.filter(x=>x==='like').length);});
   _vL=r.child('profile/views').on('value',s=>document.getElementById('eng-views').textContent=_fmtN(s.val()||0));
   _rvL=r.child('reviews').on('value',s=>_renderReviews(s.val()||{}));
 }
@@ -933,6 +957,34 @@ function _detach(){
 }
 
 /* RENDER PROFILE */
+function _pickCurrentEdu(){
+  const keys=Object.keys(_eduData||{});
+  if(!keys.length)return null;
+  const ongoing=keys.filter(k=>!_eduData[k].end);
+  const pool=ongoing.length?ongoing:keys;
+  pool.sort((a,b)=>(_eduData[b].start||'')>(_eduData[a].start||'')?1:-1);
+  return _eduData[pool[0]];
+}
+function _renderMetaChips(){
+  const d=_pd||{};
+  const edu=_pickCurrentEdu();
+  const metaDefs={
+    location:{i:'fa-location-dot',has:()=>!!d.location,t:()=>_esc(d.location)},
+    email:{i:'fa-envelope',has:()=>!!d.email,t:()=>`<a href="mailto:${_esc(d.email)}">${_esc(d.email)}</a>`},
+    phone:{i:'fa-mobile-screen',has:()=>!!d.phone,t:()=>_esc(d.phone)},
+    website:{i:'fa-globe',has:()=>!!d.website,t:()=>`<a href="${_esc(d.website)}" target="_blank" rel="noopener">${_esc(d.website.replace(/^https?:\/\//,''))}</a>`},
+    education:{i:'fa-graduation-cap',has:()=>!!(edu&&edu.school),t:()=>_esc(edu&&edu.school||'')}
+  };
+  const defKeys=Object.keys(metaDefs);
+  const savedOrder=Array.isArray(d.metaOrder)?d.metaOrder.filter(k=>defKeys.includes(k)):[];
+  const order=savedOrder.concat(defKeys.filter(k=>!savedOrder.includes(k)));
+  const draggable=isAdmin;
+  const wrap=document.getElementById('pf-meta');
+  if(wrap)wrap.innerHTML=order.filter(k=>metaDefs[k].has()).map(k=>`<span class="pf-meta-chip${draggable?' mc-draggable':''}" data-key="${k}"><i class="fa-solid ${metaDefs[k].i}"></i>${metaDefs[k].t()}</span>`).join('');
+  if(draggable)_initMetaChipDrag();
+}
+window._renderMetaChips=_renderMetaChips;
+
 function _renderProfile(d){
   document.getElementById('pf-name-el').innerHTML=_esc(d.name||'Anonymous')+' <span class="verified"><i class="fa-solid fa-circle-check"></i></span>';
   document.getElementById('pf-role-type').textContent=d.role||d.type||'Folio.me User';
@@ -944,25 +996,11 @@ function _renderProfile(d){
   let ci=cw.querySelector('.cover-img');
   if(d.cover){if(!ci){ci=document.createElement('img');ci.className='cover-img';cw.insertBefore(ci,cw.firstChild);}ci.src=d.cover;}
   else if(ci)ci.remove();
-  let cb=cw.querySelector('.cover-badge');
-  if(!cb){cb=document.createElement('div');cb.className='cover-badge';cw.appendChild(cb);}
-  cb.innerHTML=`<h2>${_esc(d.name||'')}</h2>${d.role?`<p>${_esc(d.role)}</p>`:''}`;
-  const metaDefs={
-    location:{i:'fa-location-dot',t:()=>_esc(d.location)},
-    school:{i:'fa-school',t:()=>_esc(d.school)},
-    college:{i:'fa-graduation-cap',t:()=>_esc(d.college)},
-    email:{i:'fa-envelope',t:()=>`<a href="mailto:${_esc(d.email)}">${_esc(d.email)}</a>`},
-    phone:{i:'fa-mobile-screen',t:()=>_esc(d.phone)},
-    website:{i:'fa-globe',t:()=>`<a href="${_esc(d.website)}" target="_blank" rel="noopener">${_esc(d.website.replace(/^https?:\/\//,''))}</a>`}
-  };
-  const defKeys=Object.keys(metaDefs);
-  const savedOrder=Array.isArray(d.metaOrder)?d.metaOrder.filter(k=>defKeys.includes(k)):[];
-  const order=savedOrder.concat(defKeys.filter(k=>!savedOrder.includes(k)));
-  const draggable=isAdmin;
-  document.getElementById('pf-meta').innerHTML=order.filter(k=>d[k]).map(k=>`<span class="pf-meta-chip${draggable?' mc-draggable':''}" data-key="${k}"><i class="fa-solid ${metaDefs[k].i}"></i>${metaDefs[k].t()}</span>`).join('');
-  if(draggable)_initMetaChipDrag();
+  _renderMetaChips();
   document.getElementById('cv-dl-btn').style.display=d.cv?'flex':'none';
-  ['name','role','bio','location','school','college','email','phone','website','address','cv'].forEach(f=>{const el=document.getElementById('pf-'+f);if(el)el.value=d[f]||'';});
+  const callBtn=document.getElementById('call-btn');
+  if(callBtn){if(d.phone){callBtn.href='tel:'+d.phone.replace(/\s+/g,'');callBtn.style.display='flex';}else{callBtn.style.display='none';}}
+  ['name','role','bio','location','email','phone','website','cv'].forEach(f=>{const el=document.getElementById('pf-'+f);if(el)el.value=d[f]||'';});
 }
 
 /* SOCIALS — merges legacy fixed fields (kept for backward compatibility) with the new dynamic socials list */
@@ -1009,40 +1047,55 @@ window._renderPfSocials=_renderPfSocials;
 /* RENDER SKILLS */
 function _renderSkills(d){
   const w=document.getElementById('skills-wrap'),keys=Object.keys(d);
-  if(!keys.length){w.innerHTML='<div class="empty">No skills added yet.</div>';return;}
-  w.innerHTML=keys.map(k=>{const s=d[k],pct=Math.max(0,Math.min(100,Number(s.pct)||0));
-    return`<div class="skill-card fade-in"><div class="skill-card-header"><span class="skill-name">${_esc(s.name||k)}</span><span class="skill-pct">${pct}%</span></div><div class="skill-track"><div class="skill-fill" style="width:${pct}%"></div></div><button class="skill-del" onclick="delSkill('${k}')"><i class="fa-solid fa-xmark"></i></button></div>`;
-  }).join('');
+  if(!keys.length){w.innerHTML='<div class="empty">No skills added yet.</div>';}
+  else{
+    w.innerHTML=keys.map(k=>{const s=d[k],pct=Math.max(0,Math.min(100,Number(s.pct)||0));
+      return`<div class="skill-card fade-in"${isAdmin?` onclick="editSkill('${k}')" style="cursor:pointer;"`:''}><div class="skill-card-header"><span class="skill-name">${_esc(s.name||k)}</span><span class="skill-pct">${pct}%</span></div><div class="skill-track"><div class="skill-fill" style="width:${pct}%"></div></div><button class="skill-del" onclick="event.stopPropagation();delSkill('${k}')"><i class="fa-solid fa-xmark"></i></button></div>`;
+    }).join('');
+  }
+  const el=document.getElementById('skills-edit-list');
+  if(el){
+    if(!keys.length)el.innerHTML='<div class="empty">No skills added yet. Tap "Add Skill" above.</div>';
+    else el.innerHTML=keys.map(k=>{const s=d[k],pct=Math.max(0,Math.min(100,Number(s.pct)||0));
+      return`<div class="tl-item fade-in" style="margin-bottom:10px;"><div class="tl-dot"><i class="fa-solid fa-code"></i></div><div class="tl-card"><div class="tl-role">${_esc(s.name||k)} <span style="color:var(--accent);font-weight:700;">${pct}%</span></div><div class="item-actions"><button class="ia-btn edit" onclick="editSkill('${k}')"><i class="fa-solid fa-pen"></i> Edit</button><button class="ia-btn del" onclick="delSkill('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button></div></div></div>`;
+    }).join('');
+  }
 }
 
 /* RENDER EXPERIENCE */
 function _fmtDt(s){if(!s)return'Present';try{return new Date(s+'-01').toLocaleString('en-US',{month:'short',year:'numeric'});}catch(_){return s;}}
 function _renderExp(d){
-  const w=document.getElementById('exp-wrap'),keys=Object.keys(d);
-  if(!keys.length){w.innerHTML='<div class="empty">No experience added yet.</div>';w.style.paddingLeft='0';return;}
+  const w=document.getElementById('exp-wrap'),el=document.getElementById('exp-edit-list'),keys=Object.keys(d);
+  if(!keys.length){w.innerHTML='<div class="empty">No experience added yet.</div>';w.style.paddingLeft='0';if(el)el.innerHTML='<div class="empty">No experience added yet. Tap "Add Experience" above.</div>';return;}
   w.style.paddingLeft='';
-  w.innerHTML=keys.sort((a,b)=>(d[b].start||'')>(d[a].start||'')?1:-1).map(k=>{const e=d[k];
+  const html=keys.sort((a,b)=>(d[b].start||'')>(d[a].start||'')?1:-1).map(k=>{const e=d[k];
     return`<div class="tl-item fade-in"><div class="tl-dot"><i class="fa-solid fa-briefcase"></i></div><div class="tl-card"><div class="tl-role">${_esc(e.role||'')}</div><div class="tl-org">${_esc(e.org||'')}</div><div class="tl-date">${_fmtDt(e.start)} \u2014 ${_fmtDt(e.end)}</div>${e.desc?`<div class="tl-desc">${_esc(e.desc)}</div>`:''}<div class="item-actions"><button class="ia-btn edit" onclick="editExp('${k}')"><i class="fa-solid fa-pen"></i> Edit</button><button class="ia-btn del" onclick="delExp('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button></div></div></div>`;
   }).join('');
+  w.innerHTML=html;
+  if(el)el.innerHTML=html;
 }
 
 /* RENDER EDUCATION */
 function _renderEdu(d){
-  const w=document.getElementById('edu-wrap'),keys=Object.keys(d);
-  if(!keys.length){w.innerHTML='<div class="empty">No education added yet.</div>';w.style.paddingLeft='0';return;}
+  const w=document.getElementById('edu-wrap'),el=document.getElementById('edu-edit-list'),keys=Object.keys(d);
+  if(!keys.length){w.innerHTML='<div class="empty">No education added yet.</div>';w.style.paddingLeft='0';if(el)el.innerHTML='<div class="empty">No education added yet. Tap "Add Education" above.</div>';return;}
   w.style.paddingLeft='';
-  w.innerHTML=keys.sort((a,b)=>(d[b].start||'')>(d[a].start||'')?1:-1).map(k=>{const e=d[k];
+  const html=keys.sort((a,b)=>(d[b].start||'')>(d[a].start||'')?1:-1).map(k=>{const e=d[k];
     return`<div class="tl-item fade-in"><div class="tl-dot"><i class="fa-solid fa-graduation-cap"></i></div><div class="tl-card"><div class="tl-role">${_esc(e.school||'')}</div><div class="tl-org">${_esc(e.degree||'')}</div><div class="tl-date">${_fmtDt(e.start)} \u2014 ${_fmtDt(e.end)}</div>${e.desc?`<div class="tl-desc">${_esc(e.desc)}</div>`:''}<div class="item-actions"><button class="ia-btn edit" onclick="editEdu('${k}')"><i class="fa-solid fa-pen"></i> Edit</button><button class="ia-btn del" onclick="delEdu('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button></div></div></div>`;
   }).join('');
+  w.innerHTML=html;
+  if(el)el.innerHTML=html;
 }
 
 /* RENDER PROJECTS */
 function _renderProj(d){
-  const w=document.getElementById('projects-wrap'),keys=Object.keys(d);
-  if(!keys.length){w.innerHTML='<div class="empty">No projects added yet.</div>';return;}
-  w.innerHTML=keys.map(k=>{const p=d[k];const tags=(p.tags||'').split(',').map(t=>t.trim()).filter(Boolean);
+  const w=document.getElementById('projects-wrap'),el=document.getElementById('proj-edit-list'),keys=Object.keys(d);
+  if(!keys.length){w.innerHTML='<div class="empty">No projects added yet.</div>';if(el)el.innerHTML='<div class="empty">No projects added yet. Tap "Add Project" above.</div>';return;}
+  const html=keys.map(k=>{const p=d[k];const tags=(p.tags||'').split(',').map(t=>t.trim()).filter(Boolean);
     return`<div class="project-card fade-in">${p.img?`<img class="project-img" src="${_esc(p.img)}" alt="" loading="lazy">`:'<div class="project-img-ph"><i class="fa-solid fa-folder-open"></i></div>'}<div class="project-body"><div class="project-title">${_esc(p.name||'')}</div>${p.desc?`<div class="project-desc">${_esc(p.desc)}</div>`:''}<div class="project-tags">${tags.map(t=>`<span class="project-tag">${_esc(t)}</span>`).join('')}</div><div class="project-links">${p.url?`<a class="proj-link" href="${_esc(p.url)}" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>`:''} ${p.gh?`<a class="proj-link" href="${_esc(p.gh)}" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>`:''}</div><div class="item-actions"><button class="ia-btn edit" onclick="editProject('${k}')"><i class="fa-solid fa-pen"></i> Edit</button><button class="ia-btn del" onclick="delProject('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button></div></div></div>`;
   }).join('');
+  w.innerHTML=html;
+  if(el)el.innerHTML=html;
 }
 
 /* RENDER REVIEWS */
@@ -1109,26 +1162,26 @@ function _devId(){const n=window.navigator,s=window.screen;const raw=[n.userAgen
 function _trackView(uid){const k='dc_v_'+uid;if(localStorage.getItem(k))return;const id=_devId();db.ref('users/'+uid+'/viewers/'+id).set(true).then(()=>{localStorage.setItem(k,'1');db.ref('users/'+uid+'/profile/views').transaction(v=>(v||0)+1);}).catch(()=>{});}
 
 /* REACTIONS */
-function _applyRx(r){const lb=document.getElementById('like-btn'),db2=document.getElementById('dislike-btn');if(!lb||!db2)return;lb.classList.toggle('liked',r==='like');db2.classList.toggle('disliked',r==='dislike');}
+function _applyRx(r){const lb=document.getElementById('like-btn');if(!lb)return;lb.classList.toggle('liked',r==='like');}
 function handleLike(){if(!_currentUid)return;const id=_devId(),ref=db.ref('users/'+_currentUid+'/reactions/'+id),next=_myReaction==='like'?null:'like';(next?ref.set(next):ref.remove()).then(()=>{_myReaction=next||'';localStorage.setItem('dc_rx_'+_currentUid,_myReaction);_applyRx(_myReaction);}).catch(e=>toast('Error: '+e.message,'error'));}
 window.handleLike=handleLike;
-function handleDislike(){if(!_currentUid)return;const id=_devId(),ref=db.ref('users/'+_currentUid+'/reactions/'+id),next=_myReaction==='dislike'?null:'dislike';(next?ref.set(next):ref.remove()).then(()=>{_myReaction=next||'';localStorage.setItem('dc_rx_'+_currentUid,_myReaction);_applyRx(_myReaction);}).catch(e=>toast('Error: '+e.message,'error'));}
-window.handleDislike=handleDislike;
 
 /* PROFILE SAVE */
 function saveProfile(){
   if(!isAdmin||!_myUid){toast('Permission denied','error');return;}
-  const fields=['name','role','bio','location','school','college','email','phone','website','address','cv','github','linkedin','instagram','facebook','youtube','tiktok'];
+  const fields=['name','role','bio','location','email','phone','website','cv'];
   const data={};fields.forEach(f=>{const el=document.getElementById('pf-'+f);if(el&&el.value.trim())data[f]=el.value.trim();});
   db.ref('users/'+_myUid+'/profile').update(data).then(()=>{closeModal('profile-modal');toast('Profile updated!','success');}).catch(e=>toast('Error: '+e.message,'error'));
 }
 window.saveProfile=saveProfile;
 
 /* SKILLS */
-function openSkillModal(){if(!isAdmin){toast('Sign in first');return;}document.getElementById('skill-name').value='';document.getElementById('skill-pct-range').value=80;document.getElementById('skill-pct-lbl').textContent='80';openModal('skill-modal');}
+function openSkillModal(k){if(!isAdmin){toast('Sign in first');return;}const isE=!!k;document.getElementById('skill-modal-title').innerHTML=`<i class="fa-solid fa-code" style="color:var(--accent);margin-right:8px;"></i>${isE?'Edit':'Add'} Skill`;document.getElementById('skill-edit-key').value=k||'';const cur=(isE&&_skillData[k])?_skillData[k]:null;document.getElementById('skill-name').value=cur?(cur.name||''):'';const pct=cur?(Number(cur.pct)||80):80;document.getElementById('skill-pct-range').value=pct;document.getElementById('skill-pct-lbl').textContent=pct;openModal('skill-modal');}
 window.openSkillModal=openSkillModal;
-function addSkill(){if(!isAdmin||!_myUid){toast('Permission denied','error');return;}const name=document.getElementById('skill-name').value.trim(),pct=parseInt(document.getElementById('skill-pct-range').value)||80;if(!name){toast('Enter skill name','error');return;}db.ref('users/'+_myUid+'/skills').push({name,pct}).then(()=>{closeModal('skill-modal');toast('Skill added!','success');}).catch(e=>toast('Error: '+e.message,'error'));}
-window.addSkill=addSkill;
+function editSkill(k){openSkillModal(k);}
+window.editSkill=editSkill;
+function saveSkill(){if(!isAdmin||!_myUid){toast('Permission denied','error');return;}const k=document.getElementById('skill-edit-key').value;const name=document.getElementById('skill-name').value.trim(),pct=parseInt(document.getElementById('skill-pct-range').value)||80;if(!name){toast('Enter skill name','error');return;}const ref=k?db.ref('users/'+_myUid+'/skills/'+k):db.ref('users/'+_myUid+'/skills').push();(k?ref.update({name,pct}):ref.set({name,pct})).then(()=>{closeModal('skill-modal');toast((k?'Updated':'Added')+'!','success');}).catch(e=>toast('Error: '+e.message,'error'));}
+window.saveSkill=saveSkill;
 function delSkill(k){if(!isAdmin||!_myUid)return;if(!confirm('Delete this skill?'))return;db.ref('users/'+_myUid+'/skills/'+k).remove().then(()=>toast('Skill removed'));}
 window.delSkill=delSkill;
 
@@ -1339,8 +1392,6 @@ async function modalCoverUpload(input){const file=input.files[0];input.value='';
 window.modalCoverUpload=modalCoverUpload;
 
 /* VCARD / CV */
-function downloadVCard(){const d=_pd;if(!d.name){toast('No profile data','error');return;}const vc=['BEGIN:VCARD','VERSION:3.0',`FN:${d.name||''}`,`TITLE:${d.role||''}`,d.email?`EMAIL:${d.email}`:'',d.phone?`TEL:${d.phone}`:'',d.website?`URL:${d.website}`:'','END:VCARD'].filter(Boolean).join('\n');const b=new Blob([vc],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(d.name||'contact').replace(/\s+/g,'_')+'.vcf';a.click();URL.revokeObjectURL(a.href);}
-window.downloadVCard=downloadVCard;
 function downloadCV(){const d=_pd;if(d.cv){window.open(d.cv,'_blank');return;}toast('No CV link set','error');}
 window.downloadCV=downloadCV;
 
@@ -1353,7 +1404,7 @@ window.openModal=openModal;
 function closeModal(id){const el=document.getElementById(id);if(!el)return;el.classList.remove('show');if(!document.querySelector('.modal-overlay.show'))document.body.style.overflow='';}
 window.closeModal=closeModal;
 document.querySelectorAll('.modal-overlay').forEach(ov=>{ov.addEventListener('click',e=>{if(e.target===ov){ov.classList.remove('show');if(!document.querySelector('.modal-overlay.show'))document.body.style.overflow='';}});const m=ov.querySelector('.modal');if(m)m.addEventListener('click',e=>e.stopPropagation());});
-function switchTab(id){const modal=document.getElementById(id)?.closest('.modal');if(!modal)return;modal.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));modal.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');const order=['tab-photos','tab-basic','tab-contact','tab-social'];const idx=order.indexOf(id);if(idx>=0){const btns=modal.querySelectorAll('.tab-btn');if(btns[idx])btns[idx].classList.add('active');}}
+function switchTab(id){const modal=document.getElementById(id)?.closest('.modal');if(!modal)return;modal.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));modal.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');const order=['tab-photos','tab-basic','tab-contact','tab-social','tab-skills','tab-experience','tab-education','tab-projects'];const idx=order.indexOf(id);if(idx>=0){const btns=modal.querySelectorAll('.tab-btn');if(btns[idx])btns[idx].classList.add('active');}}
 window.switchTab=switchTab;
 function openProfileModal(){if(!isAdmin){toast('Sign in first');return;}openModal('profile-modal');}
 window.openProfileModal=openProfileModal;
