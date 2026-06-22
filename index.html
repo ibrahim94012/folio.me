@@ -24,6 +24,7 @@
   --avatar-bg:#e8e7e2;--like:#2e8b00;--dislike:#d32f2f;
   --radius:12px;--radius-lg:18px;--radius-xl:22px;
 }
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
@@ -157,11 +158,32 @@ header{display:flex;align-items:center;justify-content:space-between;padding:.7r
 .reaction-row{display:flex;gap:5px;width:38px;}
 .icon-react{display:inline-flex;align-items:center;justify-content:center;width:38px;height:30px;border-radius:8px;border:1.5px solid var(--border2);background:var(--panel2);cursor:pointer;user-select:none;font-size:.98rem;color:var(--text3);transition:all .2s cubic-bezier(.34,1.56,.64,1);padding:0;}
 .icon-react i{transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
-.icon-react.like-btn:hover{border-color:rgba(46,139,0,.4);background:rgba(46,139,0,.08);color:var(--like);}
-.icon-react.like-btn.liked{background:linear-gradient(135deg,#2e8b00,#3aab00);border-color:transparent;color:#fff;box-shadow:0 3px 10px rgba(46,139,0,.35);}
+.icon-react.follow-btn{width:88px;height:30px;border-radius:8px;font-size:.68rem;font-weight:700;gap:5px;color:var(--accent);border-color:rgba(46,139,0,.4);background:rgba(46,139,0,.07);}
+.icon-react.follow-btn:hover{background:rgba(46,139,0,.15);border-color:var(--accent);}
+.icon-react.follow-btn.following{background:linear-gradient(135deg,#2e8b00,#3aab00);border-color:transparent;color:#fff;box-shadow:0 3px 10px rgba(46,139,0,.35);}
 
 .icon-react.review-btn{width:81px;height:24px;border-radius:7px;font-size:.64rem;font-weight:700;gap:4px;color:#b9790a;border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.1);}
 .icon-react.review-btn:hover{background:rgba(245,166,35,.2);border-color:#f5a623;color:#8a5a06;}
+.icon-react.edit-review-btn{width:95px;height:24px;border-radius:7px;font-size:.64rem;font-weight:700;gap:4px;color:#0a7a5c;border-color:rgba(10,122,92,.4);background:rgba(10,122,92,.1);}
+.icon-react.edit-review-btn:hover{background:rgba(10,122,92,.2);border-color:#0a7a5c;}
+
+/* FOLLOW STATS */
+.follow-stats-row{display:flex;gap:14px;margin-top:3px;}
+.follow-stat-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px;color:var(--text2);font-family:'Space Grotesk',sans-serif;}
+.follow-stat-num{font-size:.75rem;font-weight:700;color:var(--text);}
+.follow-stat-lbl{font-size:.7rem;color:var(--text3);}
+.follow-stat-btn:hover .follow-stat-num{color:var(--accent);}
+.follow-stat-btn:hover .follow-stat-lbl{color:var(--accent);}
+
+/* FOLLOWERS MODAL LIST */
+.follow-list{display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;}
+.follow-list-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--radius);background:var(--panel2);border:1px solid var(--border);cursor:pointer;transition:all .2s;}
+.follow-list-item:hover{border-color:var(--accent);}
+.fli-av{width:40px;height:40px;border-radius:50%;background:var(--avatar-bg);display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--text3);overflow:hidden;flex-shrink:0;border:2px solid var(--border2);}
+.fli-av img{width:100%;height:100%;object-fit:cover;}
+.fli-name{font-weight:700;font-size:.84rem;}
+.fli-role{font-size:.7rem;color:var(--text2);}
+.fli-empty{text-align:center;padding:2rem;color:var(--text3);font-size:.78rem;}
 @keyframes iconpop{0%{transform:scale(1);}45%{transform:scale(1.5) rotate(-14deg);}75%{transform:scale(.9) rotate(-5deg);}100%{transform:scale(1.15) rotate(-10deg);}}
 
 /* STATS ROW */
@@ -460,14 +482,17 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
             <div class="pf-name" id="pf-name-el">&#8212;<span class="verified"><i class="fa-solid fa-circle-check"></i></span></div>
             <div class="name-reaction-group">
               <div class="reaction-row">
-                <button class="icon-react like-btn" id="like-btn" onclick="handleLike()"><i class="fa-solid fa-thumbs-up"></i></button>
+                <button class="icon-react follow-btn" id="follow-btn" onclick="handleFollow()"><i class="fa-solid fa-user-plus"></i> Follow</button>
               </div>
             </div>
           </div>
           <div class="stats-row">
-            <span id="like-count" class="stat-count">0</span><span class="stat-view-lbl">Like</span>
-            <span class="stats-sep"></span>
-            <span id="eng-views" class="stat-count">0</span><span class="stat-view-lbl">views</span>
+            <div class="follow-stats-row">
+              <button class="follow-stat-btn" onclick="openFollowModal('followers')"><span class="follow-stat-num" id="followers-count">0</span>&nbsp;<span class="follow-stat-lbl">Followers</span></button>
+              <button class="follow-stat-btn" onclick="openFollowModal('following')"><span class="follow-stat-num" id="following-count">0</span>&nbsp;<span class="follow-stat-lbl">Following</span></button>
+              <span class="stats-sep"></span>
+              <span id="eng-views" class="stat-count">0</span><span class="stat-view-lbl">views</span>
+            </div>
           </div>
           <div class="review-count-row">
             <div class="stats-row">
@@ -475,7 +500,7 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
               <span class="stats-sep"></span>
               <span id="top-review-avg" class="stat-count">0.0</span><span class="stat-view-lbl"><i class="fa-solid fa-star" style="color:#f5a623;"></i> avg</span>
             </div>
-            <button class="icon-react review-btn" onclick="openReviewModal()"><i class="fa-solid fa-star"></i> Review</button>
+            <button class="icon-react review-btn" id="review-action-btn" onclick="openReviewModal()"><i class="fa-solid fa-star"></i> Review</button>
           </div>
         </div>
       </div>
@@ -793,13 +818,26 @@ section{background:var(--panel);padding:1.2rem 1rem;margin-bottom:4px;}
   </div>
 </div>
 
+<!-- FOLLOW LIST MODAL -->
+<div class="modal-overlay" id="follow-list-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-handle"></div>
+      <div class="modal-title"><span id="follow-list-title"><i class="fa-solid fa-users" style="color:var(--accent);margin-right:8px;"></i>Followers</span><button class="modal-close" onclick="closeModal('follow-list-modal')"><i class="fa-solid fa-xmark"></i></button></div>
+    </div>
+    <div class="modal-body">
+      <div class="follow-list" id="follow-list-content"><div class="fli-empty"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i></div></div>
+    </div>
+  </div>
+</div>
+
 <!-- REVIEW MODAL -->
 <div class="modal-overlay" id="review-modal">
   <div class="modal">
     <div class="modal-header"><div class="modal-handle"></div>
-      <div class="modal-title"><span><i class="fa-solid fa-star" style="color:#f5a623;margin-right:8px;"></i>Write a Review</span><button class="modal-close" onclick="closeModal('review-modal')"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="modal-title"><span id="review-modal-title"><i class="fa-solid fa-star" style="color:#f5a623;margin-right:8px;"></i>Write a Review</span><button class="modal-close" onclick="closeModal('review-modal')"><i class="fa-solid fa-xmark"></i></button></div>
     </div>
     <div class="modal-body">
+      <input type="hidden" id="rv-edit-key" value="">
       <div class="star-select" id="rv-star-select">
         <i class="fa-regular fa-star" data-val="1" onclick="setReviewStar(1)"></i>
         <i class="fa-regular fa-star" data-val="2" onclick="setReviewStar(2)"></i>
@@ -834,8 +872,8 @@ try{
   storage=storage||{ref:()=>({put:()=>{throw fbErr;}})};
 }
 
-let isAdmin=false,_currentUid=null,_myUid=null,_pd={},_expData={},_projData={},_eduData={},_socData={},_skillData={},_myReaction='';
-let _pL=null,_sL=null,_eL=null,_prL=null,_rxL=null,_rvL=null,_vL=null,_eduL=null,_scL=null;
+let isAdmin=false,_currentUid=null,_myUid=null,_pd={},_expData={},_projData={},_eduData={},_socData={},_skillData={},_myReaction='',_isFollowing=false,_myReviewKey=null;
+let _pL=null,_sL=null,_eL=null,_prL=null,_rxL=null,_rvL=null,_vL=null,_eduL=null,_scL=null,_flL=null,_fwL=null;
 
 /* URL ROUTING */
 function gup(k){return new URLSearchParams(window.location.search).get(k);}
@@ -875,7 +913,9 @@ function openProfileByUid(uid,username){
   _resetUI();
   _attach(uid);
   _myReaction=localStorage.getItem('dc_rx_'+uid)||'';
-  _applyRx(_myReaction);
+  // hide follow btn on own profile
+  const fb=document.getElementById('follow-btn');
+  if(fb)fb.style.display=isAdmin?'none':'flex';
   if(!isAdmin)_trackView(uid);
   window.scrollTo(0,0);
 }
@@ -897,6 +937,12 @@ function _resetUI(){
     const e=document.getElementById(id);
     if(e)e.innerHTML='<div class="loader"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i>&nbsp;Loading...</div>';
   });
+  // reset follow
+  const fb=document.getElementById('follow-btn');
+  if(fb){fb.className='icon-react follow-btn';fb.innerHTML='<i class="fa-solid fa-user-plus"></i> Follow';fb.style.display='flex';}
+  const fc=document.getElementById('followers-count'),fwc=document.getElementById('following-count');
+  if(fc)fc.textContent='0';if(fwc)fwc.textContent='0';
+  _isFollowing=false;_myReviewKey=null;
   const sel=document.getElementById('social-edit-list');if(sel)sel.innerHTML='';
   ['skills-edit-list','exp-edit-list','edu-edit-list','proj-edit-list'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML='';});
 }
@@ -914,7 +960,7 @@ function loadUsersList(){
     uids.forEach(uid=>{
       const u=data[uid]||{},p=u.profile||{};
       const name=p.name||'Anonymous',role=p.role||p.type||'',username=p.username||'',avatar=p.avatar||'';
-      const likes=u.reactions?Object.values(u.reactions).filter(r=>r==='like').length:0;
+      const likes=u.followers?Object.keys(u.followers).length:0;
       const card=document.createElement('div');
       card.className='user-row-card fade-in';
       card.onclick=()=>username?openProfileByUsername(username):openProfileByUid(uid);
@@ -925,7 +971,7 @@ function loadUsersList(){
           ${role?`<div class="urc-role">${_esc(role)}</div>`:''}
           ${username?`<div class="urc-username">@${_esc(username)}</div>`:''}
         </div>
-        <div class="urc-stats"><span class="urc-stat-num">${_fmtN(likes)}</span><span class="urc-stat-lbl"><i class="fa-solid fa-thumbs-up" style="color:var(--accent);"></i></span></div>
+        <div class="urc-stats"><span class="urc-stat-num">${_fmtN(likes)}</span><span class="urc-stat-lbl"><i class="fa-solid fa-user-plus" style="color:var(--accent);"></i></span></div>
         <i class="fa-solid fa-chevron-right urc-arrow"></i>`;
       grid.appendChild(card);
     });
@@ -944,16 +990,27 @@ function _attach(uid){
   _eduL=r.child('education').on('value',s=>{_eduData=s.val()||{};_renderEdu(_eduData);_renderMetaChips();});
   _prL=r.child('projects').on('value',s=>{_projData=s.val()||{};_renderProj(_projData);});
   _scL=r.child('socials').on('value',s=>{_socData=s.val()||{};_renderSocialEditList(_socData);_renderPfSocials();});
-  _rxL=r.child('reactions').on('value',s=>{const d=s.val()||{};const v=Object.values(d);document.getElementById('like-count').textContent=_fmtN(v.filter(x=>x==='like').length);});
+  _rxL=r.child('reactions').on('value',s=>{const d=s.val()||{};const v=Object.values(d);document.getElementById('followers-count').textContent=_fmtN(Object.keys(d).length);});
   _vL=r.child('profile/views').on('value',s=>document.getElementById('eng-views').textContent=_fmtN(s.val()||0));
   _rvL=r.child('reviews').on('value',s=>_renderReviews(s.val()||{}));
+  // followers count
+  _flL=r.child('followers').on('value',s=>{
+    const d=s.val()||{};
+    document.getElementById('followers-count').textContent=_fmtN(Object.keys(d).length);
+    if(_myUid){_isFollowing=!!d[_myUid];_applyFollow(_isFollowing);}
+  });
+  // following count (how many this profile follows)
+  _fwL=db.ref('following/'+uid).on('value',s=>{
+    const d=s.val()||{};
+    document.getElementById('following-count').textContent=_fmtN(Object.keys(d).length);
+  });
 }
 
 function _detach(){
   if(!_currentUid)return;
   const r=_uRef(_currentUid);
-  try{if(_pL)r.child('profile').off('value',_pL);if(_sL)r.child('skills').off('value',_sL);if(_eL)r.child('experience').off('value',_eL);if(_eduL)r.child('education').off('value',_eduL);if(_prL)r.child('projects').off('value',_prL);if(_scL)r.child('socials').off('value',_scL);if(_rxL)r.child('reactions').off('value',_rxL);if(_rvL)r.child('reviews').off('value',_rvL);if(_vL)r.child('profile/views').off('value',_vL);}catch(e){}
-  _pL=_sL=_eL=_eduL=_prL=_scL=_rxL=_rvL=_vL=null;
+  try{if(_pL)r.child('profile').off('value',_pL);if(_sL)r.child('skills').off('value',_sL);if(_eL)r.child('experience').off('value',_eL);if(_eduL)r.child('education').off('value',_eduL);if(_prL)r.child('projects').off('value',_prL);if(_scL)r.child('socials').off('value',_scL);if(_rxL)r.child('reactions').off('value',_rxL);if(_rvL)r.child('reviews').off('value',_rvL);if(_vL)r.child('profile/views').off('value',_vL);if(_flL)r.child('followers').off('value',_flL);if(_fwL)db.ref('following/'+_currentUid).off('value',_fwL);}catch(e){}
+  _pL=_sL=_eL=_eduL=_prL=_scL=_rxL=_rvL=_vL=_flL=_fwL=null;
 }
 
 /* RENDER PROFILE */
@@ -1108,11 +1165,37 @@ function _renderReviews(d){
   document.getElementById('rating-count').textContent=count?(count+(count===1?' review':' reviews')):'No reviews yet';
   document.getElementById('top-review-count').textContent=count;
   document.getElementById('top-review-avg').textContent=count?avg.toFixed(1):'0.0';
+
+  // Determine if current logged-in user has reviewed (using _myUid as key)
+  _myReviewKey=null;
+  if(_myUid&&d[_myUid])_myReviewKey=_myUid;
+
+  // Update review action button state
+  const rab=document.getElementById('review-action-btn');
+  if(rab){
+    const ownProfile=isAdmin; // can't review own profile
+    if(ownProfile){rab.style.display='none';}
+    else if(_myReviewKey){
+      // Already reviewed - show edit button
+      rab.className='icon-react edit-review-btn';
+      rab.innerHTML='<i class="fa-solid fa-pen"></i> Edit Review';
+      rab.onclick=()=>openReviewModal(true);
+    }else{
+      rab.className='icon-react review-btn';
+      rab.innerHTML='<i class="fa-solid fa-star"></i> Review';
+      rab.onclick=()=>openReviewModal(false);
+    }
+  }
+
   const w=document.getElementById('reviews-wrap');
   if(!count){w.innerHTML='<div class="empty">No reviews yet \u2014 be the first!</div>';return;}
   w.innerHTML=keys.sort((a,b)=>(d[b].ts||0)-(d[a].ts||0)).map(k=>{const r=d[k];
     const dt=r.ts?new Date(r.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-    return`<div class="review-card fade-in"><div class="review-card-head"><div class="review-name">${_esc(r.name||'Anonymous')}</div><div class="review-stars">${_stars(r.rating)}</div></div>${r.comment?`<div class="review-comment">${_esc(r.comment)}</div>`:''}<div class="review-date"><i class="fa-regular fa-calendar"></i> ${dt}</div><div class="item-actions"><button class="ia-btn del" onclick="delReview('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button></div></div>`;
+    const isMyReview=(_myUid&&k===_myUid);
+    const editBtn=isMyReview?`<button class="ia-btn edit" onclick="openReviewModal(true)"><i class="fa-solid fa-pen"></i> Edit</button>`:'';
+    const delBtn=isAdmin?`<button class="ia-btn del" onclick="delReview('${k}')"><i class="fa-solid fa-trash-can"></i> Delete</button>`:'';
+    const actionsStyle=(isMyReview||isAdmin)?'display:flex':'display:none';
+    return`<div class="review-card fade-in"><div class="review-card-head"><div class="review-name">${_esc(r.name||'Anonymous')}</div><div class="review-stars">${_stars(r.rating)}</div></div>${r.comment?`<div class="review-comment">${_esc(r.comment)}</div>`:''}<div class="review-date"><i class="fa-regular fa-calendar"></i> ${dt}</div><div class="item-actions" style="${actionsStyle}">${editBtn}${delBtn}</div></div>`;
   }).join('');
 }
 
@@ -1146,7 +1229,7 @@ auth.onAuthStateChanged(u=>{
   const lb=document.getElementById('login-btn'),nb=document.getElementById('login-action-btn'),hb=document.getElementById('home-create-btn');
   if(real){lb.innerHTML=`<img src="${real.photoURL||''}" alt="">`;lb.style.display='flex';if(nb)nb.style.display='none';if(hb){hb.innerHTML='<i class="fa-solid fa-user"></i> My Profile';hb.onclick=goToMyProfile;}}
   else{lb.style.display='none';if(nb)nb.style.display='flex';if(hb){hb.innerHTML='<i class="fa-solid fa-plus"></i> Create Your Profile';hb.onclick=openLoginModal;}if(!u)auth.signInAnonymously().catch(()=>{});}
-  if(_currentUid){const was=isAdmin;isAdmin=!!(_myUid&&_myUid===_currentUid);if(was!==isAdmin){document.body.classList.toggle('admin-mode',isAdmin);document.getElementById('edit-pf-btn').style.display=isAdmin?'flex':'none';if(_pd&&Object.keys(_pd).length)_renderProfile(_pd);}if(isAdmin)db.ref('users/'+_currentUid+'/profile/username').once('value').then(s=>document.getElementById('username-prompt').style.display=s.val()?'none':'flex');}
+  if(_currentUid){const was=isAdmin;isAdmin=!!(_myUid&&_myUid===_currentUid);if(was!==isAdmin){document.body.classList.toggle('admin-mode',isAdmin);document.getElementById('edit-pf-btn').style.display=isAdmin?'flex':'none';const fb=document.getElementById('follow-btn');if(fb)fb.style.display=isAdmin?'none':'flex';if(_pd&&Object.keys(_pd).length)_renderProfile(_pd);}if(isAdmin)db.ref('users/'+_currentUid+'/profile/username').once('value').then(s=>document.getElementById('username-prompt').style.display=s.val()?'none':'flex');}
 });
 
 /* INITIAL LOAD */
@@ -1161,10 +1244,53 @@ window.onpopstate=function(){const u=gup('u'),uid=gup('uid');if(u)openProfileByU
 function _devId(){const n=window.navigator,s=window.screen;const raw=[n.userAgent,n.language,n.hardwareConcurrency,s.width+'x'+s.height,s.colorDepth,new Date().getTimezoneOffset()].join('|');let h=5381;for(let i=0;i<raw.length;i++){h=((h<<5)+h)^raw.charCodeAt(i);h=h>>>0;}return'dv_'+h.toString(36);}
 function _trackView(uid){const k='dc_v_'+uid;if(localStorage.getItem(k))return;const id=_devId();db.ref('users/'+uid+'/viewers/'+id).set(true).then(()=>{localStorage.setItem(k,'1');db.ref('users/'+uid+'/profile/views').transaction(v=>(v||0)+1);}).catch(()=>{});}
 
-/* REACTIONS */
-function _applyRx(r){const lb=document.getElementById('like-btn');if(!lb)return;lb.classList.toggle('liked',r==='like');}
-function handleLike(){if(!_currentUid)return;const id=_devId(),ref=db.ref('users/'+_currentUid+'/reactions/'+id),next=_myReaction==='like'?null:'like';(next?ref.set(next):ref.remove()).then(()=>{_myReaction=next||'';localStorage.setItem('dc_rx_'+_currentUid,_myReaction);_applyRx(_myReaction);}).catch(e=>toast('Error: '+e.message,'error'));}
-window.handleLike=handleLike;
+/* FOLLOW */
+function _applyFollow(following){
+  const fb=document.getElementById('follow-btn');
+  if(!fb)return;
+  if(following){fb.className='icon-react follow-btn following';fb.innerHTML='<i class="fa-solid fa-user-check"></i> Following';}
+  else{fb.className='icon-react follow-btn';fb.innerHTML='<i class="fa-solid fa-user-plus"></i> Follow';}
+}
+function handleFollow(){
+  if(!_currentUid)return;
+  if(!_myUid){toast('Follow করতে Sign in করুন','error');openLoginModal();return;}
+  if(_myUid===_currentUid){toast('নিজেকে follow করা যাবে না','error');return;}
+  const updates={};
+  if(_isFollowing){
+    updates['users/'+_currentUid+'/followers/'+_myUid]=null;
+    updates['following/'+_myUid+'/'+_currentUid]=null;
+  }else{
+    updates['users/'+_currentUid+'/followers/'+_myUid]=true;
+    updates['following/'+_myUid+'/'+_currentUid]=true;
+  }
+  db.ref().update(updates).catch(e=>toast('Error: '+e.message,'error'));
+}
+window.handleFollow=handleFollow;
+
+/* FOLLOW MODAL */
+async function openFollowModal(type){
+  const title=document.getElementById('follow-list-title');
+  const content=document.getElementById('follow-list-content');
+  title.innerHTML=`<i class="fa-solid fa-users" style="color:var(--accent);margin-right:8px;"></i>${type==='followers'?'Followers':'Following'}`;
+  content.innerHTML='<div class="fli-empty"><i class="fa-solid fa-spinner" style="animation:spin 1s linear infinite;"></i></div>';
+  openModal('follow-list-modal');
+  let uids=[];
+  if(type==='followers'){
+    const s=await db.ref('users/'+_currentUid+'/followers').once('value');
+    uids=Object.keys(s.val()||{});
+  }else{
+    const s=await db.ref('following/'+_currentUid).once('value');
+    uids=Object.keys(s.val()||{});
+  }
+  if(!uids.length){content.innerHTML='<div class="fli-empty">কোনো '+( type==='followers'?'follower':'following')+' নেই।</div>';return;}
+  const items=await Promise.all(uids.map(uid=>db.ref('users/'+uid+'/profile').once('value').then(s=>({uid,p:s.val()||{}}))));
+  content.innerHTML=items.map(({uid,p})=>`
+    <div class="follow-list-item" onclick="closeModal('follow-list-modal');${p.username?`openProfileByUsername('${_esc(p.username)}')`:`openProfileByUid('${uid}')`}">
+      <div class="fli-av">${p.avatar?`<img src="${_esc(p.avatar)}" alt="">`:'<i class="fa-solid fa-user"></i>'}</div>
+      <div><div class="fli-name">${_esc(p.name||'Anonymous')}</div><div class="fli-role">${_esc(p.role||'')}</div></div>
+    </div>`).join('');
+}
+window.openFollowModal=openFollowModal;
 
 /* PROFILE SAVE */
 function saveProfile(){
@@ -1325,18 +1451,49 @@ function _initMetaChipDrag(){
 window._initMetaChipDrag=_initMetaChipDrag;
 
 /* REVIEWS */
-function openReviewModal(){
+function openReviewModal(isEdit){
   if(!_currentUid){toast('No profile loaded','error');return;}
-  const reset=()=>{['rv-name','rv-contact','rv-comment'].forEach(id=>document.getElementById(id).value='');document.getElementById('rv-rating').value='0';document.querySelectorAll('#rv-star-select i').forEach(s=>s.className='fa-regular fa-star');openModal('review-modal');};
-  db.ref('users/'+_currentUid+'/reviews/'+_devId()).once('value').then(s=>{
-    if(s.val()){toast('You have already reviewed this profile','error');return;}
-    reset();
-  }).catch(()=>reset());
+  if(isAdmin){toast('নিজের প্রোফাইলে রিভিউ দেওয়া যাবে না','error');return;}
+  if(!_myUid){toast('Review করতে Sign in করুন','error');openLoginModal();return;}
+  const titleEl=document.getElementById('review-modal-title');
+  if(isEdit&&_myReviewKey){
+    // Load existing review for editing
+    titleEl.innerHTML='<i class="fa-solid fa-pen" style="color:#f5a623;margin-right:8px;"></i>Edit Your Review';
+    document.getElementById('rv-edit-key').value=_myReviewKey;
+    db.ref('users/'+_currentUid+'/reviews/'+_myReviewKey).once('value').then(s=>{
+      const rv=s.val()||{};
+      document.getElementById('rv-name').value=rv.name||'';
+      document.getElementById('rv-contact').value=rv.contact||'';
+      document.getElementById('rv-comment').value=rv.comment||'';
+      const rating=rv.rating||0;
+      document.getElementById('rv-rating').value=rating;
+      document.querySelectorAll('#rv-star-select i').forEach(s=>{s.className=parseInt(s.dataset.val)<=rating?'fa-solid fa-star':'fa-regular fa-star';});
+      openModal('review-modal');
+    });
+  }else{
+    // Fresh review
+    titleEl.innerHTML='<i class="fa-solid fa-star" style="color:#f5a623;margin-right:8px;"></i>Write a Review';
+    document.getElementById('rv-edit-key').value='';
+    ['rv-name','rv-contact','rv-comment'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('rv-rating').value='0';
+    document.querySelectorAll('#rv-star-select i').forEach(s=>s.className='fa-regular fa-star');
+    openModal('review-modal');
+  }
 }
 window.openReviewModal=openReviewModal;
 function setReviewStar(v){document.getElementById('rv-rating').value=v;document.querySelectorAll('#rv-star-select i').forEach(s=>{s.className=parseInt(s.dataset.val)<=v?'fa-solid fa-star':'fa-regular fa-star';});}
 window.setReviewStar=setReviewStar;
-function submitReview(){if(!_currentUid){toast('No profile','error');return;}const name=document.getElementById('rv-name').value.trim(),contact=document.getElementById('rv-contact').value.trim(),comment=document.getElementById('rv-comment').value.trim(),rating=parseInt(document.getElementById('rv-rating').value)||0;if(!name){toast('Enter your name','error');return;}if(!contact||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)&&!/^[0-9+\-\s().]{7,20}$/.test(contact)){toast('Enter valid email or mobile','error');return;}if(rating<1){toast('Select a star rating','error');return;}const id=_devId();db.ref('users/'+_currentUid+'/reviews/'+id).set({name,contact,rating,comment,ts:Date.now()}).then(()=>{closeModal('review-modal');toast('Thanks for your review!','success');}).catch(e=>{if(e&&e.code==='PERMISSION_DENIED')toast('You have already reviewed this profile','error');else toast('Error: '+e.message,'error');});}
+function submitReview(){
+  if(!_currentUid){toast('No profile','error');return;}
+  if(isAdmin){toast('নিজের প্রোফাইলে রিভিউ দেওয়া যাবে না','error');return;}
+  if(!_myUid){toast('Sign in করুন','error');return;}
+  const name=document.getElementById('rv-name').value.trim(),contact=document.getElementById('rv-contact').value.trim(),comment=document.getElementById('rv-comment').value.trim(),rating=parseInt(document.getElementById('rv-rating').value)||0;
+  if(!name){toast('Enter your name','error');return;}
+  if(!contact||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)&&!/^[0-9+\-\s().]{7,20}$/.test(contact)){toast('Enter valid email or mobile','error');return;}
+  if(rating<1){toast('Select a star rating','error');return;}
+  // Use _myUid as the review key so one user = one review
+  db.ref('users/'+_currentUid+'/reviews/'+_myUid).set({name,contact,rating,comment,ts:Date.now()}).then(()=>{closeModal('review-modal');toast('Thanks for your review!','success');}).catch(e=>{toast('Error: '+e.message,'error');});
+}
 window.submitReview=submitReview;
 function delReview(k){if(!isAdmin||!_myUid)return;if(!confirm('Delete review?'))return;db.ref('users/'+_myUid+'/reviews/'+k).remove().then(()=>toast('Review removed'));}
 window.delReview=delReview;
