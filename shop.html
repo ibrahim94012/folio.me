@@ -5,19 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Folio Cards — Smart NFC Digital Business Cards</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 :root{
-  --bg:#0f1115;--panel:#171a21;--panel2:#1d212b;--border:#2a2e38;--border2:#363b47;
-  --accent:#d4af6a;--accent2:#b88a3e;--teal:#1fb6a6;--danger:#e5484d;
-  --text:#f1efe9;--text2:#a8a9b3;--text3:#6b6d78;
-  --radius:14px;
+  --bg:#f5f5f0;--bg2:#eeede8;--bg3:#e4e3dc;
+  --panel:#ffffff;--panel2:#f0efe9;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+  --accent:#2e8b00;--accent2:#0a7a5c;--accent3:#c2185b;
+  --accent-dim:rgba(46,139,0,0.08);
+  --text:#1a1a2e;--text2:#5a5a7a;--text3:#aaaabc;
+  --danger:#d32f2f;
+  --shadow:rgba(0,0,0,0.12);--modal-bg:rgba(0,0,0,0.5);
+  --radius:12px;--radius-lg:18px;--radius-xl:22px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;}
 h1,h2,h3,.brand,.card-name-disp{font-family:'Space Grotesk',sans-serif;}
-a{color:inherit;}
+a{color:inherit;text-decoration:none;}
 img{max-width:100%;display:block;}
 button{font-family:inherit;}
 .hidden{display:none!important;}
@@ -25,17 +30,17 @@ button{font-family:inherit;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:8px;}
 
 /* TOPBAR */
-.topbar{position:sticky;top:0;z-index:50;background:rgba(15,17,21,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(245,245,240,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
 .topbar-in{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
-.brand{display:flex;align-items:center;gap:9px;font-size:1.18rem;font-weight:700;letter-spacing:-.01em;cursor:pointer;}
-.brand .nfc-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;color:#0f1115;font-size:.85rem;box-shadow:0 4px 12px rgba(212,175,106,.3);}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.18rem;letter-spacing:-.03em;cursor:pointer;}
+.brand .nfc-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;box-shadow:0 3px 10px var(--shadow);}
 .nav-links{display:flex;gap:4px;align-items:center;}
-.nav-link{font-size:.84rem;font-weight:600;color:var(--text2);background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:9px;transition:.18s;display:flex;align-items:center;gap:6px;}
+.nav-link{font-size:.82rem;font-weight:600;color:var(--text2);background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:9px;transition:.18s;display:flex;align-items:center;gap:6px;}
 .nav-link:hover{color:var(--text);background:var(--panel2);}
-.nav-link.active{color:var(--accent);}
+.nav-link.active{color:var(--accent);background:var(--accent-dim);}
 .acct-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border2);background:var(--panel2);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;color:var(--text2);}
 .acct-btn img{width:100%;height:100%;object-fit:cover;}
-.cta-mini{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#13110a;border:none;font-weight:700;font-size:.8rem;padding:9px 18px;border-radius:9px;cursor:pointer;}
+.cta-mini{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-weight:700;font-size:.8rem;padding:9px 18px;border-radius:9px;cursor:pointer;}
 
 /* VIEW WRAP */
 .view{display:none;}
@@ -43,180 +48,211 @@ button{font-family:inherit;}
 .shell{max-width:1080px;margin:0 auto;padding:0 20px;}
 
 /* HERO */
-.hero{padding:64px 0 50px;text-align:center;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:rgba(212,175,106,.1);border:1px solid rgba(212,175,106,.25);padding:6px 14px;border-radius:30px;margin-bottom:22px;}
-.hero h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:700;line-height:1.08;letter-spacing:-.02em;max-width:720px;margin:0 auto 18px;}
-.hero h1 em{font-style:normal;color:var(--accent);}
-.hero p{color:var(--text2);font-size:1.05rem;max-width:520px;margin:0 auto 32px;line-height:1.6;}
-.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:54px;}
-.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#13110a;border:none;font-weight:700;font-size:.95rem;padding:14px 28px;border-radius:11px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;box-shadow:0 8px 24px rgba(212,175,106,.22);transition:.2s;}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(212,175,106,.3);}
-.btn-ghost{background:var(--panel2);border:1.5px solid var(--border2);color:var(--text);font-weight:600;font-size:.95rem;padding:14px 26px;border-radius:11px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;}
+.hero{padding:56px 0 46px;text-align:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(46,139,0,.18);padding:6px 14px;border-radius:30px;margin-bottom:20px;}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.9rem,4.6vw,3.1rem);font-weight:800;line-height:1.12;letter-spacing:-.02em;max-width:680px;margin:0 auto 16px;}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{color:var(--text2);font-size:1rem;max-width:500px;margin:0 auto 28px;line-height:1.6;}
+.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-weight:700;font-size:.92rem;padding:13px 26px;border-radius:11px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;box-shadow:0 6px 18px rgba(46,139,0,.18);transition:.2s;}
+.btn-primary:hover{transform:translateY(-1px);}
+.btn-primary:disabled{opacity:.6;cursor:default;transform:none;}
+.btn-ghost{background:var(--panel);border:1.5px solid var(--border2);color:var(--text);font-weight:600;font-size:.92rem;padding:13px 24px;border-radius:11px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;}
 
-/* CARD MOCKUP (shared component) */
-.nfc-card{width:320px;aspect-ratio:1.586;border-radius:18px;position:relative;overflow:hidden;padding:22px 24px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 22px 50px -12px rgba(0,0,0,.55);transition:transform .25s;}
-.nfc-card:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 15%,rgba(255,255,255,.16),transparent 55%);}
-.nfc-card .nfc-chip{position:absolute;top:20px;right:22px;font-size:1.1rem;opacity:.85;}
-.nfc-card .nc-logo{width:38px;height:38px;border-radius:9px;object-fit:cover;background:rgba(255,255,255,.14);}
-.nfc-card .nc-logo-ph{width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+/* NFC CARD MOCKUP */
+.nfc-card{width:300px;aspect-ratio:1.586;border-radius:18px;position:relative;overflow:hidden;padding:20px 22px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 20px 44px -14px rgba(0,0,0,.32);transition:transform .25s;}
+.nfc-card:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 15%,rgba(255,255,255,.18),transparent 55%);}
+.nfc-card .nfc-chip{position:absolute;top:18px;right:20px;font-size:1.05rem;opacity:.85;}
+.nfc-card .nc-logo{width:36px;height:36px;border-radius:9px;object-fit:cover;background:rgba(255,255,255,.16);}
+.nfc-card .nc-logo-ph{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;}
 .nfc-card .nc-bottom{display:flex;flex-direction:column;gap:2px;}
-.card-name-disp{font-size:1.18rem;font-weight:700;line-height:1.2;}
-.nfc-card .nc-title{font-size:.74rem;opacity:.82;font-weight:500;}
-.nfc-card .nc-contacts{display:flex;gap:10px;margin-top:9px;font-size:.66rem;opacity:.78;flex-wrap:wrap;}
+.card-name-disp{font-size:1.12rem;font-weight:700;line-height:1.2;}
+.nfc-card .nc-title{font-size:.72rem;opacity:.85;font-weight:500;}
+.nfc-card .nc-contacts{display:flex;gap:10px;margin-top:8px;font-size:.64rem;opacity:.8;flex-wrap:wrap;}
 .nfc-card .nc-contacts span{display:flex;align-items:center;gap:4px;}
-.nfc-card .nc-watermark{position:absolute;bottom:10px;right:14px;font-size:.6rem;opacity:.5;font-weight:600;letter-spacing:.03em;}
+.nfc-card .nc-watermark{position:absolute;bottom:9px;right:13px;font-size:.58rem;opacity:.55;font-weight:700;letter-spacing:.03em;}
 .hero-card-stage{display:flex;justify-content:center;perspective:1000px;}
 .hero-card-stage .nfc-card{transform:rotateY(-8deg) rotateX(3deg);}
 
-/* SECTION HEADERS */
-.sec-h{text-align:center;margin-bottom:34px;}
-.sec-h h2{font-size:1.7rem;font-weight:700;letter-spacing:-.01em;margin-bottom:8px;}
-.sec-h p{color:var(--text2);font-size:.92rem;}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:60px;}
-.feat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px;}
-.feat-card i{font-size:1.3rem;color:var(--accent);margin-bottom:12px;}
-.feat-card h3{font-size:.96rem;margin-bottom:6px;}
-.feat-card p{font-size:.82rem;color:var(--text2);line-height:1.55;}
+/* SECTION HEADERS (folio.me style) */
+.sec-h{text-align:center;margin-bottom:30px;}
+.sec-h h2{font-size:1.5rem;font-weight:800;letter-spacing:-.01em;margin-bottom:6px;}
+.sec-h p{color:var(--text2);font-size:.88rem;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:56px;}
+.feat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;}
+.feat-card i{font-size:1.2rem;color:var(--accent);margin-bottom:10px;}
+.feat-card h3{font-size:.92rem;margin-bottom:5px;font-weight:700;}
+.feat-card p{font-size:.8rem;color:var(--text2);line-height:1.55;}
+
+/* SHOP / PRODUCTS GRID */
+.shop-wrap{padding:36px 0 70px;}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
+.product-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:.2s;}
+.product-card:hover{box-shadow:0 10px 28px var(--shadow);transform:translateY(-2px);}
+.product-thumb{height:140px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.product-thumb img{width:100%;height:100%;object-fit:cover;}
+.product-thumb .pt-nfc{position:absolute;top:10px;right:12px;color:rgba(255,255,255,.85);font-size:.9rem;}
+.product-body{padding:16px;}
+.product-body .p-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.96rem;margin-bottom:4px;}
+.product-body .p-desc{font-size:.78rem;color:var(--text2);line-height:1.5;margin-bottom:10px;min-height:36px;}
+.product-body .p-price{font-family:'Space Grotesk',sans-serif;font-weight:800;color:var(--accent);font-size:1.05rem;margin-bottom:12px;}
+.product-body .btn-primary{width:100%;justify-content:center;padding:10px;font-size:.84rem;}
 
 /* DESIGNER */
-.designer-wrap{padding:36px 0 80px;}
-.step-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:38px;flex-wrap:wrap;}
-.step-pill{display:flex;align-items:center;gap:7px;font-size:.76rem;font-weight:700;color:var(--text3);padding:7px 14px;border-radius:30px;}
-.step-pill .num{width:20px;height:20px;border-radius:50%;background:var(--panel2);border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.68rem;}
+.designer-wrap{padding:30px 0 80px;}
+.step-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:32px;flex-wrap:wrap;}
+.step-pill{display:flex;align-items:center;gap:7px;font-size:.74rem;font-weight:700;color:var(--text3);padding:7px 14px;border-radius:30px;}
+.step-pill .num{width:20px;height:20px;border-radius:50%;background:var(--panel2);border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.66rem;}
 .step-pill.active{color:var(--accent);}
-.step-pill.active .num{background:var(--accent);border-color:var(--accent);color:#13110a;}
-.step-pill.done .num{background:var(--teal);border-color:var(--teal);color:#08221d;}
-.step-sep{width:24px;height:1.5px;background:var(--border2);}
-.designer-grid{display:grid;grid-template-columns:1fr 380px;gap:30px;align-items:start;}
-.preview-stage{position:sticky;top:90px;display:flex;flex-direction:column;align-items:center;gap:18px;background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:32px 20px;}
-.preview-stage .ps-label{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);}
-.preview-stage .nfc-card{width:280px;}
+.step-pill.active .num{background:var(--accent);border-color:var(--accent);color:#fff;}
+.step-pill.done .num{background:var(--accent2);border-color:var(--accent2);color:#fff;}
+.step-sep{width:22px;height:1.5px;background:var(--border2);}
+.designer-grid{display:grid;grid-template-columns:1fr 340px;gap:26px;align-items:start;}
+.preview-stage{position:sticky;top:88px;display:flex;flex-direction:column;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px 18px;}
+.preview-stage .ps-label{font-size:.66rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);}
+.preview-stage .nfc-card{width:260px;}
 .preview-price{text-align:center;}
-.preview-price .pp-amt{font-size:1.7rem;font-weight:700;color:var(--accent);}
-.preview-price .pp-sub{font-size:.74rem;color:var(--text3);}
-.panel-block{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:18px;}
-.panel-block h3{font-size:.92rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.preview-price .pp-amt{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:800;color:var(--accent);}
+.preview-price .pp-sub{font-size:.72rem;color:var(--text3);}
+.panel-block{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;margin-bottom:16px;}
+.panel-block h3{font-size:.88rem;font-weight:700;margin-bottom:15px;display:flex;align-items:center;gap:8px;}
 .panel-block h3 i{color:var(--accent);}
-.tmpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-.tmpl-opt{border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid transparent;position:relative;aspect-ratio:1.586;transition:.18s;}
-.tmpl-opt.selected{border-color:var(--accent);box-shadow:0 0 0 3px rgba(212,175,106,.18);}
-.tmpl-opt .tmpl-name{position:absolute;bottom:6px;left:8px;font-size:.62rem;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);}
-.color-row{display:flex;gap:10px;flex-wrap:wrap;}
-.color-dot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:.15s;}
-.color-dot.selected{border-color:var(--text);box-shadow:0 0 0 3px var(--panel),0 0 0 4px var(--text2);}
-.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.fgroup{margin-bottom:14px;}
-.fgroup label{display:block;font-size:.74rem;font-weight:600;color:var(--text2);margin-bottom:6px;}
-.finput{width:100%;background:var(--panel2);border:1.5px solid var(--border2);border-radius:9px;padding:11px 13px;color:var(--text);font-size:.88rem;font-family:inherit;outline:none;transition:.15s;}
-.finput:focus{border-color:var(--accent);}
-textarea.finput{resize:vertical;min-height:70px;}
 .logo-up{display:flex;align-items:center;gap:14px;}
-.logo-up .lu-prev{width:56px;height:56px;border-radius:10px;background:var(--panel2);border:1.5px dashed var(--border2);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--text3);}
+.logo-up .lu-prev{width:54px;height:54px;border-radius:10px;background:var(--panel2);border:1.5px dashed var(--border2);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--text3);}
 .logo-up .lu-prev img{width:100%;height:100%;object-fit:cover;}
-.lu-btn{background:var(--panel2);border:1.5px solid var(--border2);color:var(--text);font-weight:600;font-size:.78rem;padding:9px 14px;border-radius:8px;cursor:pointer;}
+.lu-btn{background:var(--panel2);border:1.5px solid var(--border2);color:var(--text);font-weight:600;font-size:.76rem;padding:9px 14px;border-radius:8px;cursor:pointer;}
 .qty-stepper{display:flex;align-items:center;gap:0;border:1.5px solid var(--border2);border-radius:9px;width:fit-content;overflow:hidden;}
-.qty-stepper button{width:38px;height:38px;background:var(--panel2);border:none;color:var(--text);font-size:1rem;cursor:pointer;}
-.qty-stepper span{width:46px;text-align:center;font-weight:700;font-size:.92rem;}
-.step-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;}
+.qty-stepper button{width:36px;height:36px;background:var(--panel2);border:none;color:var(--text);font-size:1rem;cursor:pointer;}
+.qty-stepper span{width:44px;text-align:center;font-weight:700;font-size:.9rem;}
+.step-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:6px;}
+.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
 /* CHECKOUT */
 .pay-opts{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
-.pay-opt{flex:1;min-width:130px;border:1.5px solid var(--border2);background:var(--panel2);border-radius:11px;padding:14px;text-align:center;cursor:pointer;transition:.15s;}
-.pay-opt.selected{border-color:var(--accent);background:rgba(212,175,106,.08);}
-.pay-opt i{font-size:1.3rem;margin-bottom:6px;display:block;color:var(--text2);}
+.pay-opt{flex:1;min-width:120px;border:1.5px solid var(--border2);background:var(--panel2);border-radius:11px;padding:13px;text-align:center;cursor:pointer;transition:.15s;}
+.pay-opt.selected{border-color:var(--accent);background:var(--accent-dim);}
+.pay-opt i{font-size:1.2rem;margin-bottom:5px;display:block;color:var(--text2);}
 .pay-opt.selected i{color:var(--accent);}
-.pay-opt .po-name{font-size:.8rem;font-weight:700;}
-.pay-instr{background:rgba(212,175,106,.08);border:1px solid rgba(212,175,106,.25);border-radius:10px;padding:14px;font-size:.82rem;line-height:1.6;margin-bottom:16px;}
-.pay-instr b{color:var(--accent);}
-.order-summary-row{display:flex;justify-content:space-between;font-size:.86rem;padding:9px 0;border-bottom:1px solid var(--border);}
-.order-summary-row:last-child{border-bottom:none;font-weight:700;font-size:1rem;color:var(--accent);padding-top:13px;}
+.pay-opt .po-name{font-size:.78rem;font-weight:700;}
+.pay-instr{background:var(--accent-dim);border:1px solid rgba(46,139,0,.18);border-radius:10px;padding:13px;font-size:.8rem;line-height:1.6;margin-bottom:16px;}
+.pay-instr b{color:var(--accent2);}
+.order-summary-row{display:flex;justify-content:space-between;font-size:.84rem;padding:9px 0;border-bottom:1px solid var(--border);}
+.order-summary-row:last-child{border-bottom:none;font-weight:800;font-size:.98rem;color:var(--accent);padding-top:12px;}
 
 /* STATUS BADGES */
-.status-badge{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:700;padding:5px 11px;border-radius:30px;text-transform:capitalize;}
-.status-badge.pending{background:rgba(212,175,106,.15);color:var(--accent);}
-.status-badge.confirmed{background:rgba(31,182,166,.15);color:var(--teal);}
-.status-badge.processing{background:rgba(99,140,255,.15);color:#7da3ff;}
-.status-badge.shipped{background:rgba(165,99,255,.15);color:#b08aff;}
-.status-badge.delivered{background:rgba(60,200,110,.15);color:#5fd98a;}
-.status-badge.cancelled{background:rgba(229,72,77,.15);color:var(--danger);}
+.status-badge{display:inline-flex;align-items:center;gap:5px;font-size:.66rem;font-weight:700;padding:5px 11px;border-radius:30px;text-transform:capitalize;}
+.status-badge.pending{background:rgba(212,160,40,.14);color:#9a7416;}
+.status-badge.confirmed{background:rgba(10,122,92,.14);color:var(--accent2);}
+.status-badge.processing{background:rgba(99,140,255,.14);color:#3760c9;}
+.status-badge.shipped{background:rgba(165,99,255,.14);color:#7a4dcf;}
+.status-badge.delivered{background:rgba(46,139,0,.14);color:var(--accent);}
+.status-badge.cancelled{background:rgba(211,47,47,.14);color:var(--danger);}
 
 /* ORDERS LIST */
-.orders-wrap{padding:40px 0 70px;}
-.order-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;}
-.order-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
-.order-id{font-size:.7rem;color:var(--text3);font-family:monospace;}
-.order-meta{display:flex;gap:18px;font-size:.8rem;color:var(--text2);flex-wrap:wrap;margin-top:8px;}
+.orders-wrap{padding:36px 0 70px;}
+.order-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:17px 19px;margin-bottom:13px;}
+.order-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:9px;}
+.order-id{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--text3);}
+.order-meta{display:flex;gap:16px;font-size:.78rem;color:var(--text2);flex-wrap:wrap;margin-top:8px;}
 .order-meta span{display:flex;align-items:center;gap:6px;}
-.order-detail-toggle{font-size:.74rem;color:var(--accent);cursor:pointer;font-weight:600;margin-top:10px;display:inline-block;}
-.order-detail-body{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:.82rem;color:var(--text2);line-height:1.7;}
+.order-detail-toggle{font-size:.72rem;color:var(--accent);cursor:pointer;font-weight:700;margin-top:9px;display:inline-block;}
+.order-detail-body{display:none;margin-top:13px;padding-top:13px;border-top:1px solid var(--border);font-size:.8rem;color:var(--text2);line-height:1.7;}
 .order-detail-body.open{display:block;}
 .order-detail-body b{color:var(--text);}
-.empty-state{text-align:center;padding:60px 20px;color:var(--text3);}
-.empty-state i{font-size:2.2rem;margin-bottom:14px;opacity:.5;}
+.empty-state{text-align:center;padding:55px 20px;color:var(--text3);}
+.empty-state i{font-size:2rem;margin-bottom:12px;opacity:.5;}
 
 /* ADMIN */
-.admin-wrap{padding:30px 0 80px;}
-.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
-.astat{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;}
-.astat .av{font-size:1.5rem;font-weight:700;color:var(--accent);}
-.astat .al{font-size:.72rem;color:var(--text3);}
+.admin-wrap{padding:26px 0 80px;}
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
+.astat{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:15px;}
+.astat .av{font-family:'Space Grotesk',sans-serif;font-size:1.35rem;font-weight:800;color:var(--accent);}
+.astat .al{font-size:.7rem;color:var(--text3);}
 .admin-filters{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
-.afilter{background:var(--panel2);border:1.5px solid var(--border2);color:var(--text2);font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:30px;cursor:pointer;}
-.afilter.active{background:var(--accent);color:#13110a;border-color:var(--accent);}
-.admin-order-row{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;}
+.afilter{background:var(--panel2);border:1.5px solid var(--border2);color:var(--text2);font-size:.74rem;font-weight:600;padding:7px 14px;border-radius:30px;cursor:pointer;}
+.afilter.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.admin-order-row{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:15px 17px;margin-bottom:10px;}
 .aor-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
 .aor-left{display:flex;align-items:center;gap:12px;}
-.aor-mini-card{width:48px;height:30px;border-radius:5px;flex-shrink:0;}
-.aor-name{font-weight:700;font-size:.88rem;}
-.aor-sub{font-size:.72rem;color:var(--text3);}
-.aor-status-sel{background:var(--panel2);border:1.5px solid var(--border2);color:var(--text);font-size:.76rem;padding:7px 10px;border-radius:8px;font-weight:600;}
-.aor-detail{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:.82rem;color:var(--text2);line-height:1.7;display:none;}
+.aor-mini-card{width:46px;height:29px;border-radius:5px;flex-shrink:0;}
+.aor-name{font-weight:700;font-size:.86rem;}
+.aor-sub{font-size:.7rem;color:var(--text3);}
+.aor-status-sel{background:var(--panel2);border:1.5px solid var(--border2);color:var(--text);font-size:.74rem;padding:7px 10px;border-radius:8px;font-weight:600;}
+.aor-detail{margin-top:13px;padding-top:13px;border-top:1px solid var(--border);font-size:.8rem;color:var(--text2);line-height:1.7;display:none;}
 .aor-detail.open{display:block;}
 .aor-detail b{color:var(--text);}
-.aor-toggle{font-size:.74rem;color:var(--accent);cursor:pointer;font-weight:600;}
+.aor-toggle{font-size:.72rem;color:var(--accent);cursor:pointer;font-weight:700;}
+.admin-subtabs{display:flex;gap:4px;background:var(--panel2);border-radius:10px;padding:4px;margin-bottom:22px;width:fit-content;}
+.admin-subtab{font-size:.78rem;font-weight:700;border:none;background:none;color:var(--text2);padding:9px 18px;border-radius:8px;cursor:pointer;}
+.admin-subtab.active{background:var(--panel);color:var(--accent);box-shadow:0 1px 3px var(--shadow);}
+.admin-product-row{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:14px;}
+.admin-product-row .apr-thumb{width:64px;height:40px;border-radius:7px;flex-shrink:0;overflow:hidden;position:relative;}
+.admin-product-row .apr-thumb img{width:100%;height:100%;object-fit:cover;}
+.admin-product-row .apr-name{font-weight:700;font-size:.88rem;}
+.admin-product-row .apr-sub{font-size:.74rem;color:var(--text3);margin-top:2px;}
+.apr-actions{display:flex;gap:8px;margin-left:auto;}
+.apr-icon-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border2);background:var(--panel2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.78rem;}
+.apr-icon-btn.danger{color:var(--danger);}
+.apr-inactive{opacity:.5;}
+.toggle-chip{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;cursor:pointer;}
+.toggle-chip.on{background:rgba(46,139,0,.14);color:var(--accent);}
+.toggle-chip.off{background:rgba(211,47,47,.1);color:var(--danger);}
+.color-pick-row{display:flex;gap:14px;}
+.color-pick-row .cp-item{flex:1;}
+.color-pick-row input[type=color]{width:100%;height:40px;border:1.5px solid var(--border2);border-radius:9px;cursor:pointer;background:var(--panel2);}
 
-/* LOGIN MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;}
-.modal-overlay.active{display:flex;}
-.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:18px;max-width:380px;width:100%;padding:32px 28px;text-align:center;position:relative;}
-.modal-box .mclose{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text3);font-size:1.1rem;cursor:pointer;}
-.modal-box .nfc-mark{width:48px;height:48px;border-radius:13px;margin:0 auto 18px;font-size:1.3rem;}
-.modal-box h3{font-size:1.15rem;margin-bottom:8px;}
-.modal-box p{font-size:.84rem;color:var(--text2);margin-bottom:24px;line-height:1.55;}
-.google-btn{width:100%;background:#fff;color:#1a1a1a;border:none;font-weight:700;font-size:.9rem;padding:13px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;}
-.acct-modal-box{text-align:left;}
-.acct-info{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+/* FORM (reused from folio.me) */
+.form-group{margin-bottom:1rem;}
+.form-label{display:block;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);margin-bottom:6px;}
+.fg-input{width:100%;background:var(--panel2);border:1.5px solid var(--border2);border-radius:10px;padding:.68rem .9rem;font-family:'Inter',sans-serif;font-size:.86rem;color:var(--text);outline:none;transition:border-color .2s;resize:vertical;}
+.fg-input:focus{border-color:var(--accent);}
+.input-icon-wrap{position:relative;}
+.input-icon-wrap .fg-input{padding-left:2.1rem;}
+.inp-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:.78rem;pointer-events:none;}
+
+/* SECTION HEADER (folio.me) */
+.sec-header{display:flex;align-items:center;gap:9px;margin-bottom:1rem;}
+.sec-icon{width:32px;height:32px;border-radius:9px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.85rem;flex-shrink:0;}
+.empty{text-align:center;padding:1.5rem;color:var(--text3);font-size:.72rem;border:1.5px dashed var(--border2);border-radius:var(--radius);}
+
+/* MODALS (folio.me bottom-sheet style) */
+.modal-overlay{position:fixed;inset:0;background:var(--modal-bg);z-index:1000;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.show{opacity:1;pointer-events:auto;}
+.modal{background:var(--panel);border-radius:var(--radius-xl) var(--radius-xl) 0 0;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.modal-overlay.show .modal{transform:translateY(0);}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:4px;margin:0 auto .75rem;}
+.modal-header{padding:.9rem 1.2rem .5rem;border-bottom:1px solid var(--border);}
+.modal-title{display:flex;align-items:center;justify-content:space-between;font-family:'Space Grotesk',sans-serif;font-size:1.03rem;font-weight:700;}
+.modal-close{background:none;border:none;color:var(--text3);font-size:1rem;cursor:pointer;padding:4px;border-radius:6px;}
+.modal-body{padding:1.2rem 1.2rem 2rem;}
+.modal-box-center{display:flex;align-items:center;justify-content:center;text-align:center;}
+.acct-info{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
 .acct-info img{width:48px;height:48px;border-radius:50%;}
-.acct-info .ai-name{font-weight:700;font-size:.94rem;}
-.acct-info .ai-email{font-size:.76rem;color:var(--text3);}
-.acct-action{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--border);cursor:pointer;font-size:.86rem;font-weight:600;}
+.acct-info .ai-name{font-weight:700;font-size:.92rem;}
+.acct-info .ai-email{font-size:.74rem;color:var(--text3);}
+.acct-action{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--border);cursor:pointer;font-size:.85rem;font-weight:600;}
 .acct-action i{width:18px;color:var(--text2);}
 .acct-action:last-child{border-bottom:none;color:var(--danger);}
+.google-btn{width:100%;background:#fff;color:#1a1a1a;border:1.5px solid var(--border2);font-weight:700;font-size:.88rem;padding:13px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;}
 
 /* TOAST */
-.toast-wrap{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:8px;align-items:center;}
-.toast{background:var(--panel2);border:1px solid var(--border2);color:var(--text);font-size:.84rem;font-weight:600;padding:11px 20px;border-radius:30px;box-shadow:0 8px 24px rgba(0,0,0,.3);display:flex;align-items:center;gap:8px;animation:toastIn .25s;}
-.toast.success{border-color:rgba(60,200,110,.4);}
-.toast.success i{color:#5fd98a;}
-.toast.error{border-color:rgba(229,72,77,.4);}
-.toast.error i{color:var(--danger);}
-@keyframes toastIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px) scale(.94);background:var(--text);border-radius:100px;padding:10px 22px 10px 16px;font-size:.73rem;font-weight:600;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.28);z-index:9999;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:90vw;text-align:center;display:flex;align-items:center;gap:9px;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}
 .loader-spin{animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;color:var(--text3);font-size:.76rem;}
+footer{border-top:1px solid var(--border);padding:28px 20px;text-align:center;color:var(--text3);font-size:.74rem;}
 
 @media(max-width:760px){
   .feat-grid{grid-template-columns:1fr;}
   .designer-grid{grid-template-columns:1fr;}
   .preview-stage{position:relative;top:0;}
-  .tmpl-grid{grid-template-columns:repeat(3,1fr);}
   .admin-stats{grid-template-columns:repeat(2,1fr);}
   .form-row2{grid-template-columns:1fr;}
   .nav-links{display:none;}
-  .hero{padding:40px 0 30px;}
-  .hero h1{font-size:1.7rem;}
-  .nfc-card,.hero-card-stage .nfc-card{width:260px;}
+  .hero{padding:36px 0 26px;}
+  .nfc-card,.hero-card-stage .nfc-card{width:250px;}
+  .color-pick-row{flex-direction:column;}
 }
 </style>
 </head>
@@ -227,6 +263,7 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
     <div class="brand" onclick="goView('home')"><span class="nfc-mark"><i class="fa-solid fa-wifi"></i></span>Folio Cards</div>
     <div class="nav-links">
       <button class="nav-link" id="nav-home" onclick="goView('home')"><i class="fa-solid fa-house"></i> Home</button>
+      <button class="nav-link" id="nav-shop" onclick="goView('shop')"><i class="fa-solid fa-store"></i> Shop</button>
       <button class="nav-link" id="nav-orders" onclick="goView('orders')" style="display:none;"><i class="fa-solid fa-box"></i> My Orders</button>
       <button class="nav-link" id="nav-admin" onclick="goView('admin')" style="display:none;"><i class="fa-solid fa-gauge"></i> Admin</button>
     </div>
@@ -243,15 +280,15 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
     <div class="hero">
       <div class="hero-eyebrow"><i class="fa-solid fa-bolt"></i> NFC-Enabled Digital Business Card</div>
       <h1>One tap. Your whole <em>folio.me</em> profile, shared instantly.</h1>
-      <p>Design a premium NFC card linked to your folio.me profile. Anyone taps it with their phone — no app needed — and your profile opens right away.</p>
+      <p>Pick a card, personalize it with your name and logo, and order it. Anyone taps it with their phone — no app needed — and your profile opens right away.</p>
       <div class="hero-ctas">
-        <button class="btn-primary" onclick="startDesigning()"><i class="fa-solid fa-wand-magic-sparkles"></i> Design Your Card</button>
+        <button class="btn-primary" onclick="goView('shop')"><i class="fa-solid fa-store"></i> Browse Cards</button>
         <button class="btn-ghost" onclick="goView('orders')"><i class="fa-solid fa-box"></i> Track an Order</button>
       </div>
       <div class="hero-card-stage">
-        <div class="nfc-card" style="background:linear-gradient(135deg,#1c1f26,#0c0d10);color:#f1efe9;">
+        <div class="nfc-card" style="background:linear-gradient(135deg,#1c1f26,#0c0d10);color:#f5f5f0;">
           <div class="nfc-chip"><i class="fa-solid fa-wifi" style="transform:rotate(90deg);"></i></div>
-          <div class="nc-logo-ph" style="color:#d4af6a;border:1.5px solid rgba(212,175,106,.4);">FM</div>
+          <div class="nc-logo-ph" style="color:#2e8b00;border:1.5px solid rgba(46,139,0,.4);">FM</div>
           <div class="nc-bottom">
             <div class="card-name-disp">Folio Member</div>
             <div class="nc-title">Digital Creator</div>
@@ -261,15 +298,26 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
         </div>
       </div>
     </div>
-    <div class="sec-h" style="margin-top:60px;">
+    <div class="sec-h" style="margin-top:54px;">
       <h2>Why people switch to a smart card</h2>
       <p>Skip the reprints. Update your details anytime — every card already out there updates with you.</p>
     </div>
     <div class="feat-grid">
       <div class="feat-card"><i class="fa-solid fa-wifi"></i><h3>Tap to share</h3><p>Built-in NFC chip opens your folio.me profile on any modern smartphone — no app, no scanning hassle.</p></div>
-      <div class="feat-card"><i class="fa-solid fa-pen-ruler"></i><h3>Designed by you</h3><p>Pick a template, drop in your logo, and pick an accent color. Preview it live before you order.</p></div>
+      <div class="feat-card"><i class="fa-solid fa-pen-ruler"></i><h3>Designed by you</h3><p>Pick a card style, drop in your logo and details, and preview it live before you order.</p></div>
       <div class="feat-card"><i class="fa-solid fa-arrows-rotate"></i><h3>Always up to date</h3><p>Your card links to your live profile — change your role, photo, or links anytime, the card just works.</p></div>
     </div>
+  </div>
+</div>
+
+<!-- SHOP (PRODUCTS) -->
+<div class="view" id="view-shop">
+  <div class="shell shop-wrap">
+    <div class="sec-h">
+      <h2>Choose your card</h2>
+      <p>Every card includes a built-in NFC chip linked to your folio.me profile.</p>
+    </div>
+    <div class="products-grid" id="products-grid"></div>
   </div>
 </div>
 
@@ -280,49 +328,44 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
     <div class="designer-grid">
       <div>
         <div class="panel-block" id="step-1">
-          <h3><i class="fa-solid fa-palette"></i> Choose a template</h3>
-          <div class="tmpl-grid" id="tmpl-grid"></div>
-        </div>
-        <div class="panel-block" id="step-2" style="display:none;">
           <h3><i class="fa-solid fa-pen"></i> Your card details</h3>
-          <div class="fgroup"><label>Accent color</label><div class="color-row" id="color-row"></div></div>
-          <div class="fgroup"><label>Logo or photo (optional)</label>
+          <div class="fgroup"><label class="form-label" style="display:block;margin-bottom:8px;">Logo or photo (optional)</label>
             <div class="logo-up">
               <div class="lu-prev" id="logo-prev"><i class="fa-solid fa-image"></i></div>
               <input type="file" id="logo-file-input" accept="image/*" style="display:none;" onchange="handleLogoUpload(this)">
               <button class="lu-btn" onclick="document.getElementById('logo-file-input').click()">Upload</button>
             </div>
           </div>
-          <div class="fgroup"><label>Full Name *</label><input class="finput" id="dc-name" placeholder="Your name" oninput="updatePreview()"></div>
+          <div class="form-group"><label class="form-label">Full Name *</label><input class="fg-input" id="dc-name" placeholder="Your name" oninput="updatePreview()"></div>
           <div class="form-row2">
-            <div class="fgroup"><label>Job Title</label><input class="finput" id="dc-title" placeholder="Digital Creator" oninput="updatePreview()"></div>
-            <div class="fgroup"><label>Phone</label><input class="finput" id="dc-phone" placeholder="+880 1XXX XXXXXX" oninput="updatePreview()"></div>
+            <div class="form-group"><label class="form-label">Job Title</label><input class="fg-input" id="dc-title" placeholder="Digital Creator" oninput="updatePreview()"></div>
+            <div class="form-group"><label class="form-label">Phone</label><input class="fg-input" id="dc-phone" placeholder="+880 1XXX XXXXXX" oninput="updatePreview()"></div>
           </div>
           <div class="form-row2">
-            <div class="fgroup"><label>Email</label><input class="finput" id="dc-email" placeholder="you@example.com" oninput="updatePreview()"></div>
-            <div class="fgroup"><label>folio.me username</label><input class="finput" id="dc-username" placeholder="yourname" oninput="updatePreview()"></div>
+            <div class="form-group"><label class="form-label">Email</label><input class="fg-input" id="dc-email" placeholder="you@example.com" oninput="updatePreview()"></div>
+            <div class="form-group"><label class="form-label">folio.me username</label><input class="fg-input" id="dc-username" placeholder="yourname" oninput="updatePreview()"></div>
           </div>
           <div class="step-actions">
-            <button class="btn-ghost" onclick="goStep(1)">Back</button>
-            <button class="btn-primary" onclick="goStep(3)">Continue</button>
+            <button class="btn-ghost" onclick="goView('shop')">Change card</button>
+            <button class="btn-primary" onclick="goStep(2)">Continue</button>
           </div>
         </div>
-        <div class="panel-block" id="step-3" style="display:none;">
+        <div class="panel-block" id="step-2" style="display:none;">
           <h3><i class="fa-solid fa-cart-shopping"></i> Quantity & order</h3>
-          <div class="fgroup"><label>How many cards?</label>
+          <div class="form-group"><label class="form-label">How many cards?</label>
             <div class="qty-stepper"><button onclick="changeQty(-1)">−</button><span id="qty-disp">1</span><button onclick="changeQty(1)">+</button></div>
           </div>
           <div class="step-actions">
-            <button class="btn-ghost" onclick="goStep(2)">Back</button>
+            <button class="btn-ghost" onclick="goStep(1)">Back</button>
             <button class="btn-primary" onclick="goToCheckout()"><i class="fa-solid fa-arrow-right"></i> Continue to Checkout</button>
           </div>
         </div>
       </div>
       <div class="preview-stage">
         <div class="ps-label">Live Preview</div>
-        <div class="nfc-card" id="preview-card" style="background:linear-gradient(135deg,#1c1f26,#0c0d10);color:#f1efe9;">
+        <div class="nfc-card" id="preview-card">
           <div class="nfc-chip"><i class="fa-solid fa-wifi" style="transform:rotate(90deg);"></i></div>
-          <div id="preview-logo-area"><div class="nc-logo-ph" id="preview-logo-ph" style="color:#d4af6a;border:1.5px solid rgba(212,175,106,.4);">?</div></div>
+          <div id="preview-logo-area"><div class="nc-logo-ph" id="preview-logo-ph">?</div></div>
           <div class="nc-bottom">
             <div class="card-name-disp" id="preview-name">Your Name</div>
             <div class="nc-title" id="preview-title">Job Title</div>
@@ -331,7 +374,7 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
           <div class="nc-watermark">FOLIO.ME</div>
         </div>
         <div class="preview-price">
-          <div class="pp-amt" id="preview-price">৳499</div>
+          <div class="pp-amt" id="preview-price">৳0</div>
           <div class="pp-sub" id="preview-price-sub">1 card · NFC chip included</div>
         </div>
       </div>
@@ -341,20 +384,20 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
 
 <!-- CHECKOUT -->
 <div class="view" id="view-checkout">
-  <div class="shell" style="padding:36px 0 80px;max-width:640px;">
-    <h2 style="font-size:1.4rem;margin-bottom:22px;"><i class="fa-solid fa-truck-fast" style="color:var(--accent);"></i> Shipping & Payment</h2>
+  <div class="shell" style="padding:32px 0 80px;max-width:620px;">
+    <h2 style="font-size:1.3rem;margin-bottom:20px;font-weight:800;"><i class="fa-solid fa-truck-fast" style="color:var(--accent);"></i> Shipping & Payment</h2>
     <div class="panel-block">
-      <h3><i class="fa-solid fa-location-dot"></i> Shipping details</h3>
-      <div class="fgroup"><label>Full Name *</label><input class="finput" id="ord-name" placeholder="Recipient name"></div>
+      <div class="sec-header"><div class="sec-icon"><i class="fa-solid fa-location-dot"></i></div><div style="font-weight:700;font-size:.9rem;">Shipping details</div></div>
+      <div class="form-group"><label class="form-label">Full Name *</label><input class="fg-input" id="ord-name" placeholder="Recipient name"></div>
       <div class="form-row2">
-        <div class="fgroup"><label>Phone *</label><input class="finput" id="ord-phone" placeholder="+880 1XXX XXXXXX"></div>
-        <div class="fgroup"><label>District/City *</label><input class="finput" id="ord-district" placeholder="Dhaka"></div>
+        <div class="form-group"><label class="form-label">Phone *</label><input class="fg-input" id="ord-phone" placeholder="+880 1XXX XXXXXX"></div>
+        <div class="form-group"><label class="form-label">District/City *</label><input class="fg-input" id="ord-district" placeholder="Dhaka"></div>
       </div>
-      <div class="fgroup"><label>Full Address *</label><textarea class="finput" id="ord-address" placeholder="House, road, area..."></textarea></div>
-      <div class="fgroup"><label>Order notes (optional)</label><input class="finput" id="ord-notes" placeholder="Any special instructions"></div>
+      <div class="form-group"><label class="form-label">Full Address *</label><textarea class="fg-input" id="ord-address" rows="2" placeholder="House, road, area..."></textarea></div>
+      <div class="form-group"><label class="form-label">Order notes (optional)</label><input class="fg-input" id="ord-notes" placeholder="Any special instructions"></div>
     </div>
     <div class="panel-block">
-      <h3><i class="fa-solid fa-wallet"></i> Payment method</h3>
+      <div class="sec-header"><div class="sec-icon"><i class="fa-solid fa-wallet"></i></div><div style="font-weight:700;font-size:.9rem;">Payment method</div></div>
       <div class="pay-opts">
         <div class="pay-opt selected" data-pay="cod" onclick="selectPay('cod')"><i class="fa-solid fa-money-bill-wave"></i><div class="po-name">Cash on Delivery</div></div>
         <div class="pay-opt" data-pay="bkash" onclick="selectPay('bkash')"><i class="fa-solid fa-mobile-screen-button"></i><div class="po-name">bKash</div></div>
@@ -363,7 +406,7 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
       <div id="pay-extra"></div>
     </div>
     <div class="panel-block">
-      <h3><i class="fa-solid fa-receipt"></i> Order summary</h3>
+      <div class="sec-header"><div class="sec-icon"><i class="fa-solid fa-receipt"></i></div><div style="font-weight:700;font-size:.9rem;">Order summary</div></div>
       <div id="order-summary-box"></div>
     </div>
     <button class="btn-primary" style="width:100%;justify-content:center;" onclick="placeOrder()" id="place-order-btn"><i class="fa-solid fa-circle-check"></i> Place Order</button>
@@ -372,12 +415,12 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
 
 <!-- ORDER SUCCESS -->
 <div class="view" id="view-success">
-  <div class="shell" style="padding:80px 20px;text-align:center;max-width:480px;">
-    <div style="width:74px;height:74px;border-radius:50%;background:rgba(60,200,110,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;"><i class="fa-solid fa-check" style="font-size:1.8rem;color:#5fd98a;"></i></div>
-    <h2 style="font-size:1.5rem;margin-bottom:10px;">Order placed!</h2>
-    <p style="color:var(--text2);font-size:.9rem;margin-bottom:6px;">Your order ID</p>
-    <p style="font-family:monospace;font-size:.92rem;color:var(--accent);margin-bottom:26px;" id="success-order-id"></p>
-    <p style="color:var(--text2);font-size:.86rem;margin-bottom:30px;line-height:1.6;">We'll confirm your order shortly. Track its status anytime from My Orders.</p>
+  <div class="shell" style="padding:70px 20px;text-align:center;max-width:480px;">
+    <div style="width:70px;height:70px;border-radius:50%;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;"><i class="fa-solid fa-check" style="font-size:1.7rem;color:var(--accent);"></i></div>
+    <h2 style="font-size:1.4rem;margin-bottom:8px;font-weight:800;">Order placed!</h2>
+    <p style="color:var(--text2);font-size:.88rem;margin-bottom:5px;">Your order ID</p>
+    <p style="font-family:'Space Mono',monospace;font-size:.9rem;color:var(--accent);margin-bottom:24px;" id="success-order-id"></p>
+    <p style="color:var(--text2);font-size:.84rem;margin-bottom:26px;line-height:1.6;">We'll confirm your order shortly. Track its status anytime from My Orders.</p>
     <button class="btn-primary" onclick="goView('orders')"><i class="fa-solid fa-box"></i> View My Orders</button>
   </div>
 </div>
@@ -385,7 +428,7 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
 <!-- MY ORDERS -->
 <div class="view" id="view-orders">
   <div class="shell orders-wrap">
-    <h2 style="font-size:1.4rem;margin-bottom:22px;"><i class="fa-solid fa-box" style="color:var(--accent);"></i> My Orders</h2>
+    <h2 style="font-size:1.3rem;margin-bottom:20px;font-weight:800;"><i class="fa-solid fa-box" style="color:var(--accent);"></i> My Orders</h2>
     <div id="orders-list"></div>
   </div>
 </div>
@@ -393,36 +436,79 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
 <!-- ADMIN -->
 <div class="view" id="view-admin">
   <div class="shell admin-wrap">
-    <h2 style="font-size:1.4rem;margin-bottom:22px;"><i class="fa-solid fa-gauge" style="color:var(--accent);"></i> Admin Dashboard</h2>
-    <div class="admin-stats" id="admin-stats"></div>
-    <div class="admin-filters" id="admin-filters"></div>
-    <div id="admin-orders-list"></div>
+    <h2 style="font-size:1.3rem;margin-bottom:18px;font-weight:800;"><i class="fa-solid fa-gauge" style="color:var(--accent);"></i> Admin Dashboard</h2>
+    <div class="admin-subtabs">
+      <button class="admin-subtab active" id="asub-orders" onclick="setAdminTab('orders')">Orders</button>
+      <button class="admin-subtab" id="asub-products" onclick="setAdminTab('products')">Products</button>
+    </div>
+    <div id="admin-tab-orders">
+      <div class="admin-stats" id="admin-stats"></div>
+      <div class="admin-filters" id="admin-filters"></div>
+      <div id="admin-orders-list"></div>
+    </div>
+    <div id="admin-tab-products" style="display:none;">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+        <button class="btn-primary" onclick="openProductModal()"><i class="fa-solid fa-plus"></i> Add Product</button>
+      </div>
+      <div id="admin-products-list"></div>
+    </div>
   </div>
 </div>
 
 <!-- LOGIN MODAL -->
 <div class="modal-overlay" id="login-modal">
-  <div class="modal-box">
-    <button class="mclose" onclick="closeModal('login-modal')"><i class="fa-solid fa-xmark"></i></button>
-    <div class="nfc-mark" style="display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-wifi"></i></div>
-    <h3>Sign in to continue</h3>
-    <p>Sign in with Google to design your card and track orders. Your folio.me profile is created automatically.</p>
-    <button class="google-btn" onclick="googleLogin()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" height="18" alt="">Continue with Google</button>
+  <div class="modal">
+    <div class="modal-header"><div class="modal-handle"></div><div class="modal-title"><span>Sign in</span><button class="modal-close" onclick="closeModal('login-modal')"><i class="fa-solid fa-xmark"></i></button></div></div>
+    <div class="modal-body modal-box-center" style="flex-direction:column;">
+      <div class="nfc-mark" style="width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;"><i class="fa-solid fa-wifi"></i></div>
+      <p style="font-size:.84rem;color:var(--text2);margin-bottom:22px;line-height:1.55;">Sign in with Google to design your card and track orders. Your folio.me profile is created automatically.</p>
+      <button class="google-btn" onclick="googleLogin()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" height="18" alt="">Continue with Google</button>
+    </div>
   </div>
 </div>
 
 <!-- ACCOUNT MODAL -->
 <div class="modal-overlay" id="acct-modal">
-  <div class="modal-box acct-modal-box">
-    <button class="mclose" onclick="closeModal('acct-modal')"><i class="fa-solid fa-xmark"></i></button>
-    <div class="acct-info"><img id="am-photo" src="" alt=""><div><div class="ai-name" id="am-name"></div><div class="ai-email" id="am-email"></div></div></div>
-    <div class="acct-action" onclick="closeModal('acct-modal');goView('orders');"><i class="fa-solid fa-box"></i> My Orders</div>
-    <div class="acct-action" onclick="closeModal('acct-modal');window.open('https://folio.me','_blank');"><i class="fa-solid fa-id-card"></i> View my folio.me profile</div>
-    <div class="acct-action" onclick="doLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</div>
+  <div class="modal">
+    <div class="modal-header"><div class="modal-handle"></div><div class="modal-title"><span>Account</span><button class="modal-close" onclick="closeModal('acct-modal')"><i class="fa-solid fa-xmark"></i></button></div></div>
+    <div class="modal-body">
+      <div class="acct-info"><img id="am-photo" src="" alt=""><div><div class="ai-name" id="am-name"></div><div class="ai-email" id="am-email"></div></div></div>
+      <div class="acct-action" onclick="closeModal('acct-modal');goView('orders');"><i class="fa-solid fa-box"></i> My Orders</div>
+      <div class="acct-action" onclick="closeModal('acct-modal');window.open('https://folio.me','_blank');"><i class="fa-solid fa-id-card"></i> View my folio.me profile</div>
+      <div class="acct-action" onclick="doLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</div>
+    </div>
   </div>
 </div>
 
-<div class="toast-wrap" id="toast-wrap"></div>
+<!-- PRODUCT MODAL (admin) -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-handle"></div><div class="modal-title"><span id="product-modal-title">Add Product</span><button class="modal-close" onclick="closeModal('product-modal')"><i class="fa-solid fa-xmark"></i></button></div></div>
+    <div class="modal-body">
+      <input type="hidden" id="prod-edit-key">
+      <div class="form-group"><label class="form-label">Product Photo (optional)</label>
+        <div class="logo-up"><div class="lu-prev" id="prod-photo-prev" style="width:64px;height:42px;border-radius:8px;"><i class="fa-solid fa-image"></i></div>
+          <input type="file" id="prod-photo-input" accept="image/*" style="display:none;" onchange="handleProductPhotoUpload(this)">
+          <button class="lu-btn" onclick="document.getElementById('prod-photo-input').click()">Upload</button>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Product Name *</label><input class="fg-input" id="prod-name" placeholder="e.g. Classic PVC Card"></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="fg-input" id="prod-desc" rows="2" placeholder="Short description shown to customers"></textarea></div>
+      <div class="form-group"><label class="form-label">Price (৳) *</label><input class="fg-input" type="number" id="prod-price" placeholder="499"></div>
+      <div class="form-group"><label class="form-label">Card colors (used in the live preview)</label>
+        <div class="color-pick-row">
+          <div class="cp-item"><label class="form-label">Gradient start</label><input type="color" id="prod-bgfrom" value="#1c1f26"></div>
+          <div class="cp-item"><label class="form-label">Gradient end</label><input type="color" id="prod-bgto" value="#0c0d10"></div>
+          <div class="cp-item"><label class="form-label">Text color</label><input type="color" id="prod-textcolor" value="#f5f5f0"></div>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <div class="toggle-chip on" id="prod-active-toggle" onclick="toggleProductActive()"><i class="fa-solid fa-circle-check"></i> Active (visible in shop)</div>
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center;" onclick="saveProduct()"><i class="fa-solid fa-floppy-disk"></i> Save Product</button>
+    </div>
+  </div>
+</div>
 
 <footer>© <span id="yr"></span> Folio Cards — a sister product of folio.me. Smart NFC business cards.</footer>
 
@@ -433,23 +519,12 @@ footer{border-top:1px solid var(--border);padding:30px 20px;text-align:center;co
 document.getElementById('yr').textContent=new Date().getFullYear();
 
 /* ====== CONFIG ====== */
-const UNIT_PRICE=499; // BDT per card — edit this to change pricing
 const BKASH_NUMBER='017XXXXXXXXX'; // <-- your bKash merchant/personal number
 const NAGAD_NUMBER='017XXXXXXXXX'; // <-- your Nagad merchant/personal number
 // Admin access is controlled from the database, not this file.
 // To make someone an admin: in Firebase Console → Realtime Database, add a node:
 //   admins/<their Firebase Auth UID> = true
 // Find a user's UID under Firebase Console → Authentication.
-
-const TEMPLATES=[
-  {id:'obsidian',name:'Obsidian',bg:'linear-gradient(135deg,#1c1f26,#0c0d10)',color:'#f1efe9'},
-  {id:'champagne',name:'Champagne',bg:'linear-gradient(135deg,#f4e3c1,#d8b878)',color:'#241a0a'},
-  {id:'midnight',name:'Midnight Teal',bg:'linear-gradient(135deg,#0d2230,#0a3d44)',color:'#eafffb'},
-  {id:'rosewood',name:'Rosewood',bg:'linear-gradient(135deg,#3a0d16,#5c1322)',color:'#f7e9e9'},
-  {id:'arctic',name:'Arctic',bg:'linear-gradient(135deg,#eef0f2,#cfd4d9)',color:'#15181c'},
-  {id:'emerald',name:'Emerald',bg:'linear-gradient(135deg,#0c2417,#103a26)',color:'#f1e9c9'}
-];
-const ACCENTS=['#d4af6a','#1fb6a6','#e5484d','#7da3ff','#b08aff','#5fd98a','#ffffff','#1a1a1a'];
 
 let auth,db;
 try{
@@ -463,17 +538,21 @@ try{
 }
 
 /* ====== STATE ====== */
-let _uid=null,_userEmail=null,_userName=null,_userPhoto=null,_isAdmin=false;
-let design={template:TEMPLATES[0].id,color:ACCENTS[0],logo:'',name:'',title:'',phone:'',email:'',username:'',qty:1};
-let _myOrders={},_allOrders={},_adminFilter='all';
+let _uid=null,_userEmail=null,_isAdmin=false;
+let _products={},_selectedProductId=null;
+let design={logo:'',name:'',title:'',phone:'',email:'',username:'',qty:1};
+let _myOrders={},_allOrders={},_adminFilter='all',_adminTab='orders';
+let _prodPhotoData='';
 
 /* ====== UTIL ====== */
 function _esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function toast(msg,type){const w=document.getElementById('toast-wrap');const t=document.createElement('div');t.className='toast'+(type?' '+type:'');const icon=type==='success'?'fa-circle-check':type==='error'?'fa-circle-exclamation':'fa-circle-info';t.innerHTML=`<i class="fa-solid ${icon}"></i>${_esc(msg)}`;w.appendChild(t);setTimeout(()=>t.remove(),3400);}
-function openModal(id){document.getElementById(id).classList.add('active');}
-function closeModal(id){document.getElementById(id).classList.remove('active');}
-function fmtMoney(n){return '৳'+Number(n).toLocaleString('en-US');}
+let _toastT;
+function toast(msg,type){const el=document.getElementById('toast-el');clearTimeout(_toastT);const icon=type==='success'?'fa-circle-check':type==='error'?'fa-circle-exclamation':'fa-circle-info';el.innerHTML=`<i class="fa-solid ${icon}"></i>${_esc(msg)}`;el.className='toast show'+(type?' '+type:'');_toastT=setTimeout(()=>el.classList.remove('show'),3200);}
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+function fmtMoney(n){return '৳'+Number(n||0).toLocaleString('en-US');}
 function fmtDate(ts){if(!ts)return'';return new Date(ts).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});}
+const toastWrap=document.createElement('div');toastWrap.id='toast-el';toastWrap.className='toast';document.body.appendChild(toastWrap);
 
 /* ====== VIEW ROUTING ====== */
 function goView(name){
@@ -482,17 +561,11 @@ function goView(name){
   document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
   const navBtn=document.getElementById('nav-'+name);if(navBtn)navBtn.classList.add('active');
   window.scrollTo(0,0);
+  if(name==='shop')renderProductsGrid();
   if(name==='orders')renderMyOrders();
   if(name==='admin')renderAdmin();
 }
 window.goView=goView;
-
-function startDesigning(){
-  if(!_uid){openLoginModal();return;}
-  goView('designer');
-  goStep(1);
-}
-window.startDesigning=startDesigning;
 
 /* ====== AUTH ====== */
 function openLoginModal(){openModal('login-modal');}
@@ -510,11 +583,8 @@ function googleLogin(){
   auth.signInWithPopup(p).then(result=>{
     closeModal('login-modal');toast('Signed in!','success');
     const u=result.user;
-    // Ensure a folio.me profile exists for this email/uid — same database as folio.me
     db.ref('users/'+u.uid+'/profile').once('value').then(s=>{
-      if(!s.val()){
-        return db.ref('users/'+u.uid+'/profile').set({name:u.displayName||'',avatar:u.photoURL||'',email:u.email||'',createdAt:Date.now()});
-      }
+      if(!s.val())return db.ref('users/'+u.uid+'/profile').set({name:u.displayName||'',avatar:u.photoURL||'',email:u.email||'',createdAt:Date.now()});
     }).catch(()=>{});
   }).catch(e=>toast('Error: '+e.message,'error'));
 }
@@ -523,8 +593,7 @@ function doLogout(){closeModal('acct-modal');auth.signOut().then(()=>{toast('Sig
 window.doLogout=doLogout;
 
 auth.onAuthStateChanged(u=>{
-  _uid=u?u.uid:null;
-  _userEmail=u?u.email:null;_userName=u?u.displayName:null;_userPhoto=u?u.photoURL:null;
+  _uid=u?u.uid:null;_userEmail=u?u.email:null;
   const tb=document.getElementById('login-trigger-btn'),ab=document.getElementById('acct-btn');
   const ordersNav=document.getElementById('nav-orders'),adminNav=document.getElementById('nav-admin');
   if(u){
@@ -537,28 +606,52 @@ auth.onAuthStateChanged(u=>{
   }
 });
 
-/* ====== DESIGNER ====== */
-function renderTemplates(){
-  document.getElementById('tmpl-grid').innerHTML=TEMPLATES.map(t=>
-    `<div class="tmpl-opt${design.template===t.id?' selected':''}" style="background:${t.bg}" onclick="selectTemplate('${t.id}')"><span class="tmpl-name">${_esc(t.name)}</span></div>`
-  ).join('');
-  document.getElementById('color-row').innerHTML=ACCENTS.map(c=>
-    `<div class="color-dot${design.color===c?' selected':''}" style="background:${c};${c==='#ffffff'?'border:1px solid #444;':''}" onclick="selectColor('${c}')"></div>`
-  ).join('');
-}
-function selectTemplate(id){design.template=id;renderTemplates();updatePreview();}
-window.selectTemplate=selectTemplate;
-function selectColor(c){design.color=c;renderTemplates();updatePreview();}
-window.selectColor=selectColor;
-
-function goStep(n){
-  [1,2,3].forEach(i=>document.getElementById('step-'+i).style.display=i===n?'block':'none');
-  document.getElementById('step-row').innerHTML=[1,2,3].map(i=>{
-    const label=i===1?'Template':i===2?'Details':'Quantity';
-    const cls=i===n?'active':i<n?'done':'';
-    return`<div class="step-pill ${cls}"><span class="num">${i<n?'<i class="fa-solid fa-check"></i>':i}</span>${label}</div>`+(i<3?'<div class="step-sep"></div>':'');
+/* ====== PRODUCTS (catalog) ====== */
+db.ref('products').on('value',s=>{
+  _products=s.val()||{};
+  if(document.getElementById('view-shop').classList.contains('active'))renderProductsGrid();
+  if(document.getElementById('view-admin').classList.contains('active')&&_adminTab==='products')renderAdminProducts();
+});
+function renderProductsGrid(){
+  const w=document.getElementById('products-grid');
+  const keys=Object.keys(_products).filter(k=>_products[k].active!==false);
+  if(!keys.length){w.innerHTML='<div class="empty-state"><i class="fa-solid fa-store-slash"></i><div>No cards available yet. Check back soon!</div></div>';return;}
+  w.innerHTML=keys.map(k=>{const p=_products[k];const grad=`linear-gradient(135deg,${p.bgFrom||'#1c1f26'},${p.bgTo||'#0c0d10'})`;
+    return`<div class="product-card">
+      <div class="product-thumb" style="background:${p.photo?'#000':grad};">
+        ${p.photo?`<img src="${p.photo}" alt="">`:''}
+        <div class="pt-nfc"><i class="fa-solid fa-wifi"></i></div>
+      </div>
+      <div class="product-body">
+        <div class="p-name">${_esc(p.name||'')}</div>
+        <div class="p-desc">${_esc(p.desc||'')}</div>
+        <div class="p-price">${fmtMoney(p.price)}</div>
+        <button class="btn-primary" onclick="chooseProduct('${k}')"><i class="fa-solid fa-wand-magic-sparkles"></i> Customize This Card</button>
+      </div>
+    </div>`;
   }).join('');
-  if(n===1)renderTemplates();
+}
+function chooseProduct(id){
+  if(!_uid){openLoginModal();return;}
+  _selectedProductId=id;
+  design={logo:'',name:'',title:'',phone:'',email:'',username:'',qty:1};
+  ['dc-name','dc-title','dc-phone','dc-email','dc-username'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
+  document.getElementById('logo-prev').innerHTML='<i class="fa-solid fa-image"></i>';
+  document.getElementById('qty-disp').textContent='1';
+  goView('designer');
+  goStep(1);
+  updatePreview();
+}
+window.chooseProduct=chooseProduct;
+
+/* ====== DESIGNER ====== */
+function goStep(n){
+  [1,2].forEach(i=>document.getElementById('step-'+i).style.display=i===n?'block':'none');
+  document.getElementById('step-row').innerHTML=[1,2].map(i=>{
+    const label=i===1?'Details':'Quantity';
+    const cls=i===n?'active':i<n?'done':'';
+    return`<div class="step-pill ${cls}"><span class="num">${i<n?'<i class="fa-solid fa-check"></i>':i}</span>${label}</div>`+(i<2?'<div class="step-sep"></div>':'');
+  }).join('');
   window.scrollTo(0,0);
 }
 window.goStep=goStep;
@@ -590,20 +683,22 @@ function updatePreview(){
   design.phone=document.getElementById('dc-phone')?.value.trim()||'';
   design.email=document.getElementById('dc-email')?.value.trim()||'';
   design.username=document.getElementById('dc-username')?.value.trim()||'';
-  const t=TEMPLATES.find(x=>x.id===design.template)||TEMPLATES[0];
+  const p=_products[_selectedProductId]||{bgFrom:'#1c1f26',bgTo:'#0c0d10',textColor:'#f5f5f0',price:0};
   const card=document.getElementById('preview-card');
-  card.style.background=t.bg;card.style.color=t.color;
+  card.style.background=`linear-gradient(135deg,${p.bgFrom||'#1c1f26'},${p.bgTo||'#0c0d10'})`;
+  card.style.color=p.textColor||'#f5f5f0';
   document.getElementById('preview-name').textContent=design.name||'Your Name';
   document.getElementById('preview-title').textContent=design.title||'Job Title';
   const initials=(design.name||'?').trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase()||'?';
   const logoArea=document.getElementById('preview-logo-area');
+  const tc=p.textColor||'#f5f5f0';
   if(design.logo)logoArea.innerHTML=`<img class="nc-logo" src="${design.logo}" alt="">`;
-  else logoArea.innerHTML=`<div class="nc-logo-ph" style="color:${design.color};border:1.5px solid ${design.color}66;">${_esc(initials)}</div>`;
+  else logoArea.innerHTML=`<div class="nc-logo-ph" style="color:${tc};border:1.5px solid ${tc}66;">${_esc(initials)}</div>`;
   const contacts=[];
   if(design.username)contacts.push(`<span><i class="fa-solid fa-globe"></i> folio.me/${_esc(design.username)}</span>`);
   if(design.phone)contacts.push(`<span><i class="fa-solid fa-phone"></i> ${_esc(design.phone)}</span>`);
   document.getElementById('preview-contacts').innerHTML=contacts.join('');
-  document.getElementById('preview-price').textContent=fmtMoney(UNIT_PRICE*design.qty);
+  document.getElementById('preview-price').textContent=fmtMoney((p.price||0)*design.qty);
   document.getElementById('preview-price-sub').textContent=design.qty+' card'+(design.qty>1?'s':'')+' · NFC chip included';
 }
 window.updatePreview=updatePreview;
@@ -612,7 +707,7 @@ function changeQty(d){design.qty=Math.max(1,Math.min(50,design.qty+d));document.
 window.changeQty=changeQty;
 
 function goToCheckout(){
-  if(!design.name){toast('Enter your name in card details','error');goStep(2);return;}
+  if(!design.name){toast('Enter your name in card details','error');goStep(1);return;}
   goView('checkout');
   renderOrderSummary();
 }
@@ -624,27 +719,31 @@ function selectPay(p){
   _selectedPay=p;
   document.querySelectorAll('.pay-opt').forEach(el=>el.classList.toggle('selected',el.dataset.pay===p));
   const extra=document.getElementById('pay-extra');
+  const total=(_products[_selectedProductId]?.price||0)*design.qty;
   if(p==='cod'){extra.innerHTML='<div class="pay-instr"><i class="fa-solid fa-circle-info"></i> Pay in cash when your card arrives at your door.</div>';}
   else{
     const num=p==='bkash'?BKASH_NUMBER:NAGAD_NUMBER;
     const label=p==='bkash'?'bKash':'Nagad';
-    extra.innerHTML=`<div class="pay-instr">Send <b>${fmtMoney(UNIT_PRICE*design.qty)}</b> to this ${label} number (Send Money): <b>${num}</b>. Then enter the number you sent from and the Transaction ID below.</div>
-      <div class="form-row2"><div class="fgroup"><label>Your ${label} number *</label><input class="finput" id="pay-sender"></div><div class="fgroup"><label>Transaction ID *</label><input class="finput" id="pay-txnid"></div></div>`;
+    extra.innerHTML=`<div class="pay-instr">Send <b>${fmtMoney(total)}</b> to this ${label} number (Send Money): <b>${num}</b>. Then enter the number you sent from and the Transaction ID below.</div>
+      <div class="form-row2"><div class="form-group"><label class="form-label">Your ${label} number *</label><input class="fg-input" id="pay-sender"></div><div class="form-group"><label class="form-label">Transaction ID *</label><input class="fg-input" id="pay-txnid"></div></div>`;
   }
 }
 window.selectPay=selectPay;
-selectPay('cod');
 
 function renderOrderSummary(){
-  const total=UNIT_PRICE*design.qty;
+  const p=_products[_selectedProductId]||{};
+  const total=(p.price||0)*design.qty;
   document.getElementById('order-summary-box').innerHTML=`
-    <div class="order-summary-row"><span>${_esc(TEMPLATES.find(t=>t.id===design.template)?.name||'')} template × ${design.qty}</span><span>${fmtMoney(total)}</span></div>
+    <div class="order-summary-row"><span>${_esc(p.name||'')} × ${design.qty}</span><span>${fmtMoney(total)}</span></div>
     <div class="order-summary-row"><span>Delivery</span><span>Free</span></div>
     <div class="order-summary-row"><span>Total</span><span>${fmtMoney(total)}</span></div>`;
+  selectPay(_selectedPay);
 }
 
 function placeOrder(){
   if(!_uid){openLoginModal();return;}
+  const p=_products[_selectedProductId];
+  if(!p){toast('Please choose a card first','error');goView('shop');return;}
   const name=document.getElementById('ord-name').value.trim(),phone=document.getElementById('ord-phone').value.trim(),district=document.getElementById('ord-district').value.trim(),address=document.getElementById('ord-address').value.trim(),notes=document.getElementById('ord-notes').value.trim();
   if(!name||!phone||!district||!address){toast('Fill in all required shipping fields','error');return;}
   let txnId='',senderNumber='';
@@ -654,14 +753,14 @@ function placeOrder(){
     if(!senderNumber||!txnId){toast('Enter payment number and transaction ID','error');return;}
   }
   const btn=document.getElementById('place-order-btn');btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner loader-spin"></i> Placing order...';
-  const total=UNIT_PRICE*design.qty;
+  const total=(p.price||0)*design.qty;
   const orderRef=db.ref('orders').push();
   const orderId=orderRef.key;
   const orderData={
     uid:_uid,customerName:name,customerEmail:_userEmail||'',customerPhone:phone,district,address,notes,
-    template:design.template,color:design.color,logo:design.logo,
-    cardName:design.name,cardTitle:design.title,cardPhone:design.phone,cardEmail:design.email,cardUsername:design.username,
-    qty:design.qty,unitPrice:UNIT_PRICE,totalPrice:total,
+    productId:_selectedProductId,productName:p.name||'',
+    logo:design.logo,cardName:design.name,cardTitle:design.title,cardPhone:design.phone,cardEmail:design.email,cardUsername:design.username,
+    qty:design.qty,unitPrice:p.price||0,totalPrice:total,
     paymentMethod:_selectedPay,txnId,senderNumber,
     status:'pending',createdAt:Date.now(),updatedAt:Date.now()
   };
@@ -670,7 +769,7 @@ function placeOrder(){
     .then(()=>{
       document.getElementById('success-order-id').textContent='#'+orderId.slice(-8).toUpperCase();
       goView('success');
-      design={template:TEMPLATES[0].id,color:ACCENTS[0],logo:'',name:'',title:'',phone:'',email:'',username:'',qty:1};
+      design={logo:'',name:'',title:'',phone:'',email:'',username:'',qty:1};_selectedProductId=null;
     })
     .catch(e=>toast('Error: '+e.message,'error'))
     .finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-circle-check"></i> Place Order';});
@@ -684,7 +783,7 @@ function _attachMyOrders(uid){
 function renderMyOrders(){
   const w=document.getElementById('orders-list');
   const keys=Object.keys(_myOrders).sort((a,b)=>(_myOrders[b].createdAt||0)-(_myOrders[a].createdAt||0));
-  if(!keys.length){w.innerHTML='<div class="empty-state"><i class="fa-solid fa-box-open"></i><div>No orders yet. Design your first card!</div></div>';return;}
+  if(!keys.length){w.innerHTML='<div class="empty-state"><i class="fa-solid fa-box-open"></i><div>No orders yet. Browse the shop to design your first card!</div></div>';return;}
   w.innerHTML=keys.map(k=>{const o=_myOrders[k];
     return`<div class="order-card">
       <div class="order-card-top">
@@ -694,7 +793,7 @@ function renderMyOrders(){
       <div class="order-meta"><span><i class="fa-solid fa-calendar"></i> ${fmtDate(o.createdAt)}</span><span><i class="fa-solid fa-wallet"></i> ${fmtMoney(o.totalPrice)}</span><span><i class="fa-solid fa-credit-card"></i> ${_esc((o.paymentMethod||'').toUpperCase())}</span></div>
       <span class="order-detail-toggle" onclick="this.nextElementSibling.classList.toggle('open')">View details <i class="fa-solid fa-chevron-down"></i></span>
       <div class="order-detail-body">
-        <div><b>Template:</b> ${_esc(TEMPLATES.find(t=>t.id===o.template)?.name||o.template)}</div>
+        <div><b>Card:</b> ${_esc(o.productName||'')}</div>
         <div><b>Title:</b> ${_esc(o.cardTitle||'—')}</div>
         <div><b>Shipping to:</b> ${_esc(o.customerName)}, ${_esc(o.address)}, ${_esc(o.district)}</div>
         <div><b>Phone:</b> ${_esc(o.customerPhone)}</div>
@@ -704,16 +803,24 @@ function renderMyOrders(){
   }).join('');
 }
 
-/* ====== ADMIN ====== */
-let _adminAttached=false;
+/* ====== ADMIN: ORDERS ====== */
+let _adminOrdersAttached=false;
 function renderAdmin(){
   if(!_uid||!_isAdmin){document.getElementById('view-admin').innerHTML='<div class="shell" style="padding:60px 20px;text-align:center;color:var(--text3);">Not authorized.</div>';return;}
-  if(!_adminAttached){
-    _adminAttached=true;
-    db.ref('orders').on('value',s=>{_allOrders=s.val()||{};_drawAdmin();});
-  }else _drawAdmin();
+  if(!_adminOrdersAttached){_adminOrdersAttached=true;db.ref('orders').on('value',s=>{_allOrders=s.val()||{};if(_adminTab==='orders')_drawAdminOrders();});}
+  else _drawAdminOrders();
+  if(_adminTab==='products')renderAdminProducts();
 }
-function _drawAdmin(){
+function setAdminTab(t){
+  _adminTab=t;
+  document.getElementById('asub-orders').classList.toggle('active',t==='orders');
+  document.getElementById('asub-products').classList.toggle('active',t==='products');
+  document.getElementById('admin-tab-orders').style.display=t==='orders'?'block':'none';
+  document.getElementById('admin-tab-products').style.display=t==='products'?'block':'none';
+  if(t==='orders')_drawAdminOrders();else renderAdminProducts();
+}
+window.setAdminTab=setAdminTab;
+function _drawAdminOrders(){
   const keys=Object.keys(_allOrders);
   const counts={all:keys.length,pending:0,confirmed:0,processing:0,shipped:0,delivered:0,cancelled:0};
   keys.forEach(k=>{const st=_allOrders[k].status||'pending';if(counts[st]!==undefined)counts[st]++;});
@@ -727,10 +834,10 @@ function _drawAdmin(){
   const filtered=keys.filter(k=>_adminFilter==='all'||(_allOrders[k].status||'pending')===_adminFilter).sort((a,b)=>(_allOrders[b].createdAt||0)-(_allOrders[a].createdAt||0));
   const w=document.getElementById('admin-orders-list');
   if(!filtered.length){w.innerHTML='<div class="empty-state"><i class="fa-solid fa-inbox"></i><div>No orders in this filter.</div></div>';return;}
-  w.innerHTML=filtered.map(k=>{const o=_allOrders[k];const t=TEMPLATES.find(x=>x.id===o.template)||TEMPLATES[0];
+  w.innerHTML=filtered.map(k=>{const o=_allOrders[k];const p=_products[o.productId]||{};
     return`<div class="admin-order-row">
       <div class="aor-top">
-        <div class="aor-left"><div class="aor-mini-card" style="background:${t.bg}"></div><div><div class="aor-name">${_esc(o.cardName||o.customerName||'')}</div><div class="aor-sub">#${k.slice(-8).toUpperCase()} · ${fmtDate(o.createdAt)} · ${fmtMoney(o.totalPrice)}</div></div></div>
+        <div class="aor-left"><div class="aor-mini-card" style="background:linear-gradient(135deg,${p.bgFrom||'#1c1f26'},${p.bgTo||'#0c0d10'})"></div><div><div class="aor-name">${_esc(o.cardName||o.customerName||'')}</div><div class="aor-sub">#${k.slice(-8).toUpperCase()} · ${fmtDate(o.createdAt)} · ${fmtMoney(o.totalPrice)}</div></div></div>
         <select class="aor-status-sel" onchange="updateOrderStatus('${k}',this.value)">
           ${['pending','confirmed','processing','shipped','delivered','cancelled'].map(s=>`<option value="${s}"${o.status===s?' selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
         </select>
@@ -744,19 +851,18 @@ function _drawAdmin(){
         <div><b>Card:</b> ${_esc(o.cardName)} — ${_esc(o.cardTitle||'')}</div>
         <div><b>Card phone/email:</b> ${_esc(o.cardPhone||'—')} / ${_esc(o.cardEmail||'—')}</div>
         <div><b>folio.me username:</b> ${_esc(o.cardUsername||'—')}</div>
-        <div><b>Template:</b> ${_esc(t.name)} · <b>Qty:</b> ${o.qty}</div>
+        <div><b>Product:</b> ${_esc(o.productName||p.name||'')} · <b>Qty:</b> ${o.qty}</div>
         <div><b>Payment:</b> ${_esc((o.paymentMethod||'').toUpperCase())}${o.paymentMethod!=='cod'?` — Sender: ${_esc(o.senderNumber||'—')}, TrxID: ${_esc(o.txnId||'—')}`:''}</div>
         ${o.logo?`<div style="margin-top:8px;"><b>Logo:</b><br><img src="${o.logo}" style="width:60px;height:60px;border-radius:8px;margin-top:4px;object-fit:cover;"></div>`:''}
       </div>
     </div>`;
   }).join('');
 }
-function setAdminFilter(s){_adminFilter=s;_drawAdmin();}
+function setAdminFilter(s){_adminFilter=s;_drawAdminOrders();}
 window.setAdminFilter=setAdminFilter;
 function updateOrderStatus(orderId,status){
   db.ref('orders/'+orderId).update({status,updatedAt:Date.now()})
     .then(()=>{
-      // mirror status to the customer's own order copy too
       const o=_allOrders[orderId];
       if(o&&o.uid)db.ref('userOrders/'+o.uid+'/'+orderId).update({status,updatedAt:Date.now()}).catch(()=>{});
       toast('Order status updated','success');
@@ -765,9 +871,95 @@ function updateOrderStatus(orderId,status){
 }
 window.updateOrderStatus=updateOrderStatus;
 
-/* init */
-renderTemplates();
-updatePreview();
+/* ====== ADMIN: PRODUCTS (CRUD) ====== */
+function renderAdminProducts(){
+  const w=document.getElementById('admin-products-list');
+  const keys=Object.keys(_products);
+  if(!keys.length){w.innerHTML='<div class="empty-state"><i class="fa-solid fa-box-open"></i><div>No products yet. Add your first card design!</div></div>';return;}
+  w.innerHTML=keys.map(k=>{const p=_products[k];const grad=`linear-gradient(135deg,${p.bgFrom||'#1c1f26'},${p.bgTo||'#0c0d10'})`;
+    return`<div class="admin-product-row${p.active===false?' apr-inactive':''}">
+      <div class="apr-thumb" style="background:${p.photo?'#000':grad};">${p.photo?`<img src="${p.photo}" alt="">`:''}</div>
+      <div><div class="apr-name">${_esc(p.name||'')}</div><div class="apr-sub">${fmtMoney(p.price)} · ${p.active===false?'Inactive':'Active'}</div></div>
+      <div class="apr-actions">
+        <button class="apr-icon-btn" onclick="editProduct('${k}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="apr-icon-btn danger" onclick="deleteProduct('${k}')"><i class="fa-solid fa-trash-can"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+let _prodActiveState=true;
+function openProductModal(k){
+  if(!_isAdmin){toast('Admin only','error');return;}
+  const isE=!!k;
+  document.getElementById('product-modal-title').textContent=isE?'Edit Product':'Add Product';
+  document.getElementById('prod-edit-key').value=k||'';
+  const cur=isE?_products[k]:null;
+  document.getElementById('prod-name').value=cur?(cur.name||''):'';
+  document.getElementById('prod-desc').value=cur?(cur.desc||''):'';
+  document.getElementById('prod-price').value=cur?(cur.price||''):'';
+  document.getElementById('prod-bgfrom').value=cur?(cur.bgFrom||'#1c1f26'):'#1c1f26';
+  document.getElementById('prod-bgto').value=cur?(cur.bgTo||'#0c0d10'):'#0c0d10';
+  document.getElementById('prod-textcolor').value=cur?(cur.textColor||'#f5f5f0'):'#f5f5f0';
+  _prodPhotoData=cur?(cur.photo||''):'';
+  document.getElementById('prod-photo-prev').innerHTML=_prodPhotoData?`<img src="${_prodPhotoData}" alt="">`:'<i class="fa-solid fa-image"></i>';
+  _prodActiveState=cur?cur.active!==false:true;
+  _renderProdToggle();
+  openModal('product-modal');
+}
+window.openProductModal=openProductModal;
+function editProduct(k){openProductModal(k);}
+window.editProduct=editProduct;
+function _renderProdToggle(){
+  const el=document.getElementById('prod-active-toggle');
+  el.className='toggle-chip '+(_prodActiveState?'on':'off');
+  el.innerHTML=`<i class="fa-solid ${_prodActiveState?'fa-circle-check':'fa-circle-xmark'}"></i> ${_prodActiveState?'Active (visible in shop)':'Inactive (hidden from shop)'}`;
+}
+function toggleProductActive(){_prodActiveState=!_prodActiveState;_renderProdToggle();}
+window.toggleProductActive=toggleProductActive;
+function handleProductPhotoUpload(input){
+  const file=input.files[0];input.value='';if(!file)return;
+  if(file.size>5242880){toast('Max 5MB','error');return;}
+  const img=new Image(),url=URL.createObjectURL(file);
+  img.onload=()=>{
+    let w=img.width,h=img.height;const mw=400,mh=260;
+    if(w>mw||h>mh){const r=Math.min(mw/w,mh/h);w=Math.round(w*r);h=Math.round(h*r);}
+    const c=document.createElement('canvas');c.width=w;c.height=h;
+    c.getContext('2d').drawImage(img,0,0,w,h);
+    URL.revokeObjectURL(url);
+    let q=0.85,dataUrl=c.toDataURL('image/jpeg',q);
+    while(dataUrl.length>300000&&q>0.3){q-=0.1;dataUrl=c.toDataURL('image/jpeg',q);}
+    _prodPhotoData=dataUrl;
+    document.getElementById('prod-photo-prev').innerHTML=`<img src="${dataUrl}" alt="">`;
+  };
+  img.onerror=()=>{URL.revokeObjectURL(url);toast('Image load failed','error');};
+  img.src=url;
+}
+window.handleProductPhotoUpload=handleProductPhotoUpload;
+function saveProduct(){
+  if(!_isAdmin){toast('Admin only','error');return;}
+  const k=document.getElementById('prod-edit-key').value;
+  const name=document.getElementById('prod-name').value.trim();
+  const price=parseFloat(document.getElementById('prod-price').value)||0;
+  if(!name){toast('Enter a product name','error');return;}
+  if(price<=0){toast('Enter a valid price','error');return;}
+  const data={
+    name,desc:document.getElementById('prod-desc').value.trim(),price,
+    bgFrom:document.getElementById('prod-bgfrom').value,bgTo:document.getElementById('prod-bgto').value,
+    textColor:document.getElementById('prod-textcolor').value,photo:_prodPhotoData,active:_prodActiveState,
+    updatedAt:Date.now()
+  };
+  const ref=k?db.ref('products/'+k):db.ref('products').push();
+  (k?ref.update(data):ref.set({...data,createdAt:Date.now()}))
+    .then(()=>{closeModal('product-modal');toast((k?'Updated':'Added')+'!','success');})
+    .catch(e=>toast('Error: '+e.message,'error'));
+}
+window.saveProduct=saveProduct;
+function deleteProduct(k){
+  if(!_isAdmin)return;
+  if(!confirm('Delete this product? This will not affect past orders.'))return;
+  db.ref('products/'+k).remove().then(()=>toast('Product deleted','success')).catch(e=>toast('Error: '+e.message,'error'));
+}
+window.deleteProduct=deleteProduct;
 </script>
 </body>
 </html>
