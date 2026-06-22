@@ -1173,17 +1173,24 @@ function _renderReviews(d){
   // Update review action button state
   const rab=document.getElementById('review-action-btn');
   if(rab){
-    const ownProfile=isAdmin; // can't review own profile
-    if(ownProfile){rab.style.display='none';}
-    else if(_myReviewKey){
-      // Already reviewed - show edit button
+    if(isAdmin){
+      // নিজের প্রোফাইল — বাটন সম্পূর্ণ লুকানো
+      rab.style.display='none';
+    }else if(_myReviewKey){
+      // ইতোমধ্যে রিভিউ করা আছে — Edit বাটন দেখাও
+      rab.style.display='flex';
       rab.className='icon-react edit-review-btn';
       rab.innerHTML='<i class="fa-solid fa-pen"></i> Edit Review';
       rab.onclick=()=>openReviewModal(true);
-    }else{
+    }else if(_isFollowing){
+      // Follow করা আছে — Review বাটন দেখাও
+      rab.style.display='flex';
       rab.className='icon-react review-btn';
       rab.innerHTML='<i class="fa-solid fa-star"></i> Review';
       rab.onclick=()=>openReviewModal(false);
+    }else{
+      // Follow করা নেই — বাটন লুকানো
+      rab.style.display='none';
     }
   }
 
@@ -1250,6 +1257,23 @@ function _applyFollow(following){
   if(!fb)return;
   if(following){fb.className='icon-react follow-btn following';fb.innerHTML='<i class="fa-solid fa-user-check"></i> Following';}
   else{fb.className='icon-react follow-btn';fb.innerHTML='<i class="fa-solid fa-user-plus"></i> Follow';}
+  // Follow state পরিবর্তনে review বাটনও আপডেট করো
+  const rab=document.getElementById('review-action-btn');
+  if(rab&&!isAdmin){
+    if(_myReviewKey){
+      rab.style.display='flex';
+      rab.className='icon-react edit-review-btn';
+      rab.innerHTML='<i class="fa-solid fa-pen"></i> Edit Review';
+      rab.onclick=()=>openReviewModal(true);
+    }else if(following){
+      rab.style.display='flex';
+      rab.className='icon-react review-btn';
+      rab.innerHTML='<i class="fa-solid fa-star"></i> Review';
+      rab.onclick=()=>openReviewModal(false);
+    }else{
+      rab.style.display='none';
+    }
+  }
 }
 function handleFollow(){
   if(!_currentUid)return;
@@ -1455,6 +1479,7 @@ function openReviewModal(isEdit){
   if(!_currentUid){toast('No profile loaded','error');return;}
   if(isAdmin){toast('নিজের প্রোফাইলে রিভিউ দেওয়া যাবে না','error');return;}
   if(!_myUid){toast('Review করতে Sign in করুন','error');openLoginModal();return;}
+  if(!isEdit&&!_isFollowing){toast('Review করতে প্রথমে Follow করুন','error');return;}
   const titleEl=document.getElementById('review-modal-title');
   if(isEdit&&_myReviewKey){
     // Load existing review for editing
