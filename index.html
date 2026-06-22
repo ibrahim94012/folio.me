@@ -1132,7 +1132,7 @@ function googleLogin(){
     const u=result.user;
     db.ref('users/'+u.uid+'/profile').once('value').then(s=>{
       if(!s.val())db.ref('users/'+u.uid+'/profile').set({name:u.displayName||'',avatar:u.photoURL||'',createdAt:Date.now()});
-    });
+    }).finally(()=>{openProfileByUid(u.uid);});
   }).catch(e=>toast('Error: '+e.message,'error'));
 }
 window.googleLogin=googleLogin;
@@ -1325,11 +1325,18 @@ function _initMetaChipDrag(){
 window._initMetaChipDrag=_initMetaChipDrag;
 
 /* REVIEWS */
-function openReviewModal(){if(!_currentUid){toast('No profile loaded','error');return;}['rv-name','rv-contact','rv-comment'].forEach(id=>document.getElementById(id).value='');document.getElementById('rv-rating').value='0';document.querySelectorAll('#rv-star-select i').forEach(s=>s.className='fa-regular fa-star');openModal('review-modal');}
+function openReviewModal(){
+  if(!_currentUid){toast('No profile loaded','error');return;}
+  const reset=()=>{['rv-name','rv-contact','rv-comment'].forEach(id=>document.getElementById(id).value='');document.getElementById('rv-rating').value='0';document.querySelectorAll('#rv-star-select i').forEach(s=>s.className='fa-regular fa-star');openModal('review-modal');};
+  db.ref('users/'+_currentUid+'/reviews/'+_devId()).once('value').then(s=>{
+    if(s.val()){toast('You have already reviewed this profile','error');return;}
+    reset();
+  }).catch(()=>reset());
+}
 window.openReviewModal=openReviewModal;
 function setReviewStar(v){document.getElementById('rv-rating').value=v;document.querySelectorAll('#rv-star-select i').forEach(s=>{s.className=parseInt(s.dataset.val)<=v?'fa-solid fa-star':'fa-regular fa-star';});}
 window.setReviewStar=setReviewStar;
-function submitReview(){if(!_currentUid){toast('No profile','error');return;}const name=document.getElementById('rv-name').value.trim(),contact=document.getElementById('rv-contact').value.trim(),comment=document.getElementById('rv-comment').value.trim(),rating=parseInt(document.getElementById('rv-rating').value)||0;if(!name){toast('Enter your name','error');return;}if(!contact||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)&&!/^[0-9+\-\s().]{7,20}$/.test(contact)){toast('Enter valid email or mobile','error');return;}if(rating<1){toast('Select a star rating','error');return;}db.ref('users/'+_currentUid+'/reviews').push({name,contact,rating,comment,ts:Date.now()}).then(()=>{closeModal('review-modal');toast('Thanks for your review!','success');}).catch(e=>toast('Error: '+e.message,'error'));}
+function submitReview(){if(!_currentUid){toast('No profile','error');return;}const name=document.getElementById('rv-name').value.trim(),contact=document.getElementById('rv-contact').value.trim(),comment=document.getElementById('rv-comment').value.trim(),rating=parseInt(document.getElementById('rv-rating').value)||0;if(!name){toast('Enter your name','error');return;}if(!contact||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)&&!/^[0-9+\-\s().]{7,20}$/.test(contact)){toast('Enter valid email or mobile','error');return;}if(rating<1){toast('Select a star rating','error');return;}const id=_devId();db.ref('users/'+_currentUid+'/reviews/'+id).set({name,contact,rating,comment,ts:Date.now()}).then(()=>{closeModal('review-modal');toast('Thanks for your review!','success');}).catch(e=>{if(e&&e.code==='PERMISSION_DENIED')toast('You have already reviewed this profile','error');else toast('Error: '+e.message,'error');});}
 window.submitReview=submitReview;
 function delReview(k){if(!isAdmin||!_myUid)return;if(!confirm('Delete review?'))return;db.ref('users/'+_myUid+'/reviews/'+k).remove().then(()=>toast('Review removed'));}
 window.delReview=delReview;
